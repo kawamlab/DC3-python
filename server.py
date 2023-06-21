@@ -1,3 +1,5 @@
+#このファイルは使わない
+
 import asyncio
 import websockets
 
