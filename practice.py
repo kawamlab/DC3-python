@@ -89,7 +89,7 @@ class update_recv():
 
 @dataclass
 class isready():
-    """対戦開始の際の情報を受け取る"""
+    """対戦開始の際の情報を受け取る(is_ready))"""
     cmd : str
     team : str
     game : gamerule
