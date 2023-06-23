@@ -4,12 +4,11 @@ import socket
 import json
 import time
 from dataclasses import dataclass
-
-
+from DataClass import *
 
 
 class BaseClient:
-    def __init__(self, timeout: int = 10, buffer: int = 1024):  # timeout in seconds
+    def __init__(self, timeout: int = 10, buffer: int = 8192):  # timeout in seconds
         self.socket = None  # socket object
         self.address = None  # address of server
         self.timeout = timeout  # timeout in seconds
@@ -26,7 +25,7 @@ class BaseClient:
         stream_handler.setFormatter(formatter)
         self.logger.addHandler(stream_handler)
 
-        self.ai_name = "test1 AI1"
+        self.ai_name = "test AI0"
         self.end = {"cmd": "game_over"}
 
         atexit.register(self.shutdown)
@@ -41,7 +40,7 @@ class BaseClient:
         self.socket.connect(self.address)  # connect to server
         self.logger.info(f"Connect to {address} success")
 
-    def send(self, message: str = "") -> None:
+    def send(self, message: str = ""):
         flag = False
         while True:
             if message == "":
@@ -51,45 +50,20 @@ class BaseClient:
                 flag = True
             self.socket.send(message_send.encode("utf-8"))
             self.logger.info(f"Send message : {message_send}")
-            message_recv = self.socket.recv(self.buffer).decode("utf-8")
-            self.logger.info(f"Receive message : {message_recv}")
+            # message_recv:str = self.socket.recv(self.buffer).decode("utf-8")
+            # self.logger.info(f"Receive message : {message_recv}")
             if flag:
                 break
 
         # return message_recv
 
-    def receive(self) -> str:
-        message = self.socket.recv(self.buffer).decode("utf-8")
-        self.logger.info(f"Receive message : {message}")
-        s = json.dumps(message)
-        return s
-
-    def dc_ok(self) -> None:
-        message: dict = {"cmd": "dc_ok", "name": self.ai_name}
-        s = json.dumps(message)
-        s = s + "\n"
-        self.send(s)
-    
-    def ready(self):
-        ready : dict = {
-    "cmd": "ready_ok",
-    "player_order": [0,1,3,2]}
-        s:str = json.dumps(ready)
-        s = s + "\n"
-        self.send(s)
-
-    def move(self):
-        shot : dict = {"cmd": "move","move": {"type": "shot","velocity": { "x": 0.0, "y": 4.0 },"rotation": "ccw"}}  #まっすぐ投げる
-        s:str = json.dumps(shot)
-        s = s + "\n"
-        self.send(s)
-
-    def battle(self, message = "") -> None:
-        for i in range(8):
-            message = self.receive()
-            self.logger.info(f"Receive message : {message}")
-            self.move()
-            time.sleep(10) #これだと最後に無駄な起動を起こす
+    def receive(self) -> dict:
+        message: str = self.socket.recv(self.buffer).decode("utf-8")
+        # self.logger.info(f"Receive message : {message}")
+        s: str = json.dumps(message)
+        json_data = json.loads(s)
+        dict_data = json.loads(json_data)
+        return dict_data
 
     def shutdown(self):
         self.logger.info("Shutdown socket")
@@ -102,20 +76,269 @@ class BaseClient:
             pass
 
 
-class SocketClient1(BaseClient):
+class SocketClient(BaseClient):
     def __init__(self, host: str = "dc3-server", port: int = 10001) -> None:
         self.server = (host, port)
-        super().__init__(timeout=60, buffer=1024)
+        super().__init__(timeout=60, buffer=2048)
         super().connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
 
 
-if __name__ == "__main__":
-    cli = SocketClient1()
-    cli.receive()
-    cli.dc_ok()
-    cli.receive()
-    cli.ready()
-    a:str = cli.receive()
-    self.logger.info(f"Receive message : {a}")
+    def dc_recv(self) -> None:
+        """dcを受信"""
+        message_recv = self.receive()
+        self.dc = server_dc(
+            cmd=message_recv["cmd"],
+            version=message_recv["version"],
+            game_id=message_recv["game_id"],
+            date_time=message_recv["date_time"],
+        )
 
-    # print(json.loads(ready))
+    def dc_ok(self) -> None:
+        """dc_okを送信"""
+        message: dict = {"cmd": "dc_ok", "name": self.ai_name}
+        s: str = json.dumps(message)
+        s: str = s + "\n"
+        self.send(s)
+
+    def is_ready_recv(self) -> None:
+        """is_readyを受信"""
+        message_recv = self.receive()
+
+        thinking_time = ThinkingTime(
+            team0=message_recv["game"]["setting"]["thinking_time"]["team0"],
+            team1=message_recv["game"]["setting"]["thinking_time"]["team1"],
+        )
+
+        extra_end_thinking_time = ExtraEndThinkingTime(
+            team0=message_recv["game"]["setting"]["extra_end_thinking_time"]["team0"],
+            team1=message_recv["game"]["setting"]["extra_end_thinking_time"]["team1"],
+        )
+
+        simulator = Simulator(
+            simulator_type=message_recv["game"]["simulator"]["type"],
+            seconds_per_frame=message_recv["game"]["simulator"]["seconds_per_frame"],
+        )
+
+        team0_players = [
+            NormalDist(
+                max_speed=data["max_speed"],
+                seed=None,
+                stddev_angle=data["stddev_angle"],
+                stddev_speed=data["stddev_speed"],
+                type=data["type"],
+            )
+            for data in message_recv["game"]["players"]["team0"]
+        ]
+        team1_players = [
+            NormalDist(
+                type=data["type"],
+                stddev_speed=data["stddev_speed"],
+                stddev_angle=data["stddev_angle"],
+                max_speed=data["max_speed"],
+                seed=None,
+            )
+            for data in message_recv["game"]["players"]["team1"]
+        ]
+
+        players = Players(team0=team0_players, team1=team1_players)
+
+        game_setting = Setting(
+            max_end=message_recv["game"]["setting"]["max_end"],
+            sheet_width=message_recv["game"]["setting"]["sheet_width"],
+            five_rock_rule=message_recv["game"]["setting"]["five_rock_rule"],
+            thinking_time=thinking_time,
+            extra_end_thinking_time=extra_end_thinking_time,
+        )
+
+        game = gamerule(
+            rule=message_recv["game"]["rule"],
+            setting=game_setting,
+            players=players,
+            simulator=simulator,
+        )
+
+        self.match_setting = isready(
+            cmd=message_recv["cmd"], team=message_recv["team"], game=game
+        )
+        # self.logger.info(f"match_setting : {self.match_setting}")
+
+    def ready_ok(self) -> None:
+        ready: dict = {"cmd": "ready_ok", "player_order": [0, 1, 3, 2]}
+        s: str = json.dumps(ready)
+        s: str = s + "\n"
+        self.send(s)
+
+    def new_game(self) -> None:
+        message_recv = self.receive()
+        self.newgame = NewGame(cmd=message_recv["cmd"], name=message_recv["name"])
+
+    def update(self) -> None:
+        message_recv = self.receive()
+        self.logger.info(f"Receive message : {message_recv}")
+        a = message_recv["state"]["game_result"]
+        b = message_recv["last_move"]
+
+        team0_stone = []
+        team1_stone = []
+
+        if message_recv["state"]["game_result"] == None:
+            winner = None
+            reason = None
+        else:
+            winner = message_recv["state"]["game_result"]["winner"]
+            reason = message_recv["state"]["game_result"]["reason"]
+
+        game_result = GameResult(
+            winner=winner,
+            reason=reason,
+        )
+
+        if a == None:
+            game_result = a
+        else:
+            game_result = game_result
+
+        extra_end_score = ExtraEndScore(
+            team0=message_recv["state"]["extra_end_score"]["team0"],
+            team1=message_recv["state"]["extra_end_score"]["team1"],
+        )
+
+        scores = Scores(
+            team0=message_recv["state"]["scores"]["team0"],
+            team1=message_recv["state"]["scores"]["team1"],
+        )
+
+        # team0_stone = [
+        #     Coordinate(
+        #         position=[Position(x=data["x"], y=data["y"])], angle=data["angle"]
+        #     )
+        #     if data != "None"
+        #     else None
+        #     for data in message_recv["state"]["stones"]["team0"]
+        # ]
+
+        # team1_stone = [
+        #     Coordinate(
+        #     position=[Position(x=data["x"], y=data["y"])],
+        #     angle=data["angle"]
+        #     )
+        #     if data != "None"
+        #     else None
+        #     for data in message_recv["state"]["stones"]["team1"]
+        # ]
+
+        for data in message_recv["state"]["stones"]["team0"]:
+            if data == None:
+                team0_stone.append(None)
+                # self.logger.info(f"team0_stone : {team0_stone}")
+            else:
+                team0_stone.append(
+                    Coordinate(
+                        angle=data["angle"],
+                        position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
+                    )
+                )
+
+        for data in message_recv["state"]["stones"]["team1"]:
+            if data == None:
+                team1_stone.append(None)
+            else:
+                team1_stone.append(
+                    Coordinate(
+                        angle=data["angle"],
+                        position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
+                    )
+                )
+
+        stones = Stones(
+            team0=team0_stone,
+            team1=team1_stone,
+        )
+
+        thinking_time_remaining = ThinkingTimeRemaining(
+            team0=message_recv["state"]["thinking_time_remaining"]["team0"],
+            team1=message_recv["state"]["thinking_time_remaining"]["team1"]
+        )
+
+
+        if b == None:
+            last_move = b
+            actual_move = None
+            free_guard_zone_foul = False
+            type = None
+            velocity = None
+            rotation = None
+            x = None
+            y = None
+        else:
+            last_move = message_recv["last_move"]
+            actual_move = message_recv["last_move"]["actual_move"]
+            free_guard_zone_foul = message_recv["last_move"]["free_guard_zone_foul"]
+            type = message_recv["last_move"]["actual_move"]["type"]
+            velocity = message_recv["last_move"]["actual_move"]["velocity"]
+            rotation = message_recv["last_move"]["actual_move"]["rotation"]
+            x = message_recv["last_move"]["actual_move"]["velocity"]["x"]
+            y = message_recv["last_move"]["actual_move"]["velocity"]["y"]
+
+
+        velocity = Velocity(
+            x = x,
+            y = y
+        )
+
+
+        actual_move = ActualMove(
+            rotation=rotation,
+            type=type,
+            velocity=velocity,
+        )
+
+
+        last_move = LastMove(
+            actual_move = actual_move,
+            free_guard_zone_foul = free_guard_zone_foul,
+        )
+
+
+        state = State(
+            end=message_recv["state"]["end"],
+            extra_end_score=extra_end_score,
+            game_result=game_result,
+            hammer=message_recv["state"]["hammer"],
+            scores=scores,
+            shot=message_recv["state"]["shot"],
+            stones=stones,
+            thinking_time_remaining=thinking_time_remaining,
+        )
+
+        self.updateinfo = Update(
+            cmd=message_recv["cmd"],
+            last_move=last_move,
+            next_team=message_recv["next_team"],
+            state=state,
+        )
+
+        self.logger.info(f"next_team : {self.updateinfo.next_team}")
+
+    def move(self):
+        time.sleep(10)
+        shot: dict = {
+            "cmd": "move",
+            "move": {
+                "type": "shot",
+                "velocity": {"x": 0.0, "y": 2.4},
+                "rotation": "ccw",
+            },
+        }  # まっすぐ投げる
+        s: str = json.dumps(shot)
+        s: str = s + "\n"
+        time.sleep(5)
+        self.send(s)
+
+    def battle(self) -> None:
+        for i in range(8):
+            self.move()
+            message = self.receive()
+            # self.logger.info(f"Receive message : {message}")
+            
+
