@@ -89,8 +89,8 @@ class SocketClient(BaseClient):
 
 
         version = Version(
-            major = message_recv["major"],
-            minor = message_recv["minor"]
+            major = message_recv["version"]["major"],
+            minor = message_recv["version"]["minor"]
         )
 
         self.dc = server_dc(

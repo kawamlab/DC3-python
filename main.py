@@ -32,6 +32,6 @@ if __name__ == "__main__":
         if cli.updateinfo.state.game_result != None:
 
             break
-    f = open("learning_data1.json", "a", encoding="UTF-8")
+    f = open("learning_data2.json", "a", encoding="UTF-8")
     f.writelines(str(learning))
     f.close()
