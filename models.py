@@ -5,13 +5,13 @@ from dataclasses_json import dataclass_json
 @dataclass_json
 @dataclass
 class Version:
-    major : int
-    minor : int
+    major: int
+    minor: int
 
 
 @dataclass_json
 @dataclass  # dcで受信するメッセージを格納
-class server_dc:
+class ServerDC:
     cmd: str
     version: Version
     game_id: str
@@ -28,7 +28,6 @@ class NormalDist:
     stddev_angle: float
     stddev_speed: float
     type: str
-
 
 
 @dataclass_json
@@ -81,7 +80,7 @@ class Simulator:
 
 @dataclass_json
 @dataclass
-class gamerule:
+class GameRule:
     """試合設定"""
 
     players: Players
@@ -92,12 +91,12 @@ class gamerule:
 
 @dataclass_json
 @dataclass
-class isready:
+class IsReady:
     """対戦開始の際の情報を受け取る(is_ready))"""
 
     cmd: str
     team: str
-    game: gamerule
+    game: GameRule
 
 
 @dataclass_json
@@ -188,8 +187,8 @@ class State:
 @dataclass_json
 @dataclass
 class Velocity:
-    x : float | None
-    y : float | None
+    x: float | None
+    y: float | None
 
 
 @dataclass_json
@@ -208,7 +207,7 @@ class LastMove:
     """前回のショット情報"""
 
     actual_move: ActualMove
-    free_guard_zone_foul : bool
+    free_guard_zone_foul: bool
 
 
 @dataclass_json
@@ -219,4 +218,4 @@ class Update:
     cmd: str
     next_team: str
     state: State
-    last_move : LastMove
+    last_move: LastMove
