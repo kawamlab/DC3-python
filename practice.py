@@ -321,14 +321,14 @@ class SocketClient(BaseClient):
             thinking_time_remaining=thinking_time_remaining,
         )
 
-        self.updateinfo = Update(
+        self.update_info = Update(
             cmd=message_recv["cmd"],
             last_move=last_move,
             next_team=message_recv["next_team"],
             state=state,
         )
 
-        self.logger.info(f"next_team : {self.updateinfo.next_team}")
+        self.logger.info(f"next_team : {self.update_info.next_team}")
 
     def move(self):
         time.sleep(10)
