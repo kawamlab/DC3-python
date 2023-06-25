@@ -4,7 +4,7 @@ import socket
 import json
 import time
 from dataclasses import dataclass
-from DataClass import *
+from models import *
 
 
 class BaseClient:
@@ -18,9 +18,7 @@ class BaseClient:
 
         self.logger.setLevel(logging.INFO)
 
-        formatter = logging.Formatter(
-            "%(asctime)s - %(levelname)s:%(name)s - %(message)s"
-        )
+        formatter = logging.Formatter("%(asctime)s - %(levelname)s:%(name)s - %(message)s")
         stream_handler = logging.StreamHandler()
         stream_handler.setFormatter(formatter)
         self.logger.addHandler(stream_handler)
@@ -82,11 +80,10 @@ class SocketClient(BaseClient):
         super().__init__(timeout=60, buffer=2048)
         super().connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
 
-
     def dc_recv(self) -> None:
         """dcを受信"""
         message_recv = self.receive()
-        self.dc = server_dc(
+        self.dc = ServerDC(
             cmd=message_recv["cmd"],
             version=message_recv["version"],
             game_id=message_recv["game_id"],
@@ -150,16 +147,14 @@ class SocketClient(BaseClient):
             extra_end_thinking_time=extra_end_thinking_time,
         )
 
-        game = gamerule(
+        game = GameRule(
             rule=message_recv["game"]["rule"],
             setting=game_setting,
             players=players,
             simulator=simulator,
         )
 
-        self.match_setting = isready(
-            cmd=message_recv["cmd"], team=message_recv["team"], game=game
-        )
+        self.match_setting = IsReady(cmd=message_recv["cmd"], team=message_recv["team"], game=game)
         # self.logger.info(f"match_setting : {self.match_setting}")
 
     def ready_ok(self) -> None:
@@ -234,8 +229,7 @@ class SocketClient(BaseClient):
             else:
                 team0_stone.append(
                     Coordinate(
-                        angle=data["angle"],
-                        position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
+                        angle=data["angle"], position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
                     )
                 )
 
@@ -245,8 +239,7 @@ class SocketClient(BaseClient):
             else:
                 team1_stone.append(
                     Coordinate(
-                        angle=data["angle"],
-                        position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
+                        angle=data["angle"], position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
                     )
                 )
 
@@ -257,9 +250,8 @@ class SocketClient(BaseClient):
 
         thinking_time_remaining = ThinkingTimeRemaining(
             team0=message_recv["state"]["thinking_time_remaining"]["team0"],
-            team1=message_recv["state"]["thinking_time_remaining"]["team1"]
+            team1=message_recv["state"]["thinking_time_remaining"]["team1"],
         )
-
 
         if b == None:
             last_move = b
@@ -280,12 +272,7 @@ class SocketClient(BaseClient):
             x = message_recv["last_move"]["actual_move"]["velocity"]["x"]
             y = message_recv["last_move"]["actual_move"]["velocity"]["y"]
 
-
-        velocity = Velocity(
-            x = x,
-            y = y
-        )
-
+        velocity = Velocity(x=x, y=y)
 
         actual_move = ActualMove(
             rotation=rotation,
@@ -293,12 +280,10 @@ class SocketClient(BaseClient):
             velocity=velocity,
         )
 
-
         last_move = LastMove(
-            actual_move = actual_move,
-            free_guard_zone_foul = free_guard_zone_foul,
+            actual_move=actual_move,
+            free_guard_zone_foul=free_guard_zone_foul,
         )
-
 
         state = State(
             end=message_recv["state"]["end"],
@@ -340,5 +325,3 @@ class SocketClient(BaseClient):
             self.move()
             message = self.receive()
             # self.logger.info(f"Receive message : {message}")
-            
-
