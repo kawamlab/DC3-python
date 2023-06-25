@@ -7,7 +7,21 @@
     // "initializeCommand": "if ! docker network ls | awk '{ print $2 }' | grep -qx 'dc3'; then docker network create --driver bridge test-group; fi",
     "runArgs": [
         "--network=dc3"
-    ]
+    ],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "shardulm94.trailing-spaces",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "ms-python.isort",
+                "seatonjiang.gitmoji-vscode",
+                "GitHub.copilot",
+                "ms-python.flake8",
+                "ms-python.black-formatter"
+            ]
+        }
+    }
     // Features to add to the dev container. More info: https://containers.dev/features.
     // "features": {},
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
