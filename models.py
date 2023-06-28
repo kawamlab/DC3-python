@@ -1,15 +1,12 @@
 from dataclasses import dataclass
-from dataclasses_json import dataclass_json
 
 
-@dataclass_json
 @dataclass
 class Version:
     major: int
     minor: int
 
 
-@dataclass_json
 @dataclass  # dcで受信するメッセージを格納
 class ServerDC:
     cmd: str
@@ -18,7 +15,7 @@ class ServerDC:
     date_time: str
 
 
-@dataclass_json
+
 @dataclass
 class NormalDist:
     """最大速度及び、初速・初期角度に加わる正規分布乱数の標準偏差"""
@@ -30,7 +27,7 @@ class NormalDist:
     type: str
 
 
-@dataclass_json
+
 @dataclass
 class Players:
     """プレイヤーの設定"""
@@ -39,7 +36,7 @@ class Players:
     team1: list[NormalDist]
 
 
-@dataclass_json
+
 @dataclass
 class ExtraEndThinkingTime:
     """延長戦の1エンド毎の思考時間"""
@@ -48,7 +45,7 @@ class ExtraEndThinkingTime:
     team1: float
 
 
-@dataclass_json
+
 @dataclass
 class ThinkingTime:
     """延長戦を含まない思考時間"""
@@ -57,7 +54,7 @@ class ThinkingTime:
     team1: float
 
 
-@dataclass_json
+
 @dataclass
 class Setting:
     """試合設定"""
@@ -69,7 +66,7 @@ class Setting:
     thinking_time: ThinkingTime
 
 
-@dataclass_json
+
 @dataclass
 class Simulator:
     """シミュレータの設定"""
@@ -78,7 +75,7 @@ class Simulator:
     simulator_type: str
 
 
-@dataclass_json
+
 @dataclass
 class GameRule:
     """試合設定"""
@@ -89,7 +86,7 @@ class GameRule:
     simulator: Simulator
 
 
-@dataclass_json
+
 @dataclass
 class IsReady:
     """対戦開始の際の情報を受け取る(is_ready))"""
@@ -99,7 +96,7 @@ class IsReady:
     game: GameRule
 
 
-@dataclass_json
+
 @dataclass
 class NewGame:
     """試合開始の合図"""
@@ -108,7 +105,7 @@ class NewGame:
     name: dict
 
 
-@dataclass_json
+
 @dataclass
 class ExtraEndScore:
     """延長戦のスコア"""
@@ -117,14 +114,14 @@ class ExtraEndScore:
     team1: int
 
 
-@dataclass_json
+
 @dataclass
 class GameResult:
     winner: str | None
     reason: str | None
 
 
-@dataclass_json
+
 @dataclass
 class Scores:
     """スコア"""
@@ -133,25 +130,25 @@ class Scores:
     team1: list
 
 
-@dataclass_json
+
 @dataclass
 class Position:
     """位置"""
 
-    x: float
-    y: float
+    x: float | None
+    y: float | None
 
 
-@dataclass_json
+
 @dataclass
 class Coordinate:
     """位置と角度"""
 
-    angle: float
+    angle: float | None
     position: list[Position]
 
 
-@dataclass_json
+
 @dataclass
 class Stones:
     """石の位置"""
@@ -160,7 +157,7 @@ class Stones:
     team1: list[Coordinate]
 
 
-@dataclass_json
+
 @dataclass
 class ThinkingTimeRemaining:
     """残り思考時間"""
@@ -169,7 +166,7 @@ class ThinkingTimeRemaining:
     team1: float
 
 
-@dataclass_json
+
 @dataclass
 class State:
     """状態"""
@@ -184,14 +181,14 @@ class State:
     thinking_time_remaining: ThinkingTimeRemaining
 
 
-@dataclass_json
+
 @dataclass
 class Velocity:
     x: float | None
     y: float | None
 
 
-@dataclass_json
+
 @dataclass
 class ActualMove:
     """実際のショット情報"""
@@ -201,16 +198,44 @@ class ActualMove:
     velocity: Velocity
 
 
-@dataclass_json
+@dataclass
+class Start:
+    """ショットの開始位置"""
+
+    team0 : list[Coordinate]
+    team1 : list[Coordinate]
+
+
+@dataclass
+class Finish:
+    team0 : list[Coordinate]
+    team1 : list[Coordinate]
+
+
+@dataclass
+class Frame:
+    """ショットのフレーム情報"""
+
+    team : str | None
+    index : int | None
+    value : list[Coordinate] | None
+
+@dataclass
+class Trajectory:
+    seconds_per_frame: float | None
+    start : Start
+    finish : Finish
+    frames : list[Frame] | None
+
 @dataclass
 class LastMove:
     """前回のショット情報"""
 
     actual_move: ActualMove
     free_guard_zone_foul: bool
+    trajectory : Trajectory | None
 
 
-@dataclass_json
 @dataclass
 class Update:
     """対戦中の情報を受け取る"""
@@ -218,4 +243,4 @@ class Update:
     cmd: str
     next_team: str
     state: State
-    last_move: LastMove
+    last_move: LastMove | None

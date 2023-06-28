@@ -22,12 +22,15 @@ if __name__ == "__main__":
     # cli.logger.info(f"id : {id.next_team}")
     while True:
         cli.update()
-        nextteam = cli.updateinfo.next_team
-        learning.append(asdict(cli.updateinfo))
+        nextteam = cli.update_info.next_team
+        # learning.append(asdict(cli.update_info))
         cli.logger.info(f"nextteam : {nextteam}")
         # cli.logger.info(f"learning : {learning}")
+        cli.logger.info(myteam==nextteam)
         if myteam == nextteam:
             cli.move()
-        if cli.updateinfo.state.game_result != None:
+        else:
+            continue
+        if cli.update_info.state.game_result.winner is not None:
             break
     
