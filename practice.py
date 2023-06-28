@@ -421,7 +421,7 @@ class SocketClient(BaseClient):
                                 angle=data["angle"], position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
                             )
                         )
-                for data in message_recv["last_move"]["trajectory"]["frames"]:
+                for data in message_recv["last_move"]["trajectory"]["frames"]["value"]:
                     frame_value.append(
                         Coordinate(
                             angle=data["frames"]["angle"], position=[Position(x=data["frames"]["position"]["x"], y=data["frames"]["position"]["y"])]
