@@ -31,11 +31,12 @@ from models import (
     Start,
     Finish,
     Frame,
+    Array
 )
 
 
 class BaseClient:
-    def __init__(self, timeout: int = 10, buffer: int = 8192):  # timeout in seconds
+    def __init__(self, timeout: int = 10, buffer: int = 1024):  # timeout in seconds
         self.socket = None  # socket object
         self.address = None  # address of server
         self.timeout = timeout  # timeout in seconds
@@ -88,11 +89,19 @@ class BaseClient:
         # return message_recv
 
     def receive(self) -> dict:
-        message: str = self.socket.recv(self.buffer).decode("utf-8")  # type: ignore
+        # messageの末尾に改行が現れるまで受信を続ける
+        message = ""
+        while True:
+            message_recv: str = self.socket.recv(self.buffer).decode("utf-8")  # type: ignore
+            message += message_recv
+            if message_recv[-1] == "\n":
+                break
+
         # self.logger.info(f"Receive message : {message}")
         s = json.dumps(message)
         json_data = json.loads(s)
         dict_data = json.loads(json_data)
+        # self.logger.info(f"Receive message : {dict_data}")
         return dict_data
 
     def shutdown(self):
@@ -109,7 +118,7 @@ class BaseClient:
 class SocketClient(BaseClient):
     def __init__(self, host: str = "dc3-server", port: int = 10001) -> None:
         self.server = (host, port)
-        super().__init__(timeout=60, buffer=65536)
+        super().__init__(timeout=60, buffer=1024)
         super().connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
 
     def dc_recv(self) -> None:
@@ -159,13 +168,13 @@ class SocketClient(BaseClient):
                 seed=None,
                 stddev_angle=data["stddev_angle"],
                 stddev_speed=data["stddev_speed"],
-                type=data["type"],
+                randomness=data["type"],
             )
             for data in message_recv["game"]["players"]["team0"]
         ]
         team1_players = [
             NormalDist(
-                type=data["type"],
+                randomness=data["type"],
                 stddev_speed=data["stddev_speed"],
                 stddev_angle=data["stddev_angle"],
                 max_speed=data["max_speed"],
@@ -202,16 +211,17 @@ class SocketClient(BaseClient):
         ready_str: str = ready_str + "\n"
         self.send(ready_str)
 
-    def new_game(self) -> None:
+    def get_new_game(self) -> None:
         """new_gameを受信"""
 
         message_recv = self.receive()
-        self.newgame = NewGame(cmd=message_recv["cmd"], name=message_recv["name"])
+        self.new_game = NewGame(cmd=message_recv["cmd"], name=message_recv["name"])
 
     def update(self) -> None:
         """updateを受信"""
 
         message_recv = self.receive()
+        # self.logger.info(f"Receive message : {message_recv}")
         last_move = message_recv["last_move"]
 
         team0_stone = []
@@ -222,7 +232,6 @@ class SocketClient(BaseClient):
         finish_team1_position = []
         frame_data = []
         frame_value = []
-        
 
         if message_recv["state"]["game_result"] is None:
             winner = None
@@ -269,11 +278,7 @@ class SocketClient(BaseClient):
 
         for data in message_recv["state"]["stones"]["team0"]:
             if data is None:
-                team0_stone.append(
-                    Coordinate(
-                        angle=None, position=[Position(x=None, y=None)]
-                    )
-                )
+                team0_stone.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
 
             else:
                 team0_stone.append(
@@ -284,11 +289,7 @@ class SocketClient(BaseClient):
 
         for data in message_recv["state"]["stones"]["team1"]:
             if data is None:
-                team1_stone.append(
-                    Coordinate(
-                        angle=None, position=[Position(x=None, y=None)]
-                    )
-                )
+                team1_stone.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
             else:
                 team1_stone.append(
                     Coordinate(
@@ -306,138 +307,119 @@ class SocketClient(BaseClient):
             team1=message_recv["state"]["thinking_time_remaining"]["team1"],
         )
 
-        if last_move is None:               #last_moveがNoneの場合
-            free_guard_zone_foul=False
-            type=None
-            rotation=None
-            x=None
-            y=None
-            trajectory=None
-            seconds_per_frame=None
-        else:                               #last_moveがNoneでない場合
-            last_move=message_recv["last_move"]
-            actual_move=message_recv["last_move"]["actual_move"]
-            free_guard_zone_foul=message_recv["last_move"]["free_guard_zone_foul"]
-            type=message_recv["last_move"]["actual_move"]["type"]
-            velocity=message_recv["last_move"]["actual_move"]["velocity"]
-            rotation=message_recv["last_move"]["actual_move"]["rotation"]
-            x=message_recv["last_move"]["actual_move"]["velocity"]["x"]
-            y=message_recv["last_move"]["actual_move"]["velocity"]["y"]
-            if message_recv["last_move"]["trajectory"] is None:                 #trajectoryがNoneの場合
-                seconds_per_frame=None
-                x=None
-                y=None
+        if last_move is None:  # last_moveがNoneの場合
+            free_guard_zone_foul = False
+            type = None
+            rotation = None
+            x = None
+            y = None
+            trajectory = None
+            seconds_per_frame = None
+        else:  # last_moveがNoneでない場合
+            last_move = message_recv["last_move"]
+            actual_move = message_recv["last_move"]["actual_move"]
+            free_guard_zone_foul = message_recv["last_move"]["free_guard_zone_foul"]
+            type = message_recv["last_move"]["actual_move"]["type"]
+            velocity = message_recv["last_move"]["actual_move"]["velocity"]
+            rotation = message_recv["last_move"]["actual_move"]["rotation"]
+            x = message_recv["last_move"]["actual_move"]["velocity"]["x"]
+            y = message_recv["last_move"]["actual_move"]["velocity"]["y"]
+            if message_recv["last_move"]["trajectory"] is None:  # trajectoryがNoneの場合
+                seconds_per_frame = None
+                # x=None
+                # y=None
                 # if trajectory["start"] is None:
                 for data in message_recv["last_move"]["trajectory"]["start"]["team0"]:
-                    start_team0_position.append(
-                        Coordinate(
-                           angle=None, position=[Position(x=None, y=None)]
-                        ))
+                    start_team0_position.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
                 for data in message_recv["last_move"]["trajectory"]["start"]["team1"]:
-                    start_team1_position.append(
-                        Coordinate(
-                           angle=None, position=[Position(x=None, y=None)]
-                        )
-                    )
+                    start_team1_position.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
                 # if trajectory["finish"] is None:
                 for data in message_recv["last_move"]["trajectory"]["finish"]["team0"]:
-                    finish_team0_position.append(
-                        Coordinate(
-                            angle=None, position=[Position(x=None, y=None)]
-                        )
-                    )
+                    finish_team0_position.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
                 for data in message_recv["last_move"]["trajectory"]["finish"]["team1"]:
-                    finish_team1_position.append(
-                        Coordinate(
-                            angle=None, position=[Position(x=None, y=None)]
-                        )
-                    )
+                    finish_team1_position.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
 
-                frame_value.append(
-                    Coordinate(
-                    angle=None, position=[Position(x=None,y=None)]
-                    )
-                )
+                frame_value.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
 
                 # if trajectory["frames"] is None:
                 frame_data.append(
                     Frame(
-                    team=None,
-                    index=None,
-                    value=frame_value,
+                        team=None,
+                        index=None,
+                        value=frame_value[0],
                     )
                 )
 
-            else:                                            #trajectoryがNoneでない場合
-                seconds_per_frame=message_recv["last_move"]["trajectory"]["seconds_per_frame"]
+            else:  # trajectoryがNoneでない場合
+                seconds_per_frame = message_recv["last_move"]["trajectory"]["seconds_per_frame"]
                 for data in message_recv["last_move"]["trajectory"]["start"]["team0"]:
                     if data is None:
-                        start_team0_position.append(
-                            Coordinate(
-                            angle=None, position=[Position(x=None, y=None)]
-                            )
-                        )
+                        start_team0_position.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
                     else:
                         start_team0_position.append(
                             Coordinate(
-                            angle=data["angle"], position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
-                            ))
+                                angle=data["angle"],
+                                position=[Position(x=data["position"]["x"], y=data["position"]["y"])],
+                            )
+                        )
                 for data in message_recv["last_move"]["trajectory"]["start"]["team1"]:
                     if data is None:
-                        start_team1_position.append(
-                            Coordinate(
-                            angle=None, position=[Position(x=None, y=None)]
-                            )
-                        )
+                        start_team1_position.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
                     else:
                         start_team1_position.append(
                             Coordinate(
-                            angle=data["angle"], position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
+                                angle=data["angle"],
+                                position=[Position(x=data["position"]["x"], y=data["position"]["y"])],
                             )
                         )
                 for data in message_recv["last_move"]["trajectory"]["finish"]["team0"]:
                     if data is None:
-                        finish_team0_position.append(
-                            Coordinate(
-                            angle=None, position=[Position(x=None, y=None)]
-                            )
-                        )
+                        finish_team0_position.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
                     else:
                         finish_team0_position.append(
                             Coordinate(
-                                angle=data["angle"], position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
+                                angle=data["angle"],
+                                position=[Position(x=data["position"]["x"], y=data["position"]["y"])],
                             )
                         )
                 for data in message_recv["last_move"]["trajectory"]["finish"]["team1"]:
                     if data is None:
-                        finish_team1_position.append(
-                            Coordinate(
-                            angle=None, position=[Position(x=None, y=None)]
-                            )
-                        )
+                        finish_team1_position.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
                     else:
                         finish_team1_position.append(
                             Coordinate(
-                                angle=data["angle"], position=[Position(x=data["position"]["x"], y=data["position"]["y"])]
+                                angle=data["angle"],
+                                position=[Position(x=data["position"]["x"], y=data["position"]["y"])],
                             )
                         )
-                for data in message_recv["last_move"]["trajectory"]["frames"]:
-                    frame_value.append(
-                        Coordinate(
-                            angle=data["frames"]["angle"], position=[Position(x=data["frames"]["position"]["x"], y=data["frames"]["position"]["y"])]
-                        )
-                    )
-
 
                 for data in message_recv["last_move"]["trajectory"]["frames"]:
-                    frame_data.append(
-                        Frame(
-                        team=data["team"],
-                        index=data["index"],
-                        value=frame_value,
+                    for i in data:
+                        if i["value"] is None:
+                            frame_value.append(None)
+                        else:
+                            frame_value.append(
+                                Coordinate(
+                                    angle=i["value"]["angle"],
+                                    position=[Position(x=i["value"]["position"]["x"], y=i["value"]["position"]["y"])],
+                            )
                         )
-                    )
 
+                
+                for data in message_recv["last_move"]["trajectory"]["frames"]:
+                    count:int = 0
+                    for i in data:
+                        frame_data.append(
+                            Array(
+                                Frame(
+                                    team=i["team"],
+                                    index=i["index"],
+                                    value=frame_value[count],
+                                    ),
+                                )
+                        )
+                        count += 1
+                    
 
         velocity = Velocity(x=x, y=y)
 
@@ -446,7 +428,6 @@ class SocketClient(BaseClient):
             type=type,
             velocity=velocity,
         )
-
 
         start = Start(
             team0=start_team0_position,
@@ -458,12 +439,11 @@ class SocketClient(BaseClient):
             team1=finish_team1_position,
         )
 
-
         trajectory = Trajectory(
-            seconds_per_frame = seconds_per_frame,
-            start = start,
-            finish = finish,
-            frames = frame_data,
+            seconds_per_frame=seconds_per_frame,
+            start=start,
+            finish=finish,
+            frames=frame_data,
         )
 
         last_move = LastMove(
@@ -493,7 +473,7 @@ class SocketClient(BaseClient):
         self.logger.info(f"next_team : {self.update_info.next_team}")
 
     def move(self):
-        time.sleep(3)
+        time.sleep(6)
         shot: dict = {
             "cmd": "move",
             "move": {
@@ -504,7 +484,7 @@ class SocketClient(BaseClient):
         }  # まっすぐ投げる
         s: str = json.dumps(shot)
         s: str = s + "\n"
-        time.sleep(3)
+        time.sleep(6)
         self.send(s)
 
     def battle(self) -> None:

@@ -9,10 +9,11 @@ class Version:
 
 @dataclass  # dcで受信するメッセージを格納
 class ServerDC:
+    date_time: str
+    game_id: str
     cmd: str
     version: Version
-    game_id: str
-    date_time: str
+    
 
 
 
@@ -24,7 +25,17 @@ class NormalDist:
     seed: None
     stddev_angle: float
     stddev_speed: float
-    type: str
+    randomness: str
+
+@dataclass
+class NormalDist1:
+    """最大速度及び、初速・初期角度に加わる正規分布乱数の標準偏差"""
+
+    max_speed: float
+    seed: None
+    stddev_angle: float
+    stddev_speed: float
+    randomness: str
 
 
 
@@ -33,7 +44,7 @@ class Players:
     """プレイヤーの設定"""
 
     team0: list[NormalDist]
-    team1: list[NormalDist]
+    team1: list[NormalDist1]
 
 
 
@@ -218,14 +229,18 @@ class Frame:
 
     team : str | None
     index : int | None
-    value : list[Coordinate] | None
+    value : str| None
+
+@dataclass
+class Array:
+    array : Frame | None
 
 @dataclass
 class Trajectory:
     seconds_per_frame: float | None
     start : Start
     finish : Finish
-    frames : list[Frame] | None
+    frames : list[Array] | None
 
 @dataclass
 class LastMove:

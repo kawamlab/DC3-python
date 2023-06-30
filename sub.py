@@ -13,10 +13,7 @@ if __name__ == "__main__":
     cli.logger.info(f"myteam :{myteam}")
     cli.ready_ok() #ready_okを送信
 
-    cli.new_game()
-    learning.append((asdict(cli.dc),
-                    asdict(cli.match_setting),
-                    asdict(cli.newgame)))
+    cli.get_new_game()
 
     # id = cmd(dict_data.get("cmd"), dict_data.get("last_move"), dict_data.get("next_team"))
     # cli.logger.info(f"id : {id.next_team}")
@@ -24,13 +21,12 @@ if __name__ == "__main__":
         cli.update()
         nextteam = cli.update_info.next_team
         # learning.append(asdict(cli.update_info))
-        cli.logger.info(f"nextteam : {nextteam}")
         # cli.logger.info(f"learning : {learning}")
-        cli.logger.info(myteam==nextteam)
+        if cli.update_info.state.game_result.winner is not None:
+            break
         if myteam == nextteam:
             cli.move()
         else:
             continue
-        if cli.update_info.state.game_result.winner is not None:
-            break
+        
     
