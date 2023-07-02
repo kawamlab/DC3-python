@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -210,7 +210,7 @@ class Frame:
 
     team: str | None
     index: int | None
-    value: str | None
+    value: Coordinate | None
 
 
 @dataclass
@@ -243,3 +243,13 @@ class Update:
     next_team: str
     state: State
     last_move: LastMove | None
+
+
+@dataclass
+class MatchData:
+    """試合情報"""
+
+    server_dc: ServerDC | None = None
+    is_ready: IsReady | None = None
+    new_game: NewGame | None = None
+    update_list: list[Update] = field(default_factory=list)
