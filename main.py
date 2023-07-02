@@ -4,19 +4,17 @@ from practice import SocketClient
 
 
 learning = []
-trajectory_data=[]
-update_data=[]
+trajectory_data = []
+update_data = []
 obj_dict = {}
-
 
 
 if __name__ == "__main__":
     cli = SocketClient()
     rec = Recursion()
     dc = cli.dc_recv()
-    re=True
-    
-    
+    re = True
+
     cli.dc_ok()  # dc_okを送信
 
     is_ready = cli.is_ready_recv()  # is_readyを読み取るための受信
@@ -33,7 +31,7 @@ if __name__ == "__main__":
     # id = cmd(dict_data.get("cmd"), dict_data.get("last_move"), dict_data.get("next_team"))
     # cli.logger.info(f"id : {id.next_team}")
     while True:
-        update= cli.update()
+        update = cli.update()
         # cli.logger.info(f"update_data : {update_data[0]}")
         update_data.append(update[0])
         trajectory_data.append(update[1])
@@ -49,8 +47,7 @@ if __name__ == "__main__":
         else:
             continue
 
-
-    rec.tojson(update_data[1], re)
+    rec.to_json(update_data[1], re)
     # f=open("Trajectory_Data1.json", "w", encoding="UTF-8")
-    # f.writelines(rec.tojson(trajectory_data))
+    # f.writelines(rec.to_json(trajectory_data))
     # f.close()

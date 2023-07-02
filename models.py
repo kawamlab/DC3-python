@@ -13,8 +13,6 @@ class ServerDC:
     game_id: str
     cmd: str
     version: Version
-    
-
 
 
 @dataclass
@@ -27,6 +25,7 @@ class NormalDist:
     stddev_speed: float
     randomness: str
 
+
 @dataclass
 class NormalDist1:
     """最大速度及び、初速・初期角度に加わる正規分布乱数の標準偏差"""
@@ -38,14 +37,12 @@ class NormalDist1:
     randomness: str
 
 
-
 @dataclass
 class Players:
     """プレイヤーの設定"""
 
     team0: list[NormalDist]
     team1: list[NormalDist1]
-
 
 
 @dataclass
@@ -56,14 +53,12 @@ class ExtraEndThinkingTime:
     team1: float
 
 
-
 @dataclass
 class ThinkingTime:
     """延長戦を含まない思考時間"""
 
     team0: float
     team1: float
-
 
 
 @dataclass
@@ -77,14 +72,12 @@ class Setting:
     thinking_time: ThinkingTime
 
 
-
 @dataclass
 class Simulator:
     """シミュレータの設定"""
 
     seconds_per_frame: float
     simulator_type: str
-
 
 
 @dataclass
@@ -97,7 +90,6 @@ class GameRule:
     simulator: Simulator
 
 
-
 @dataclass
 class IsReady:
     """対戦開始の際の情報を受け取る(is_ready))"""
@@ -105,7 +97,6 @@ class IsReady:
     cmd: str
     team: str
     game: GameRule
-
 
 
 @dataclass
@@ -116,7 +107,6 @@ class NewGame:
     name: dict
 
 
-
 @dataclass
 class ExtraEndScore:
     """延長戦のスコア"""
@@ -125,12 +115,10 @@ class ExtraEndScore:
     team1: int
 
 
-
 @dataclass
 class GameResult:
     winner: str | None
     reason: str | None
-
 
 
 @dataclass
@@ -141,14 +129,12 @@ class Scores:
     team1: list
 
 
-
 @dataclass
 class Position:
     """位置"""
 
     x: float | None
     y: float | None
-
 
 
 @dataclass
@@ -159,7 +145,6 @@ class Coordinate:
     position: list[Position]
 
 
-
 @dataclass
 class Stones:
     """石の位置"""
@@ -168,14 +153,12 @@ class Stones:
     team1: list[Coordinate]
 
 
-
 @dataclass
 class ThinkingTimeRemaining:
     """残り思考時間"""
 
     team0: float
     team1: float
-
 
 
 @dataclass
@@ -192,12 +175,10 @@ class State:
     thinking_time_remaining: ThinkingTimeRemaining
 
 
-
 @dataclass
 class Velocity:
     x: float | None
     y: float | None
-
 
 
 @dataclass
@@ -213,34 +194,37 @@ class ActualMove:
 class Start:
     """ショットの開始位置"""
 
-    team0 : list[Coordinate]
-    team1 : list[Coordinate]
+    team0: list[Coordinate]
+    team1: list[Coordinate]
 
 
 @dataclass
 class Finish:
-    team0 : list[Coordinate]
-    team1 : list[Coordinate]
+    team0: list[Coordinate]
+    team1: list[Coordinate]
 
 
 @dataclass
 class Frame:
     """ショットのフレーム情報"""
 
-    team : str | None
-    index : int | None
-    value : str| None
+    team: str | None
+    index: int | None
+    value: str | None
+
 
 @dataclass
 class Array:
-    array : Frame | None
+    array: Frame | None
+
 
 @dataclass
 class Trajectory:
     seconds_per_frame: float | None
-    start : Start
-    finish : Finish
-    frames : list[Array] | None
+    start: Start
+    finish: Finish
+    frames: list[Array] | None
+
 
 @dataclass
 class LastMove:
@@ -248,7 +232,7 @@ class LastMove:
 
     actual_move: ActualMove
     free_guard_zone_foul: bool
-    trajectory : Trajectory | None
+    trajectory: Trajectory | None
 
 
 @dataclass

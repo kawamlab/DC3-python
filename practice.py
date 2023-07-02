@@ -33,7 +33,7 @@ from models import (
     Start,
     Finish,
     Frame,
-    Array
+    Array,
 )
 
 
@@ -126,7 +126,7 @@ class SocketClient(BaseClient):
     def dc_recv(self):
         """dcを受信"""
         message_recv = self.receive()
-        dc=[]
+        dc = []
 
         version = Version(major=message_recv["version"]["major"], minor=message_recv["version"]["minor"])
 
@@ -138,7 +138,6 @@ class SocketClient(BaseClient):
         )
 
         return dc
-        
 
     def dc_ok(self) -> None:
         """dc_okを送信"""
@@ -174,8 +173,10 @@ class SocketClient(BaseClient):
                 seed=None,
                 stddev_angle=data["stddev_angle"],
                 stddev_speed=data["stddev_speed"],
-                randomness=data["type"],)
-            for data in message_recv["game"]["players"]["team0"]]
+                randomness=data["type"],
+            )
+            for data in message_recv["game"]["players"]["team0"]
+        ]
 
         team1_players = [
             NormalDist1(
@@ -206,7 +207,7 @@ class SocketClient(BaseClient):
         )
 
         self.match_setting = IsReady(cmd=message_recv["cmd"], team=message_recv["team"], game=game)
-        match_setting=self.match_setting
+        match_setting = self.match_setting
         return match_setting
 
     def ready_ok(self, player_order: list = [0, 1, 3, 2]) -> None:
@@ -221,7 +222,7 @@ class SocketClient(BaseClient):
         """new_gameを受信"""
 
         message_recv = self.receive()
-        new_game=[]
+        new_game = []
         self.new_game = NewGame(cmd=message_recv["cmd"], name=message_recv["name"])
         new_game.append(self.new_game.cmd)
         new_game.append(self.new_game.name)
@@ -229,8 +230,8 @@ class SocketClient(BaseClient):
         return new_game
 
     def update(self):
-        data_update=[]
-        trajectory_data=[]
+        data_update = []
+        trajectory_data = []
         """updateを受信"""
 
         message_recv = self.receive()
@@ -414,12 +415,11 @@ class SocketClient(BaseClient):
                                 Coordinate(
                                     angle=i["value"]["angle"],
                                     position=[Position(x=i["value"]["position"]["x"], y=i["value"]["position"]["y"])],
+                                )
                             )
-                        )
 
-                
                 for data in message_recv["last_move"]["trajectory"]["frames"]:
-                    count:int = 0
+                    count: int = 0
                     for i in data:
                         frame_data.append(
                             Array(
@@ -427,11 +427,11 @@ class SocketClient(BaseClient):
                                     team=i["team"],
                                     index=i["index"],
                                     value=frame_value[count],
-                                    ),
-                                )
+                                ),
+                            )
                         )
                         count += 1
-                    
+
         velocity = Velocity(x=x, y=y)
 
         actual_move = ActualMove(
@@ -515,5 +515,3 @@ class SocketClient(BaseClient):
             self.move()
             message = self.receive()
             # self.logger.info(f"Receive message : {message}")
-
-
