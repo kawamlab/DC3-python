@@ -1,4 +1,5 @@
 from practice import SocketClient
+import json
 
 
 if __name__ == "__main__":
@@ -6,6 +7,10 @@ if __name__ == "__main__":
 
     my_team = cli.get_my_team()
     cli.logger.info(f"my_team :{my_team}")
+    dc = cli.match_data.server_dc
+    dc_message = cli.dc_convert(dc)
+    is_ready = cli.match_data.is_ready
+    is_ready_message = cli.is_ready_convert(is_ready)
 
     # id = cmd(dict_data.get("cmd"), dict_data.get("last_move"), dict_data.get("next_team"))
     # cli.logger.info(f"id : {id.next_team}")
@@ -32,6 +37,7 @@ if __name__ == "__main__":
     # update = cli.update_to_json(update_list)
     trajectory = cli.trajectory_to_json(trajectory)
     print(trajectory)
-    # f=open("Trajectory_Data1.json", "w", encoding="UTF-8")
-    # f.writelines(rec.to_json(trajectory_data))
-    # f.close()
+    f=open("Trajectory_Data1.json", "a", encoding="UTF-8")
+    # f.writelines(json.dumps(dc_message, indent=0))
+    f.writelines(json.dumps(is_ready_message, indent=0))
+    f.close()

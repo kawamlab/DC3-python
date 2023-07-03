@@ -463,38 +463,21 @@ class SocketClient(BaseClient):
             message = self.receive()
             # self.logger.info(f"Receive message : {message}")
 
-    def update_to_json(self, obj):
-        if isinstance(obj, list):
-            for data in obj:
-                # dictに変換
-                for field in fields(data):
-                    value = getattr(data, field.name)
-                    if value is None:
-                        self.obj_dict[field.name] = None
+    # def update_to_json(self, obj):
+    #     if isinstance(obj, list):
+    #         for data in obj:
+    #             # dictに変換
+    #             for field in fields(data):
+    #                 value = getattr(data, field.name)
+    #                 if value is None:
+    #                     self.obj_dict[field.name] = None
 
-                    if is_dataclass(value):
-                        self.obj_dict[field.name] = self.update_to_json(value)
+    #                 if is_dataclass(value):
+    #                     self.obj_dict[field.name] = self.update_to_json(value)
 
-                    else:
-                        self.obj_dict[field.name] = value
-        # for field in fields(obj):
-        #     value = getattr(obj, field.name)
-        #     # if value is None:
-        #     #     obj_dict[field.name] = None
-
-        #     if is_dataclass(value):
-        #         self.obj_dict[field.name] = self.update_to_json(value)
-        #     elif isinstance(value, list):
-        #         self.obj_dict[field.name] = [self.update_to_json(v) for v in value]
-        #     elif isinstance(value, dict):
-        #         self.obj_dict[field.name] = {k: self.update_to_json(v) for k, v in value.items()}
-        #     elif isinstance(value, tuple):
-        #         self.obj_dict[field.name] = tuple(self.update_to_json(v) for v in value)
-        #     else:
-        #         update: str | int | float = value
-        #         self.obj_dict[field.name] = update
-
-        return self.obj_dict
+    #                 else:
+    #                     self.obj_dict[field.name] = value
+    #     return self.obj_dict
 
     def trajectory_to_json(self, obj: list) -> list:
         """trajectoryをjsonに変換"""
@@ -548,8 +531,10 @@ class SocketClient(BaseClient):
         return update_list, trajectory_list
 
 
-    def dc_convert(self, dc_data: ServerDC) -> dict:
+    def dc_convert(self, dc_data: ServerDC | None) -> dict:
         dc_dict = {}
+        if dc_data is None:
+            return dc_dict
         for field in fields(dc_data):
             value = getattr(dc_data, field.name)
             if field.name == "cmd":
@@ -559,17 +544,20 @@ class SocketClient(BaseClient):
             if field.name == "date_time":
                 dc_dict[field.name] = value
             if field.name == "version":
+                dc_dict["version"] = {}
                 for field in fields(value):
-                    value = getattr(value, field.name)
+                    dc_version = getattr(value, field.name)
                     if field.name == "major":
-                        dc_dict[field.name] = value
+                        dc_dict["version"][field.name] = dc_version
                     if field.name == "minor":
-                        dc_dict[field.name] = value          
-        return self.obj_dict
+                        dc_dict["version"][field.name] = dc_version        
+        return dc_dict
     
 
-    def is_ready_convert(self, is_ready_data: IsReady) -> dict:
+    def is_ready_convert(self, is_ready_data: IsReady | None) -> dict:
         is_ready_dict = {}
+        if is_ready_data is None:
+            return is_ready_dict
         for field in fields(is_ready_data):
             value = getattr(is_ready_data, field.name)
             if field.name == "cmd":
@@ -577,69 +565,72 @@ class SocketClient(BaseClient):
             if field.name == "team":
                 is_ready_dict[field.name] = value
             if field.name == "game":
+                is_ready_dict[field.name] = {}
                 for field in fields(value):
-                    value = getattr(value, field.name)
+                    game_value = getattr(value, field.name)
                     if field.name == "rule":
-                        is_ready_dict[field.name] = value
+                        is_ready_dict["game"][field.name] = game_value
                     if field.name == "setting":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
+                        is_ready_dict["game"][field.name] = {}
+                        for field in fields(game_value):
+                            config_value = getattr(game_value, field.name)
                             if field.name == "max_end":
-                                is_ready_dict[field.name] = value
+                                is_ready_dict["game"]["setting"][field.name] = config_value
                             if field.name == "sheet_width":
-                                is_ready_dict[field.name] = value
+                                is_ready_dict["game"]["setting"][field.name] = config_value
                             if field.name == "five_rock_rule":
-                                is_ready_dict[field.name] = value
+                                is_ready_dict["game"]["setting"][field.name] = config_value
                             if field.name == "thinking_time":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
+                                is_ready_dict["game"]["setting"][field.name] = {}
+                                for field in fields(config_value):
+                                    thinking_time_value = getattr(config_value, field.name)
                                     if field.name == "team0":
-                                        is_ready_dict[field.name] = value
+                                        is_ready_dict["game"]["setting"]["thinking_time"][field.name] = thinking_time_value
                                     if field.name == "team1":
-                                        is_ready_dict[field.name] = value
+                                        is_ready_dict["game"]["setting"]["thinking_time"][field.name] = thinking_time_value
                             if field.name == "extra_end_thinking_time":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
+                                is_ready_dict["game"]["setting"][field.name] = {}
+                                for field in fields(config_value):
+                                    extra_end_thinking_time_value = getattr(config_value, field.name)
                                     if field.name == "team0":
-                                        is_ready_dict[field.name] = value
+                                        is_ready_dict["game"]["setting"]["extra_end_thinking_time"][field.name] = extra_end_thinking_time_value
                                     if field.name == "team1":
-                                        is_ready_dict[field.name] = value
+                                        is_ready_dict["game"]["setting"]["extra_end_thinking_time"][field.name] = extra_end_thinking_time_value
                     if field.name == "simulator":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
+                        is_ready_dict["game"][field.name] = {}
+                        for field in fields(game_value):
+                            simulator_value = getattr(game_value, field.name)
                             if field.name == "simulator_type":
-                                is_ready_dict[field.name] = value
+                                is_ready_dict["game"]["simulator"][field.name] = simulator_value
                             if field.name == "seconds_per_frame":
-                                is_ready_dict[field.name] = value
+                                is_ready_dict["game"]["simulator"][field.name] = simulator_value
                     if field.name == "players":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
+                        is_ready_dict["game"][field.name] = {}
+                        for field in fields(game_value):
+                            team_data = getattr(game_value, field.name)
                             if field.name == "team0":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "max_speed":
-                                        is_ready_dict[field.name] = value
-                                    if field.name == "seed":
-                                        is_ready_dict[field.name] = value
-                                    if field.name == "stddev_angle":
-                                        is_ready_dict[field.name] = value
-                                    if field.name == "stddev_speed":
-                                        is_ready_dict[field.name] = value
-                                    if field.name == "type":
-                                        is_ready_dict[field.name] = value
+                                is_ready_dict["game"]["players"][field.name] = []
+                                players1_list = []
+                                for i in team_data:
+                                    team0_dict = {}
+                                    for field in fields(i):
+                                        normal0 = getattr(i, field.name)
+                                        team0_dict[field.name] = normal0
+                                        if len(team0_dict) == 5:
+                                            players1_list.append(team0_dict)
+                                    is_ready_dict["game"]["players"]["team0"] = players1_list
+
                             if field.name == "team1":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "max_speed":
-                                        is_ready_dict[field.name] = value
-                                    if field.name == "seed":
-                                        is_ready_dict[field.name] = value
-                                    if field.name == "stddev_angle":
-                                        is_ready_dict[field.name] = value
-                                    if field.name == "stddev_speed":
-                                        is_ready_dict[field.name] = value
-                                    if field.name == "type":
-                                        is_ready_dict[field.name] = value
+                                is_ready_dict["game"]["players"][field.name] = []
+                                players2_list = []
+                                for i in team_data:
+                                    team1_dict = {}
+                                    for field in fields(i):
+                                        normal1 = getattr(i, field.name)
+                                        team1_dict[field.name] = normal1
+                                        if len(team1_dict) == 5:
+                                            players2_list.append(team1_dict)
+                                    is_ready_dict["game"]["players"]["team1"] = players2_list
         return is_ready_dict
     
     def update_convert(self, update_data) -> dict:
