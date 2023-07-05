@@ -610,198 +610,266 @@ class SocketClient(BaseClient):
                             team_data = getattr(game_value, field.name)
                             if field.name == "team0":
                                 is_ready_dict["game"]["players"][field.name] = []
-                                players1_list = []
+                                players0_list = []
                                 for i in team_data:
                                     team0_dict = {}
                                     for field in fields(i):
                                         normal0 = getattr(i, field.name)
                                         team0_dict[field.name] = normal0
                                         if len(team0_dict) == 5:
-                                            players1_list.append(team0_dict)
-                                    is_ready_dict["game"]["players"]["team0"] = players1_list
+                                            players0_list.append(team0_dict)
+                                    is_ready_dict["game"]["players"]["team0"] = players0_list
 
                             if field.name == "team1":
                                 is_ready_dict["game"]["players"][field.name] = []
-                                players2_list = []
+                                players1_list = []
                                 for i in team_data:
                                     team1_dict = {}
                                     for field in fields(i):
                                         normal1 = getattr(i, field.name)
                                         team1_dict[field.name] = normal1
                                         if len(team1_dict) == 5:
-                                            players2_list.append(team1_dict)
-                                    is_ready_dict["game"]["players"]["team1"] = players2_list
+                                            players1_list.append(team1_dict)
+                                    is_ready_dict["game"]["players"]["team1"] = players1_list
         return is_ready_dict
     
-    def update_convert(self, update_data) -> dict:
+    def update_convert(self, update_data, remove_trajectory) -> dict:
         update_dict = {}
         for field in fields(update_data):
-            value = getattr(update_data, field.name)
+            update_value = getattr(update_data, field.name)
             if field.name == "cmd":
-                update_dict[field.name] = value
+                update_dict[field.name] = update_value
             if field.name == "next_team":
-                update_dict[field.name] = value
+                update_dict[field.name] = update_value
             if field.name == "state":
-                for field in fields(value):
-                    value = getattr(value, field.name)
+                update_dict[field.name] = {}
+                for field in fields(update_value):
+                    state_value = getattr(update_value, field.name)
                     if field.name == "end":
-                        update_dict[field.name] = value
+                        update_dict["state"][field.name] = state_value
                     if field.name == "extra_end_score":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
+                        update_dict["state"][field.name] = {}
+                        for field in fields(state_value):
+                            extra_end_score_value = getattr(state_value, field.name)
                             if field.name == "team0":
-                                update_dict[field.name] = value
+                                update_dict["state"]["extra_end_score"][field.name] = extra_end_score_value
                             if field.name == "team1":
-                                update_dict[field.name] = value
+                                update_dict["state"]["extra_end_score"][field.name] = extra_end_score_value
                     if field.name == "game_result":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
+                        update_dict["state"][field.name] = {}
+                        for field in fields(state_value):
+                            game_result_value = getattr(state_value, field.name)
                             if field.name == "winner":
-                                update_dict[field.name] = value
+                                update_dict["state"]["game_result"][field.name] = game_result_value
                             if field.name == "reason":
-                                update_dict[field.name] = value
+                                update_dict["state"]["game_result"][field.name] = game_result_value
                     if field.name == "hammer":
-                        update_dict[field.name] = value
+                        update_dict["state"][field.name] = state_value
                     if field.name == "scores":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
+                        update_dict["state"][field.name] = {}
+                        for field in fields(state_value):
+                            scores_value = getattr(state_value, field.name)
                             if field.name == "team0":
-                                update_dict[field.name] = value
+                                update_dict["state"]["scores"][field.name] = scores_value
                             if field.name == "team1":
-                                update_dict[field.name] = value
+                                update_dict["state"]["scores"][field.name] = scores_value
                     if field.name == "shot":
-                        update_dict[field.name] = value
+                        update_dict["state"][field.name] = state_value
                     if field.name == "stones":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
+                        update_dict["state"][field.name] = {}
+                        for field in fields(state_value):
+                            stones_value = getattr(state_value, field.name)
                             if field.name == "team0":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "angle":
-                                        update_dict[field.name] = value
-                                    if field.name == "position":
-                                        for field in fields(value):
-                                            value = getattr(value, field.name)
-                                            if field.name == "x":
-                                                update_dict[field.name] = value
-                                            if field.name == "y":
-                                                update_dict[field.name] = value
+                                update_dict["state"]["stones"][field.name] = []
+                                state_stones_team0_list = []
+                                for i in stones_value:
+                                    state_stone_team0_dict = {}
+                                    for field in fields(i):
+                                        team0_value = getattr(i, field.name)
+                                        if field.name == "angle":
+                                            state_stone_team0_dict[field.name] = team0_value
+                                        if field.name == "position":
+                                            for j in team0_value:
+                                                state_stone_team0_dict["position"] = {}
+                                                for field in fields(j):
+                                                    team0_position_value = getattr(j, field.name)
+                                                    if field.name == "x":
+                                                        state_stone_team0_dict["position"][field.name] = team0_position_value
+                                                    if field.name == "y":
+                                                        state_stone_team0_dict["position"][field.name] = team0_position_value
+                                    state_stones_team0_list.append(state_stone_team0_dict)
+                                update_dict["state"]["stones"]["team0"] = state_stones_team0_list
+
                             if field.name == "team1":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "angle":
-                                        update_dict[field.name] = value
-                                    if field.name == "position":
-                                        for field in fields(value):
-                                            value = getattr(value, field.name)
-                                            if field.name == "x":
-                                                update_dict[field.name] = value
-                                            if field.name == "y":
-                                                update_dict[field.name] = value
+                                update_dict["state"]["stones"][field.name] = []
+                                state_stones_team1_list = []
+                                for k in stones_value:
+                                    state_stone_team1_dict = {}
+                                    for field in fields(k):
+                                        team1_value = getattr(k, field.name)
+                                        if field.name == "angle":
+                                            state_stone_team1_dict[field.name] = team1_value
+                                        if field.name == "position":
+                                            for l in team1_value:
+                                                state_stone_team1_dict["position"] = {}
+                                                for field in fields(l):
+                                                    team1_position_value = getattr(l, field.name)
+                                                    if field.name == "x":
+                                                        state_stone_team1_dict["position"][field.name] = team1_position_value
+                                                    if field.name == "y":
+                                                        state_stone_team1_dict["position"][field.name] = team1_position_value
+                                    state_stones_team1_list.append(state_stone_team1_dict)
+                                update_dict["state"]["stones"]["team1"] = state_stones_team1_list
                     if field.name == "thinking_time_remaining":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
+                        update_dict["state"][field.name] = {}
+                        for field in fields(state_value):
+                            thinking_time_remaining_value = getattr(state_value, field.name)
                             if field.name == "team0":
-                                update_dict[field.name] = value
+                                update_dict["state"]["thinking_time_remaining"][field.name] = thinking_time_remaining_value
                             if field.name == "team1":
-                                update_dict[field.name] = value
+                                update_dict["state"]["thinking_time_remaining"][field.name] = thinking_time_remaining_value
             if field.name == "last_move":
-                for field in fields(value):
-                    value = getattr(value, field.name)
-                    if field.name == "actual_move":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
-                            if field.name == "rotation":
-                                update_dict[field.name] = value
-                            if field.name == "type":
-                                update_dict[field.name] = value
-                            if field.name == "velocity":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "x":
-                                        update_dict[field.name] = value
-                                    if field.name == "y":
-                                        update_dict[field.name] = value
-                    if field.name == "free_guard_zone_foul":
-                        update_dict[field.name] = value
-                    if field.name == "trajectory":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
-                            if field.name == "seconds_per_frame":
-                                update_dict[field.name] = value
-                            if field.name == "start":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "team0":
-                                        for field in fields(value):
-                                            value = getattr(value, field.name)
-                                            if field.name == "angle":
-                                                update_dict[field.name] = value
-                                            if field.name == "position":
-                                                for field in fields(value):
-                                                    value = getattr(value, field.name)
-                                                    if field.name == "x":
-                                                        update_dict[field.name] = value
-                                                    if field.name == "y":
-                                                        update_dict[field.name] = value
-                                    if field.name == "team1":
-                                        for field in fields(value):
-                                            value = getattr(value, field.name)
-                                            if field.name == "angle":
-                                                update_dict[field.name] = value
-                                            if field.name == "position":
-                                                for field in fields(value):
-                                                    value = getattr(value, field.name)
-                                                    if field.name == "x":
-                                                        update_dict[field.name] = value
-                                                    if field.name == "y":
-                                                        update_dict[field.name] = value
-                            if field.name == "finish":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "team0":
-                                        for field in fields(value):
-                                            value = getattr(value, field.name)
-                                            if field.name == "angle":
-                                                update_dict[field.name] = value
-                                            if field.name == "position":
-                                                for field in fields(value):
-                                                    value = getattr(value, field.name)
-                                                    if field.name == "x":
-                                                        update_dict[field.name] = value
-                                                    if field.name == "y":
-                                                        update_dict[field.name] = value
-                                    if field.name == "team1":
-                                        for field in fields(value):
-                                            value = getattr(value, field.name)
-                                            if field.name == "angle":
-                                                update_dict[field.name] = value
-                                            if field.name == "position":
-                                                for field in fields(value):
-                                                    value = getattr(value, field.name)
-                                                    if field.name == "x":
-                                                        update_dict[field.name] = value
-                                                    if field.name == "y":
-                                                        update_dict[field.name] = value
-                            if field.name == "frames":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "team":
-                                        update_dict[field.name] = value
-                                    if field.name == "index":
-                                        update_dict[field.name] = value
-                                    if field.name == "value":
-                                        for field in fields(value):
-                                            value = getattr(value, field.name)
-                                            if field.name == "angle":
-                                                update_dict[field.name] = value
-                                            if field.name == "position":
-                                                for field in fields(value):
-                                                    value = getattr(value, field.name)
-                                                    if field.name == "x":
-                                                        update_dict[field.name] = value
-                                                    if field.name == "y":
-                                                        update_dict[field.name] = value
+                if update_value is None:
+                    update_dict[field.name] = None
+                else:
+                    update_dict[field.name] = {}
+                    for field in fields(update_value):
+                        last_move_value = getattr(update_value, field.name)
+                        if field.name == "actual_move":
+                            update_dict["last_move"][field.name] = {}
+                            for field in fields(last_move_value):
+                                actual_move_value = getattr(last_move_value, field.name)
+                                if field.name == "rotation":
+                                    update_dict["last_move"]["actual_move"][field.name] = actual_move_value
+                                if field.name == "type":
+                                    update_dict["last_move"]["actual_move"][field.name] = actual_move_value
+                                if field.name == "velocity":
+                                    update_dict["last_move"]["actual_move"][field.name] = {}
+                                    for field in fields(actual_move_value):
+                                        velocity_value = getattr(actual_move_value, field.name)
+                                        if field.name == "x":
+                                            update_dict["last_move"]["actual_move"]["velocity"][field.name] = velocity_value
+                                        if field.name == "y":
+                                            update_dict["last_move"]["actual_move"]["velocity"][field.name] = velocity_value
+                        if field.name == "free_guard_zone_foul":
+                            update_dict["last_move"][field.name] = last_move_value
+                        if field.name == "trajectory":
+                            if remove_trajectory is True:
+                                update_dict["last_move"][field.name] = None
+                            else:
+                                update_dict["last_move"][field.name] = {}
+                                for field in fields(last_move_value):
+                                    trajectory_value = getattr(last_move_value, field.name)
+                                    if field.name == "seconds_per_frame":
+                                        update_dict["last_move"]["trajectory"][field.name] = trajectory_value
+                                    if field.name == "start":
+                                        update_dict["last_move"]["trajectory"][field.name] = {}
+                                        for field in fields(trajectory_value):
+                                            start_value = getattr(trajectory_value, field.name)
+                                            if field.name == "team0":
+                                                update_dict["last_move"]["trajectory"]["start"][field.name] = []
+                                                start_team0_list = []
+                                                for field in fields(start_value):
+                                                    start_team0_dict = {}
+                                                    start_team0_value = getattr(start_value, field.name)
+                                                    if field.name == "angle":
+                                                        start_team0_dict[field.name] = start_team0_value
+                                                    if field.name == "position":
+                                                        start_team0_dict["position"] = {}
+                                                        for field in fields(start_team0_value):
+                                                            start_team0_position_value = getattr(start_team0_value, field.name)
+                                                            if field.name == "x":
+                                                                start_team0_dict["position"][field.name] = start_team0_position_value
+                                                            if field.name == "y":
+                                                                start_team0_dict["position"][field.name] = start_team0_position_value
+                                                    start_team0_list.append(start_team0_dict)
+                                                update_dict["last_move"]["trajectory"]["start"]["team0"] = start_team0_list
+                                            if field.name == "team1":
+                                                update_dict["last_move"]["trajectory"]["start"][field.name] = []
+                                                start_team1_list = []
+                                                for field in fields(start_value):
+                                                    start_team1_dict = {}
+                                                    start_team1_value = getattr(start_value, field.name)
+                                                    if field.name == "angle":
+                                                        start_team1_dict[field.name] = start_team1_value
+                                                    if field.name == "position":
+                                                        start_team1_dict["position"] = {}
+                                                        for field in fields(start_team1_value):
+                                                            start_team1_position_value = getattr(start_team1_value, field.name)
+                                                            if field.name == "x":
+                                                                start_team1_dict["position"][field.name] = start_team1_position_value
+                                                            if field.name == "y":
+                                                                start_team1_dict["position"][field.name] = start_team1_position_value
+                                                    start_team1_list.append(start_team1_dict)
+                                                update_dict["last_move"]["trajectory"]["start"]["team1"] = start_team1_list
+                                    if field.name == "finish":
+                                        update_dict["last_move"]["trajectory"][field.name] = {}
+                                        for field in fields(trajectory_value):
+                                            finish_value = getattr(trajectory_value, field.name)
+                                            if field.name == "team0":
+                                                update_dict["last_move"]["trajectory"]["finish"][field.name] = []
+                                                finish_team0_list = []
+                                                for field in fields(finish_value):
+                                                    finish_team0_dict = {}
+                                                    finish_team0_value = getattr(finish_value, field.name)
+                                                    if field.name == "angle":
+                                                        finish_team0_dict[field.name] = finish_team0_value
+                                                    if field.name == "position":
+                                                        finish_team0_dict["position"] = {}
+                                                        for field in fields(finish_team0_value):
+                                                            finish_team0_position_value = getattr(finish_team0_value, field.name)
+                                                            if field.name == "x":
+                                                                finish_team0_dict["position"][field.name] = finish_team0_position_value
+                                                            if field.name == "y":
+                                                                finish_team0_dict["position"][field.name] = finish_team0_position_value
+                                                    finish_team0_list.append(finish_team0_dict)
+                                                update_dict["last_move"]["trajectory"]["finish"]["team0"] = finish_team0_list
+                                            if field.name == "team1":
+                                                update_dict["last_move"]["trajectory"]["finish"][field.name] = []
+                                                finish_team1_list = []
+                                                for field in fields(finish_value):
+                                                    finish_team1_dict = {}
+                                                    finish_team1_value = getattr(finish_value, field.name)
+                                                    if field.name == "angle":
+                                                        finish_team1_dict[field.name] = finish_team1_value
+                                                    if field.name == "position":
+                                                        finish_team1_dict["position"] = {}
+                                                        for field in fields(finish_team1_value):
+                                                            finish_team1_position_value = getattr(finish_team1_value, field.name)
+                                                            if field.name == "x":
+                                                                finish_team1_dict["position"][field.name] = finish_team1_position_value
+                                                            if field.name == "y":
+                                                                finish_team1_dict["position"][field.name] = finish_team1_position_value
+                                                    finish_team1_list.append(finish_team1_dict)
+                                                update_dict["last_move"]["trajectory"]["finish"]["team1"] = finish_team1_list
+                                    if field.name == "frames":
+                                        update_dict["last_move"]["trajectory"][field.name] = []
+
+                                #明日はここからスタート
+                                        for field in fields(trajectory_value):
+                                            frames_list = []
+                                            frames_dict = {}
+                                            frames_value = getattr(trajectory_value, field.name)
+                                            if field.name == "team":
+                                                frames_dict[field.name] = frames_value
+                                            if field.name == "index":
+                                                frames_dict[field.name] = frames_value
+                                            if field.name == "value":
+                                                frames_dict[field.name] = {}
+                                                for field in fields(frames_value):
+                                                    frames_value_value = getattr(frames_value, field.name)
+                                                    if field.name == "angle":
+                                                        frames_dict["value"][field.name] = frames_value_value
+                                                    if field.name == "position":
+                                                        frames_dict["value"][field.name] = {}
+                                                        for field in fields(frames_value_value):
+                                                            frames_value_position_value = getattr(frames_value_value, field.name)
+                                                            if field.name == "x":
+                                                                frames_dict["value"]["position"][field.name] = frames_value_position_value
+                                                            if field.name == "y":
+                                                                frames_dict["value"]["position"][field.name] = frames_value_position_value
+                                            frames_list.append(frames_dict)
+                                            update_dict["last_move"]["trajectory"]["frames"].append(frames_list)
         return update_dict
 
     def trajectory_convert(self, trajectory_data) -> dict:
@@ -809,79 +877,127 @@ class SocketClient(BaseClient):
         for field in fields(trajectory_data):
             value = getattr(trajectory_data, field.name)
             if field.name == "seconds_per_frame":
-                trajectory_data[field.name] = value
+                trajectory_dict[field.name] = value
             if field.name == "start":
+                trajectory_dict[field.name] = {}
                 for field in fields(value):
-                    value = getattr(value, field.name)
+                    start_value = getattr(value, field.name)
                     if field.name == "team0":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
-                            if field.name == "angle":
-                                trajectory_data[field.name] = value
-                            if field.name == "position":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "x":
-                                        trajectory_data[field.name] = value
-                                    if field.name == "y":
-                                        trajectory_data[field.name] = value
+                        trajectory_dict["start"][field.name] = []
+                        start_team0_list = []
+                        for i in start_value:
+                            start_team0_dict = {}
+                            for field in fields(i):
+                                start_team0_value = getattr(i, field.name)
+                                if field.name == "angle":
+                                    start_team0_dict[field.name] = start_team0_value
+                                if field.name == "position":
+                                    for j in start_team0_value:
+                                        start_team0_dict["position"] = {}
+                                        for field in fields(j):
+                                            start_team0_position_value = getattr(j, field.name)
+                                            if field.name == "x":
+                                                start_team0_dict["position"][field.name] = start_team0_position_value
+                                            if field.name == "y":
+                                                start_team0_dict["position"][field.name] = start_team0_position_value
+                            start_team0_list.append(start_team0_dict)
+                        trajectory_dict["start"]["team0"] = start_team0_list
+
+
                     if field.name == "team1":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
-                            if field.name == "angle":
-                                trajectory_data[field.name] = value
-                            if field.name == "position":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "x":
-                                        trajectory_data[field.name] = value
-                                    if field.name == "y":
-                                        trajectory_data[field.name] = value
+                        trajectory_dict["start"][field.name] = []
+                        start_team1_list = []
+                        for k in start_value:
+                            start_team1_dict = {}
+                            for field in fields(k):
+                                start_team1_value = getattr(k, field.name)
+                                if field.name == "angle":
+                                    start_team1_dict[field.name] = start_team1_value
+                                if field.name == "position":
+                                    for l in start_team1_value:
+                                        start_team1_dict["position"] = {}
+                                        for field in fields(l):
+                                            start_team1_position_value = getattr(l, field.name)
+                                            if field.name == "x":
+                                                start_team1_dict["position"][field.name] = start_team1_position_value
+                                            if field.name == "y":
+                                                start_team1_dict["position"][field.name] = start_team1_position_value
+                            start_team1_list.append(start_team1_dict)
+                        trajectory_dict["start"]["team1"] = start_team1_list
+
             if field.name == "finish":
+                trajectory_dict[field.name] = {}
                 for field in fields(value):
-                    value = getattr(value, field.name)
+                    finish_value = getattr(value, field.name)
                     if field.name == "team0":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
-                            if field.name == "angle":
-                                trajectory_data[field.name] = value
-                            if field.name == "position":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "x":
-                                        trajectory_data[field.name] = value
-                                    if field.name == "y":
-                                        trajectory_data[field.name] = value
+                        trajectory_dict["finish"][field.name] = []
+                        finish_team0_list = []
+                        for i in finish_value:
+                            finish_team0_dict = {}
+                            for field in fields(i):
+                                finish_team0_value = getattr(i, field.name)
+                                if field.name == "angle":
+                                    finish_team0_dict[field.name] = finish_team0_value
+                                if field.name == "position":
+                                    for j in finish_team0_value:
+                                        finish_team0_dict["position"] = {}
+                                        for field in fields(j):
+                                            finish_team0_position_value = getattr(j, field.name)
+                                            if field.name == "x":
+                                                finish_team0_dict["position"][field.name] = finish_team0_position_value
+                                            if field.name == "y":
+                                                finish_team0_dict["position"][field.name] = finish_team0_position_value
+                            finish_team0_list.append(finish_team0_dict)
+                        trajectory_dict["finish"]["team0"] = finish_team0_list
                     if field.name == "team1":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
-                            if field.name == "angle":
-                                trajectory_data[field.name] = value
-                            if field.name == "position":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "x":
-                                        trajectory_data[field.name] = value
-                                    if field.name == "y":
-                                        trajectory_data[field.name] = value
+                        trajectory_dict["finish"][field.name] = []
+                        finish_team1_list = []
+                        for k in finish_value:
+                            finish_team1_dict = {}
+                            for field in fields(k):
+                                finish_team1_value = getattr(k, field.name)
+                                if field.name == "angle":
+                                    finish_team1_dict[field.name] = finish_team1_value
+                                if field.name == "position":
+                                    for l in finish_team1_value:
+                                        finish_team1_dict["position"] = {}
+                                        for field in fields(l):
+                                            finish_team1_position_value = getattr(l, field.name)
+                                            if field.name == "x":
+                                                finish_team1_dict["position"][field.name] = finish_team1_position_value
+                                            if field.name == "y":
+                                                finish_team1_dict["position"][field.name] = finish_team1_position_value
+                            finish_team1_list.append(finish_team1_dict)
+                        trajectory_dict["finish"]["team1"] = finish_team1_list
+#次起きたらここから
             if field.name == "frames":
-                for field in fields(value):
-                    value = getattr(value, field.name)
-                    if field.name == "team":
-                        trajectory_data[field.name] = value
-                    if field.name == "index":
-                        trajectory_data[field.name] = value
-                    if field.name == "value":
-                        for field in fields(value):
-                            value = getattr(value, field.name)
-                            if field.name == "angle":
-                                trajectory_data[field.name] = value
-                            if field.name == "position":
-                                for field in fields(value):
-                                    value = getattr(value, field.name)
-                                    if field.name == "x":
-                                        trajectory_data[field.name] = value
-                                    if field.name == "y":
-                                        trajectory_data[field.name] = value
+                trajectory_dict[field.name] = []
+                for i in value:
+                    frames_dict = {}
+                    frames_list = []
+                    for field in fields(i):
+                        frame_value = getattr(i, field.name)
+                        if field.name == "team":
+                            frames_dict[field.name] = frame_value
+                        if field.name == "index":
+                            frames_dict[field.name] = frame_value
+                        if field.name == "value":
+                            frames_dict[field.name] = {}
+                            for field in fields(frame_value):
+                                frame_data_value = getattr(frame_value, field.name)
+                                if field.name == "angle":
+                                    frames_dict["value"][field.name] = frame_data_value
+                                if field.name == "position":
+                                    frames_dict["value"][field.name] = {}
+                                    for j in frame_data_value:
+                                        for field in fields(j):
+                                            frame_data_position_value = getattr(j, field.name)
+                                            if field.name == "x":
+                                                frames_dict["value"]["position"][field.name] = frame_data_position_value
+                                            if field.name == "y":
+                                                frames_dict["value"]["position"][field.name] = frame_data_position_value
+                    frames_list.append(frames_dict)
+                    trajectory_dict["frames"]+=frames_list
+
         return trajectory_dict
                 
