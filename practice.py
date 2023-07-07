@@ -136,8 +136,11 @@ class SocketClient(BaseClient):
         super().connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
 
         self.obj_dict = {}
-
         self.match_data = MatchData()
+
+        self.move_info_x = []
+        self.move_info_y = []
+        self.move_info_angle = []
 
         self.dc_recv()
         self.dc_ok()  # dc_okを送信
@@ -444,6 +447,16 @@ class SocketClient(BaseClient):
             y (float, optional): y軸方向の速度. Defaults to 2.4.
             rotation (str, optional): 回転方向. Defaults to "ccw".
         """
+
+        if rotation == "ccw":
+            rot = 1
+            self.move_info_angle.append(rot)
+        else:
+            rot = 0
+            self.move_info_angle.append(rot)
+
+        self.move_info_x.append(x)
+        self.move_info_y.append(y)
 
         shot = {
             "cmd": "move",
@@ -845,7 +858,7 @@ class SocketClient(BaseClient):
                                     if field.name == "frames":
                                         update_dict["last_move"]["trajectory"][field.name] = []
 
-                                #明日はここからスタート
+
                                         for field in fields(trajectory_value):
                                             frames_list = []
                                             frames_dict = {}
@@ -969,7 +982,7 @@ class SocketClient(BaseClient):
                                                 finish_team1_dict["position"][field.name] = finish_team1_position_value
                             finish_team1_list.append(finish_team1_dict)
                         trajectory_dict["finish"]["team1"] = finish_team1_list
-#次起きたらここから
+
             if field.name == "frames":
                 trajectory_dict[field.name] = []
                 for i in value:
