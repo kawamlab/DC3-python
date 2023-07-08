@@ -543,7 +543,6 @@ class SocketClient(BaseClient):
 
         return update_list, trajectory_list
 
-
     def dc_convert(self, dc_data: ServerDC | None) -> dict:
         dc_dict = {}
         if dc_data is None:
@@ -563,9 +562,8 @@ class SocketClient(BaseClient):
                     if field.name == "major":
                         dc_dict["version"][field.name] = dc_version
                     if field.name == "minor":
-                        dc_dict["version"][field.name] = dc_version        
+                        dc_dict["version"][field.name] = dc_version
         return dc_dict
-    
 
     def is_ready_convert(self, is_ready_data: IsReady | None) -> dict:
         is_ready_dict = {}
@@ -598,17 +596,25 @@ class SocketClient(BaseClient):
                                 for field in fields(config_value):
                                     thinking_time_value = getattr(config_value, field.name)
                                     if field.name == "team0":
-                                        is_ready_dict["game"]["setting"]["thinking_time"][field.name] = thinking_time_value
+                                        is_ready_dict["game"]["setting"]["thinking_time"][
+                                            field.name
+                                        ] = thinking_time_value
                                     if field.name == "team1":
-                                        is_ready_dict["game"]["setting"]["thinking_time"][field.name] = thinking_time_value
+                                        is_ready_dict["game"]["setting"]["thinking_time"][
+                                            field.name
+                                        ] = thinking_time_value
                             if field.name == "extra_end_thinking_time":
                                 is_ready_dict["game"]["setting"][field.name] = {}
                                 for field in fields(config_value):
                                     extra_end_thinking_time_value = getattr(config_value, field.name)
                                     if field.name == "team0":
-                                        is_ready_dict["game"]["setting"]["extra_end_thinking_time"][field.name] = extra_end_thinking_time_value
+                                        is_ready_dict["game"]["setting"]["extra_end_thinking_time"][
+                                            field.name
+                                        ] = extra_end_thinking_time_value
                                     if field.name == "team1":
-                                        is_ready_dict["game"]["setting"]["extra_end_thinking_time"][field.name] = extra_end_thinking_time_value
+                                        is_ready_dict["game"]["setting"]["extra_end_thinking_time"][
+                                            field.name
+                                        ] = extra_end_thinking_time_value
                     if field.name == "simulator":
                         is_ready_dict["game"][field.name] = {}
                         for field in fields(game_value):
@@ -645,7 +651,7 @@ class SocketClient(BaseClient):
                                             players1_list.append(team1_dict)
                                     is_ready_dict["game"]["players"]["team1"] = players1_list
         return is_ready_dict
-    
+
     def update_convert(self, update_data, remove_trajectory) -> dict:
         update_dict = {}
         for field in fields(update_data):
@@ -707,9 +713,13 @@ class SocketClient(BaseClient):
                                                 for field in fields(j):
                                                     team0_position_value = getattr(j, field.name)
                                                     if field.name == "x":
-                                                        state_stone_team0_dict["position"][field.name] = team0_position_value
+                                                        state_stone_team0_dict["position"][
+                                                            field.name
+                                                        ] = team0_position_value
                                                     if field.name == "y":
-                                                        state_stone_team0_dict["position"][field.name] = team0_position_value
+                                                        state_stone_team0_dict["position"][
+                                                            field.name
+                                                        ] = team0_position_value
                                     state_stones_team0_list.append(state_stone_team0_dict)
                                 update_dict["state"]["stones"]["team0"] = state_stones_team0_list
 
@@ -728,9 +738,13 @@ class SocketClient(BaseClient):
                                                 for field in fields(l):
                                                     team1_position_value = getattr(l, field.name)
                                                     if field.name == "x":
-                                                        state_stone_team1_dict["position"][field.name] = team1_position_value
+                                                        state_stone_team1_dict["position"][
+                                                            field.name
+                                                        ] = team1_position_value
                                                     if field.name == "y":
-                                                        state_stone_team1_dict["position"][field.name] = team1_position_value
+                                                        state_stone_team1_dict["position"][
+                                                            field.name
+                                                        ] = team1_position_value
                                     state_stones_team1_list.append(state_stone_team1_dict)
                                 update_dict["state"]["stones"]["team1"] = state_stones_team1_list
                     if field.name == "thinking_time_remaining":
@@ -738,9 +752,13 @@ class SocketClient(BaseClient):
                         for field in fields(state_value):
                             thinking_time_remaining_value = getattr(state_value, field.name)
                             if field.name == "team0":
-                                update_dict["state"]["thinking_time_remaining"][field.name] = thinking_time_remaining_value
+                                update_dict["state"]["thinking_time_remaining"][
+                                    field.name
+                                ] = thinking_time_remaining_value
                             if field.name == "team1":
-                                update_dict["state"]["thinking_time_remaining"][field.name] = thinking_time_remaining_value
+                                update_dict["state"]["thinking_time_remaining"][
+                                    field.name
+                                ] = thinking_time_remaining_value
             if field.name == "last_move":
                 if update_value is None:
                     update_dict[field.name] = None
@@ -761,9 +779,13 @@ class SocketClient(BaseClient):
                                     for field in fields(actual_move_value):
                                         velocity_value = getattr(actual_move_value, field.name)
                                         if field.name == "x":
-                                            update_dict["last_move"]["actual_move"]["velocity"][field.name] = velocity_value
+                                            update_dict["last_move"]["actual_move"]["velocity"][
+                                                field.name
+                                            ] = velocity_value
                                         if field.name == "y":
-                                            update_dict["last_move"]["actual_move"]["velocity"][field.name] = velocity_value
+                                            update_dict["last_move"]["actual_move"]["velocity"][
+                                                field.name
+                                            ] = velocity_value
                         if field.name == "free_guard_zone_foul":
                             update_dict["last_move"][field.name] = last_move_value
                         if field.name == "trajectory":
@@ -790,13 +812,21 @@ class SocketClient(BaseClient):
                                                     if field.name == "position":
                                                         start_team0_dict["position"] = {}
                                                         for field in fields(start_team0_value):
-                                                            start_team0_position_value = getattr(start_team0_value, field.name)
+                                                            start_team0_position_value = getattr(
+                                                                start_team0_value, field.name
+                                                            )
                                                             if field.name == "x":
-                                                                start_team0_dict["position"][field.name] = start_team0_position_value
+                                                                start_team0_dict["position"][
+                                                                    field.name
+                                                                ] = start_team0_position_value
                                                             if field.name == "y":
-                                                                start_team0_dict["position"][field.name] = start_team0_position_value
+                                                                start_team0_dict["position"][
+                                                                    field.name
+                                                                ] = start_team0_position_value
                                                     start_team0_list.append(start_team0_dict)
-                                                update_dict["last_move"]["trajectory"]["start"]["team0"] = start_team0_list
+                                                update_dict["last_move"]["trajectory"]["start"][
+                                                    "team0"
+                                                ] = start_team0_list
                                             if field.name == "team1":
                                                 update_dict["last_move"]["trajectory"]["start"][field.name] = []
                                                 start_team1_list = []
@@ -808,13 +838,21 @@ class SocketClient(BaseClient):
                                                     if field.name == "position":
                                                         start_team1_dict["position"] = {}
                                                         for field in fields(start_team1_value):
-                                                            start_team1_position_value = getattr(start_team1_value, field.name)
+                                                            start_team1_position_value = getattr(
+                                                                start_team1_value, field.name
+                                                            )
                                                             if field.name == "x":
-                                                                start_team1_dict["position"][field.name] = start_team1_position_value
+                                                                start_team1_dict["position"][
+                                                                    field.name
+                                                                ] = start_team1_position_value
                                                             if field.name == "y":
-                                                                start_team1_dict["position"][field.name] = start_team1_position_value
+                                                                start_team1_dict["position"][
+                                                                    field.name
+                                                                ] = start_team1_position_value
                                                     start_team1_list.append(start_team1_dict)
-                                                update_dict["last_move"]["trajectory"]["start"]["team1"] = start_team1_list
+                                                update_dict["last_move"]["trajectory"]["start"][
+                                                    "team1"
+                                                ] = start_team1_list
                                     if field.name == "finish":
                                         update_dict["last_move"]["trajectory"][field.name] = {}
                                         for field in fields(trajectory_value):
@@ -830,13 +868,21 @@ class SocketClient(BaseClient):
                                                     if field.name == "position":
                                                         finish_team0_dict["position"] = {}
                                                         for field in fields(finish_team0_value):
-                                                            finish_team0_position_value = getattr(finish_team0_value, field.name)
+                                                            finish_team0_position_value = getattr(
+                                                                finish_team0_value, field.name
+                                                            )
                                                             if field.name == "x":
-                                                                finish_team0_dict["position"][field.name] = finish_team0_position_value
+                                                                finish_team0_dict["position"][
+                                                                    field.name
+                                                                ] = finish_team0_position_value
                                                             if field.name == "y":
-                                                                finish_team0_dict["position"][field.name] = finish_team0_position_value
+                                                                finish_team0_dict["position"][
+                                                                    field.name
+                                                                ] = finish_team0_position_value
                                                     finish_team0_list.append(finish_team0_dict)
-                                                update_dict["last_move"]["trajectory"]["finish"]["team0"] = finish_team0_list
+                                                update_dict["last_move"]["trajectory"]["finish"][
+                                                    "team0"
+                                                ] = finish_team0_list
                                             if field.name == "team1":
                                                 update_dict["last_move"]["trajectory"]["finish"][field.name] = []
                                                 finish_team1_list = []
@@ -848,16 +894,23 @@ class SocketClient(BaseClient):
                                                     if field.name == "position":
                                                         finish_team1_dict["position"] = {}
                                                         for field in fields(finish_team1_value):
-                                                            finish_team1_position_value = getattr(finish_team1_value, field.name)
+                                                            finish_team1_position_value = getattr(
+                                                                finish_team1_value, field.name
+                                                            )
                                                             if field.name == "x":
-                                                                finish_team1_dict["position"][field.name] = finish_team1_position_value
+                                                                finish_team1_dict["position"][
+                                                                    field.name
+                                                                ] = finish_team1_position_value
                                                             if field.name == "y":
-                                                                finish_team1_dict["position"][field.name] = finish_team1_position_value
+                                                                finish_team1_dict["position"][
+                                                                    field.name
+                                                                ] = finish_team1_position_value
                                                     finish_team1_list.append(finish_team1_dict)
-                                                update_dict["last_move"]["trajectory"]["finish"]["team1"] = finish_team1_list
+                                                update_dict["last_move"]["trajectory"]["finish"][
+                                                    "team1"
+                                                ] = finish_team1_list
                                     if field.name == "frames":
                                         update_dict["last_move"]["trajectory"][field.name] = []
-
 
                                         for field in fields(trajectory_value):
                                             frames_list = []
@@ -876,11 +929,17 @@ class SocketClient(BaseClient):
                                                     if field.name == "position":
                                                         frames_dict["value"][field.name] = {}
                                                         for field in fields(frames_value_value):
-                                                            frames_value_position_value = getattr(frames_value_value, field.name)
+                                                            frames_value_position_value = getattr(
+                                                                frames_value_value, field.name
+                                                            )
                                                             if field.name == "x":
-                                                                frames_dict["value"]["position"][field.name] = frames_value_position_value
+                                                                frames_dict["value"]["position"][
+                                                                    field.name
+                                                                ] = frames_value_position_value
                                                             if field.name == "y":
-                                                                frames_dict["value"]["position"][field.name] = frames_value_position_value
+                                                                frames_dict["value"]["position"][
+                                                                    field.name
+                                                                ] = frames_value_position_value
                                             frames_list.append(frames_dict)
                                             update_dict["last_move"]["trajectory"]["frames"].append(frames_list)
         return update_dict
@@ -915,7 +974,6 @@ class SocketClient(BaseClient):
                                                 start_team0_dict["position"][field.name] = start_team0_position_value
                             start_team0_list.append(start_team0_dict)
                         trajectory_dict["start"]["team0"] = start_team0_list
-
 
                     if field.name == "team1":
                         trajectory_dict["start"][field.name] = []
@@ -1010,7 +1068,6 @@ class SocketClient(BaseClient):
                                             if field.name == "y":
                                                 frames_dict["value"]["position"][field.name] = frame_data_position_value
                     frames_list.append(frames_dict)
-                    trajectory_dict["frames"]+=frames_list
+                    trajectory_dict["frames"] += frames_list
 
         return trajectory_dict
-                

@@ -43,7 +43,7 @@ if __name__ == "__main__":
     # print(f"trajectory : {trajectory_list[0]}")
     update = cli.update_convert(update_list[1], remove_trajectory)
     # trajectory = cli.trajectory_convert(trajectory_list[0])
-    f=open("data_x.json", "w", encoding="UTF-8")
+    f = open("data_x.json", "w", encoding="UTF-8")
     # f.writelines(json.dumps(dc_message, indent=0))
     # f.writelines(json.dumps(is_ready_message, indent=0))
     f.writelines(json.dumps(move_info_x, indent=0))
