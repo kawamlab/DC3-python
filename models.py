@@ -253,3 +253,20 @@ class MatchData:
     is_ready: IsReady | None = None
     new_game: NewGame | None = None
     update_list: list[Update] = field(default_factory=list)
+
+
+@dataclass
+class MoveInfo:
+    """ショット情報"""
+
+    velocity_x: float
+    velocity_y: float
+    rotation: bool
+
+
+class DCNotFoundError(Exception):
+    pass
+
+
+class IsReadyNotFoundError(Exception):
+    pass
