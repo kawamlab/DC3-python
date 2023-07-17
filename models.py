@@ -1,14 +1,26 @@
+import enum
 from dataclasses import dataclass, field
+
+
+class StoneRotation(str, enum.Enum):
+    """Stone Rotation Direction"""
+
+    clockwise = "cw"
+    counterclockwise = "ccw"
 
 
 @dataclass
 class Version:
+    """Version Info"""
+
     major: int
     minor: int
 
 
-@dataclass  # dcで受信するメッセージを格納
+@dataclass
 class ServerDC:
+    """Server Info"""
+
     date_time: str
     game_id: str
     cmd: str
@@ -16,19 +28,11 @@ class ServerDC:
 
 
 @dataclass
-class NormalDist:
-    """最大速度及び、初速・初期角度に加わる正規分布乱数の標準偏差"""
-
-    max_speed: float
-    seed: None
-    stddev_angle: float
-    stddev_speed: float
-    randomness: str
-
-
-@dataclass
-class NormalDist1:
-    """最大速度及び、初速・初期角度に加わる正規分布乱数の標準偏差"""
+class PlayerInfo:
+    """
+    Maximum velocity of the stone and standard deviation of normally distributed random numbers
+    applied to the initial velocity and initial angle
+    """
 
     max_speed: float
     seed: None
@@ -39,23 +43,23 @@ class NormalDist1:
 
 @dataclass
 class Players:
-    """プレイヤーの設定"""
+    """Pool of players per team"""
 
-    team0: list[NormalDist]
-    team1: list[NormalDist1]
+    team0: list[PlayerInfo]
+    team1: list[PlayerInfo]
 
 
 @dataclass
-class ExtraEndThinkingTime:
-    """延長戦の1エンド毎の思考時間"""
+class ThinkingTime:
+    """Thinking time not including ExtraEnd"""
 
     team0: float
     team1: float
 
 
 @dataclass
-class ThinkingTime:
-    """延長戦を含まない思考時間"""
+class ExtraEndThinkingTime:
+    """Thinking time per end of ExtraEnd"""
 
     team0: float
     team1: float
@@ -63,7 +67,7 @@ class ThinkingTime:
 
 @dataclass
 class Setting:
-    """試合設定"""
+    """Match Setting"""
 
     extra_end_thinking_time: ExtraEndThinkingTime
     five_rock_rule: bool
@@ -74,7 +78,7 @@ class Setting:
 
 @dataclass
 class Simulator:
-    """シミュレータの設定"""
+    """Simulator Settings"""
 
     seconds_per_frame: float
     simulator_type: str
@@ -82,7 +86,7 @@ class Simulator:
 
 @dataclass
 class GameRule:
-    """試合設定"""
+    """Game Rule"""
 
     players: Players
     rule: str
@@ -92,7 +96,7 @@ class GameRule:
 
 @dataclass
 class IsReady:
-    """対戦開始の際の情報を受け取る(is_ready))"""
+    """Match settings"""
 
     cmd: str
     team: str
@@ -101,7 +105,7 @@ class IsReady:
 
 @dataclass
 class NewGame:
-    """試合開始の合図"""
+    """Signal for the start of the match"""
 
     cmd: str
     name: dict
@@ -109,7 +113,7 @@ class NewGame:
 
 @dataclass
 class ExtraEndScore:
-    """延長戦のスコア"""
+    """ExtraEnd Score"""
 
     team0: int
     team1: int
@@ -117,13 +121,15 @@ class ExtraEndScore:
 
 @dataclass
 class GameResult:
+    """Game Result"""
+
     winner: str | None
     reason: str | None
 
 
 @dataclass
 class Scores:
-    """スコア"""
+    """Scores"""
 
     team0: list
     team1: list
@@ -131,7 +137,7 @@ class Scores:
 
 @dataclass
 class Position:
-    """位置"""
+    """Stone Position"""
 
     x: float | None
     y: float | None
@@ -139,7 +145,7 @@ class Position:
 
 @dataclass
 class Coordinate:
-    """位置と角度"""
+    """Position and Angle"""
 
     angle: float | None
     position: list[Position]
@@ -147,7 +153,7 @@ class Coordinate:
 
 @dataclass
 class Stones:
-    """石の位置"""
+    """Stone Positions of each team"""
 
     team0: list[Coordinate]
     team1: list[Coordinate]
@@ -155,7 +161,7 @@ class Stones:
 
 @dataclass
 class ThinkingTimeRemaining:
-    """残り思考時間"""
+    """Thinking time remaining"""
 
     team0: float
     team1: float
@@ -163,7 +169,7 @@ class ThinkingTimeRemaining:
 
 @dataclass
 class State:
-    """状態"""
+    """Match State"""
 
     end: int
     extra_end_score: ExtraEndScore
@@ -177,13 +183,15 @@ class State:
 
 @dataclass
 class Velocity:
+    """Velocity"""
+
     x: float | None
     y: float | None
 
 
 @dataclass
 class ActualMove:
-    """実際のショット情報"""
+    """Actual Move"""
 
     rotation: str | None
     type: str | None
@@ -192,7 +200,7 @@ class ActualMove:
 
 @dataclass
 class Start:
-    """ショットの開始位置"""
+    """Stone placement at the start of the shot"""
 
     team0: list[Coordinate]
     team1: list[Coordinate]
@@ -200,13 +208,18 @@ class Start:
 
 @dataclass
 class Finish:
+    """Stone placement at end of shot"""
+
     team0: list[Coordinate]
     team1: list[Coordinate]
 
 
 @dataclass
 class Frame:
-    """ショットのフレーム情報"""
+    """
+    The position and angle of the stones at each time interval, denoted by seconds_per_frame.
+    Each frame is represented as the difference from the previous frame (the first frame is start).
+    """
 
     team: str | None
     index: int | None
@@ -214,21 +227,25 @@ class Frame:
 
 
 @dataclass
-class Array:
+class FrameArray:
+    """Frame Array"""
+
     array: Frame | None
 
 
 @dataclass
 class Trajectory:
+    """Trajectory of each stone"""
+
     seconds_per_frame: float | None
     start: Start
     finish: Finish
-    frames: list[Array] | None
+    frames: list[FrameArray] | None
 
 
 @dataclass
 class LastMove:
-    """前回のショット情報"""
+    """Results of previous shot"""
 
     actual_move: ActualMove
     free_guard_zone_foul: bool
@@ -237,7 +254,7 @@ class LastMove:
 
 @dataclass
 class Update:
-    """対戦中の情報を受け取る"""
+    """Match information on each shot"""
 
     cmd: str
     next_team: str
@@ -247,7 +264,7 @@ class Update:
 
 @dataclass
 class MatchData:
-    """試合情報"""
+    """Match Data"""
 
     server_dc: ServerDC | None = None
     is_ready: IsReady | None = None
@@ -256,12 +273,12 @@ class MatchData:
 
 
 @dataclass
-class MoveInfo:
+class ShotInfo:
     """ショット情報"""
 
     velocity_x: float
     velocity_y: float
-    rotation: bool
+    rotation: StoneRotation
 
 
 class DCNotFoundError(Exception):
@@ -269,4 +286,8 @@ class DCNotFoundError(Exception):
 
 
 class IsReadyNotFoundError(Exception):
+    pass
+
+
+class GameResultNotFoundError(Exception):
     pass

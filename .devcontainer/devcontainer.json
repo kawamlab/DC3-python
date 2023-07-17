@@ -3,7 +3,7 @@
 {
     "name": "Python 3",
     // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-    "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
+    "image": "mcr.microsoft.com/devcontainers/python:0-3.10",
     // "initializeCommand": "if ! docker network ls | awk '{ print $2 }' | grep -qx 'dc3'; then docker network create --driver bridge test-group; fi",
     "runArgs": [
         "--network=dc3"

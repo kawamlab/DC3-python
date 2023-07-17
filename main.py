@@ -1,17 +1,22 @@
-from practice import SocketClient
 import json
+import pathlib
 
+from practice import SocketClient
 
 if __name__ == "__main__":
-    cli = SocketClient()
+    cli = SocketClient(rate_limit=2.0)
+
+    log_dir = pathlib.Path("logs")
+
     remove_trajectory = True
 
     my_team = cli.get_my_team()
     cli.logger.info(f"my_team :{my_team}")
+
     dc = cli.get_dc()
-    dc_message = cli.dc_convert(dc)
+    dc_message = cli.convert_dc(dc)
     is_ready = cli.get_is_ready()
-    is_ready_message = cli.is_ready_convert(is_ready)
+    is_ready_message = cli.convert_is_ready(is_ready)
 
     # id = cmd(dict_data.get("cmd"), dict_data.get("last_move"), dict_data.get("next_team"))
     # cli.logger.info(f"id : {id.next_team}")
@@ -36,17 +41,8 @@ if __name__ == "__main__":
 
     move_info = cli.get_move_info()
     update_list, trajectory_list = cli.get_update_and_trajectory(remove_trajectory)
-    # update = cli.update_to_json(update_list)
-    # print(f"trajectory : {trajectory_list[0]}")
-    update = cli.update_convert(update_list[0], remove_trajectory)
-    # trajectory = cli.trajectory_convert(trajectory_list[1])
-    # trajectory = cli.trajectory_convert(trajectory_list[0])
-    f = open("data_x.json", "w", encoding="UTF-8")
-    # f.writelines(json.dumps(dc_message, indent=0))
-    # f.writelines(json.dumps(is_ready_message, indent=0))
-    # f.writelines(json.dumps(move_info_x, indent=0))
-    # f.writelines(json.dumps(move_info_y, indent=0))
-    # f.writelines(json.dumps(move_info_angle, indent=0))
-    f.writelines(json.dumps(update, indent=4))
-    # f.writelines(json.dumps(trajectory, indent=4))
-    f.close()
+
+    update = cli.convert_update(update_list[0], remove_trajectory)
+
+    with open("data_x.json", "w", encoding="UTF-8") as f:
+        json.dump(update, f, indent=4)
