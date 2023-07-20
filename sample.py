@@ -1,7 +1,7 @@
 import json
 import pathlib
 
-from practice import SocketClient
+from dc3client import SocketClient
 
 if __name__ == "__main__":
     cli = SocketClient(rate_limit=2.0)

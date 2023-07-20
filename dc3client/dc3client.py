@@ -6,7 +6,7 @@ import time
 from dataclasses import fields
 from typing import Any
 
-from models import (
+from dc3client.models import (
     ActualMove,
     Coordinate,
     DCNotFoundError,
