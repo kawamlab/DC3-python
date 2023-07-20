@@ -73,7 +73,7 @@ class BaseClient:
         # Rate limit time interval
         self.rate_limit = 3.0
 
-    def _connect(self, address: tuple, family: int, typ: int, proto: int):
+    def __connect(self, address: tuple, family: int, typ: int, proto: int):
         self.logger.info(f"Connect to {address}")
         self.address = address  # address of server
         self.socket = socket.socket(family, typ, proto)  # create socket object
@@ -85,9 +85,9 @@ class BaseClient:
             self.logger.error("Socket is None")
             raise Exception("Socket is None")
         # Close socket on exit
-        atexit.register(self._shutdown)
+        atexit.register(self.__shutdown)
 
-    def _send(self, message: str = ""):
+    def __send(self, message: str = ""):
         """send message to server
 
         Args:
@@ -113,7 +113,7 @@ class BaseClient:
                     self.logger.debug(f"Please wait {wait_time + .5} seconds")
                     time.sleep(wait_time + 0.5)
 
-    def _receive(self) -> dict[str, Any]:
+    def __receive(self) -> dict[str, Any]:
         """receive message from server until "\n"
 
         Returns:
@@ -132,7 +132,7 @@ class BaseClient:
         dict_data = json.loads(json_data)
         return dict_data
 
-    def _shutdown(self):
+    def __shutdown(self):
         """shutdown socket"""
         self.logger.info("Shutdown socket")
         try:
@@ -174,10 +174,10 @@ class SocketClient(BaseClient):
 
         if auto_start:
             self.rate_limit = rate_limit
-            super()._connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
-            self._start_game()
+            super().__connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
+            self.start_game()
 
-    def _start_game(self):
+    def start_game(self):
         """start game"""
         self.dc_recv()
         self.dc_ok()
@@ -185,7 +185,7 @@ class SocketClient(BaseClient):
         self.ready_ok()
         self.get_new_game()
 
-    def _stone_trajectory_parser(self, message_recv: list) -> list:
+    def __stone_trajectory_parser(self, message_recv: list) -> list:
         """Convert stone trajectory to data class
 
         Args:
@@ -211,7 +211,7 @@ class SocketClient(BaseClient):
 
     def dc_recv(self):
         """receive dc"""
-        message_recv = self._receive()
+        message_recv = self.__receive()
 
         version = Version(
             major=message_recv["version"]["major"],
@@ -233,12 +233,12 @@ class SocketClient(BaseClient):
         message: dict = {"cmd": "dc_ok", "name": self.client_name}
         message_str: str = json.dumps(message)
         message_str: str = message_str + "\n"
-        self._send(message_str)
+        self.__send(message_str)
 
     def is_ready_recv(self):
         """receive is_ready"""
 
-        message_recv = self._receive()
+        message_recv = self.__receive()
 
         thinking_time = ThinkingTime(
             team0=message_recv["game"]["setting"]["thinking_time"]["team0"],
@@ -303,18 +303,18 @@ class SocketClient(BaseClient):
         ready = {"cmd": "ready_ok", "player_order": player_order}
         ready_str = json.dumps(ready)
         ready_str = ready_str + "\n"
-        self._send(ready_str)
+        self.__send(ready_str)
 
     def get_new_game(self):
         """receive new_game"""
 
-        message_recv = self._receive()
+        message_recv = self.__receive()
         self.match_data.new_game = NewGame(cmd=message_recv["cmd"], name=message_recv["name"])
 
     def update(self):
         """receive update"""
 
-        message_recv = self._receive()
+        message_recv = self.__receive()
 
         start_team0_position = []
         start_team1_position = []
@@ -351,8 +351,8 @@ class SocketClient(BaseClient):
         )
 
         stones = Stones(
-            team0=self._stone_trajectory_parser(message_recv["state"]["stones"]["team0"]),
-            team1=self._stone_trajectory_parser(message_recv["state"]["stones"]["team1"]),
+            team0=self.__stone_trajectory_parser(message_recv["state"]["stones"]["team0"]),
+            team1=self.__stone_trajectory_parser(message_recv["state"]["stones"]["team1"]),
         )
 
         thinking_time_remaining = ThinkingTimeRemaining(
@@ -383,19 +383,19 @@ class SocketClient(BaseClient):
             else:
                 seconds_per_frame = message_recv["last_move"]["trajectory"]["seconds_per_frame"]
 
-                start_team0_position = self._stone_trajectory_parser(
+                start_team0_position = self.__stone_trajectory_parser(
                     message_recv["last_move"]["trajectory"]["start"]["team0"]
                 )
 
-                start_team1_position = self._stone_trajectory_parser(
+                start_team1_position = self.__stone_trajectory_parser(
                     message_recv["last_move"]["trajectory"]["start"]["team1"]
                 )
 
-                finish_team0_position = self._stone_trajectory_parser(
+                finish_team0_position = self.__stone_trajectory_parser(
                     message_recv["last_move"]["trajectory"]["finish"]["team0"]
                 )
 
-                finish_team1_position = self._stone_trajectory_parser(
+                finish_team1_position = self.__stone_trajectory_parser(
                     message_recv["last_move"]["trajectory"]["finish"]["team1"]
                 )
 
@@ -506,14 +506,14 @@ class SocketClient(BaseClient):
         }
         s = json.dumps(shot)
         s = s + "\n"
-        self._send(s)
+        self.__send(s)
 
     def concede(self) -> None:
         """Concede"""
         concede = {"cmd": "move", "move": {"type": "concede"}}
         s = json.dumps(concede)
         s = s + "\n"
-        self._send(s)
+        self.__send(s)
 
     def get_my_team(self) -> str:
         """get my team name
