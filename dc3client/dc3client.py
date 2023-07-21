@@ -161,6 +161,7 @@ class SocketClient(BaseClient):
             client_name (str, optional): Identification name of the client. Defaults to "AI0".
             rate_limit (int, optional): Minimum time interval to send data to the server. Defaults to 3.
         """
+        self.is_connected = False
         self.server = (host, port)
         super().__init__(timeout=60, buffer=1024)
 
@@ -176,6 +177,8 @@ class SocketClient(BaseClient):
             self.rate_limit = rate_limit
             super().__connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
             self.start_game()
+        else:
+            self.start_game()
 
     def start_game(self):
         """start game"""
@@ -184,6 +187,7 @@ class SocketClient(BaseClient):
         self.is_ready_recv()
         self.ready_ok()
         self.get_new_game()
+
 
     def __stone_trajectory_parser(self, message_recv: list) -> list:
         """Convert stone trajectory to data class
@@ -310,10 +314,15 @@ class SocketClient(BaseClient):
 
         message_recv = self.__receive()
         self.match_data.new_game = NewGame(cmd=message_recv["cmd"], name=message_recv["name"])
+        if self.match_data.new_game is not None:
+            self.is_connected = True
 
     def update(self):
         """receive update"""
 
+        if self.is_connected is False:
+            raise Exception("Not connected to server")
+        
         message_recv = self.__receive()
 
         start_team0_position = []
@@ -479,7 +488,7 @@ class SocketClient(BaseClient):
 
         self.match_data.update_list.append(update_info)
 
-    def move(self, x: float = 0.0, y: float = 2.4, rotation: StoneRotation = StoneRotation.counterclockwise) -> None:
+    def move(self, x: float = 0.0, y: float = 2.4, rotation: StoneRotation = StoneRotation.outtern) -> None:
         """Shot Stone
 
         Args:
@@ -487,7 +496,8 @@ class SocketClient(BaseClient):
             y (float, optional): Velocity in y-axis direction. Defaults to 2.4.
             rotation (str, optional): Direction of rotation. Defaults to "ccw".
         """
-
+        if self.is_connected is False:
+            raise Exception("Not connected to server")
         self.move_info.append(
             ShotInfo(
                 velocity_x=x,

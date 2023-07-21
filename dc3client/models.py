@@ -5,8 +5,10 @@ from dataclasses import dataclass, field
 class StoneRotation(str, enum.Enum):
     """Stone Rotation Direction"""
 
-    clockwise = "cw"
-    counterclockwise = "ccw"
+    # clockwise = "cw"
+    # counterclockwise = "ccw"
+    intern = "cw"
+    outtern = "ccw"
 
 
 @dataclass
