@@ -1,4 +1,4 @@
-from practice import SocketClient
+from dc3client.dc3clikent import SocketClient
 import math
 import sys
 import os
