@@ -1,7 +1,6 @@
 import json
 import numpy as np
 import pathlib
-import os
 # team0を自分のチームとして、team1を相手のチームとして扱う
 
 
@@ -87,8 +86,8 @@ class ReadFile:
             dataset["end"] = end
 
         file_name = "dataset" + str(i) + ".json"
-        dataset_path = os.path.join(os.path.dirname(__file__), "dataset")
-        with open(os.path.join(dataset_path, file_name), "a") as f:
+        dataset_path = pathlib.Path(__file__).parent.joinpath("dataset")
+        with open(dataset_path.joinpath(dataset_path, file_name), "a") as f:
             json.dump(dataset, f, indent=4)
 
 
