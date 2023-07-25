@@ -73,7 +73,7 @@ class BaseClient:
         # Rate limit time interval
         self.rate_limit = 3.0
 
-    def __connect(self, address: tuple, family: int, typ: int, proto: int):
+    def _connect(self, address: tuple, family: int, typ: int, proto: int):
         self.logger.info(f"Connect to {address}")
         self.address = address  # address of server
         self.socket = socket.socket(family, typ, proto)  # create socket object
@@ -87,7 +87,7 @@ class BaseClient:
         # Close socket on exit
         atexit.register(self.__shutdown)
 
-    def __send(self, message: str = ""):
+    def send(self, message: str = ""):
         """send message to server
 
         Args:
@@ -113,7 +113,7 @@ class BaseClient:
                     self.logger.debug(f"Please wait {wait_time + .5} seconds")
                     time.sleep(wait_time + 0.5)
 
-    def __receive(self) -> dict[str, Any]:
+    def receive(self) -> dict[str, Any]:
         """receive message from server until "\n"
 
         Returns:
@@ -175,7 +175,7 @@ class SocketClient(BaseClient):
 
         if auto_start:
             self.rate_limit = rate_limit
-            super().__connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
+            super()._connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
             self.start_game()
         else:
             self.start_game()
@@ -215,7 +215,7 @@ class SocketClient(BaseClient):
 
     def dc_recv(self):
         """receive dc"""
-        message_recv = self.__receive()
+        message_recv = self.receive()
 
         version = Version(
             major=message_recv["version"]["major"],
@@ -237,12 +237,12 @@ class SocketClient(BaseClient):
         message: dict = {"cmd": "dc_ok", "name": self.client_name}
         message_str: str = json.dumps(message)
         message_str: str = message_str + "\n"
-        self.__send(message_str)
+        self.send(message_str)
 
     def is_ready_recv(self):
         """receive is_ready"""
 
-        message_recv = self.__receive()
+        message_recv = self.receive()
 
         thinking_time = ThinkingTime(
             team0=message_recv["game"]["setting"]["thinking_time"]["team0"],
@@ -307,12 +307,12 @@ class SocketClient(BaseClient):
         ready = {"cmd": "ready_ok", "player_order": player_order}
         ready_str = json.dumps(ready)
         ready_str = ready_str + "\n"
-        self.__send(ready_str)
+        self.send(ready_str)
 
     def get_new_game(self):
         """receive new_game"""
 
-        message_recv = self.__receive()
+        message_recv = self.receive()
         self.match_data.new_game = NewGame(cmd=message_recv["cmd"], name=message_recv["name"])
         if self.match_data.new_game is not None:
             self.is_connected = True
@@ -323,7 +323,7 @@ class SocketClient(BaseClient):
         if self.is_connected is False:
             raise Exception("Not connected to server")
         
-        message_recv = self.__receive()
+        message_recv = self.receive()
 
         start_team0_position = []
         start_team1_position = []
@@ -516,14 +516,14 @@ class SocketClient(BaseClient):
         }
         s = json.dumps(shot)
         s = s + "\n"
-        self.__send(s)
+        self.send(s)
 
     def concede(self) -> None:
         """Concede"""
         concede = {"cmd": "move", "move": {"type": "concede"}}
         s = json.dumps(concede)
         s = s + "\n"
-        self.__send(s)
+        self.send(s)
 
     def get_my_team(self) -> str:
         """get my team name
