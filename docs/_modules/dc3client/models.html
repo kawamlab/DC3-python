@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dc3client.models &#8212; dc3client 0.0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f63d8bfa" />
+    <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
+    <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
+          <span>dc3client 0.0.2 documentation</span></a></h1>
+        <h2 class="heading"><span>dc3client.models</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <h1>Source code for dc3client.models</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">enum</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+
+
+<div class="viewcode-block" id="StoneRotation">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.StoneRotation">[docs]</a>
+<span class="k">class</span> <span class="nc">StoneRotation</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stone Rotation Direction&quot;&quot;&quot;</span>
+
+    <span class="n">clockwise</span> <span class="o">=</span> <span class="s2">&quot;cw&quot;</span>
+    <span class="n">counterclockwise</span> <span class="o">=</span> <span class="s2">&quot;ccw&quot;</span>
+    <span class="n">inturn</span> <span class="o">=</span> <span class="s2">&quot;cw&quot;</span>
+    <span class="n">outturn</span> <span class="o">=</span> <span class="s2">&quot;ccw&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Version">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Version">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Version</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Version Info&quot;&quot;&quot;</span>
+
+    <span class="n">major</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">minor</span><span class="p">:</span> <span class="nb">int</span></div>
+
+
+
+<div class="viewcode-block" id="ServerDC">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.ServerDC">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ServerDC</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Server Info&quot;&quot;&quot;</span>
+
+    <span class="n">date_time</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">game_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">version</span><span class="p">:</span> <span class="n">Version</span></div>
+
+
+
+<div class="viewcode-block" id="PlayerInfo">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.PlayerInfo">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PlayerInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Maximum velocity of the stone and standard deviation of normally distributed random numbers</span>
+<span class="sd">    applied to the initial velocity and initial angle</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">max_speed</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="kc">None</span>
+    <span class="n">stddev_angle</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">stddev_speed</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">randomness</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="Players">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Players">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Players</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pool of players per team&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PlayerInfo</span><span class="p">]</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PlayerInfo</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="ThinkingTime">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.ThinkingTime">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ThinkingTime</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Thinking time not including ExtraEnd&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+
+<div class="viewcode-block" id="ExtraEndThinkingTime">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.ExtraEndThinkingTime">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ExtraEndThinkingTime</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Thinking time per end of ExtraEnd&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+
+<div class="viewcode-block" id="Setting">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Setting">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Setting</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Match Setting&quot;&quot;&quot;</span>
+
+    <span class="n">extra_end_thinking_time</span><span class="p">:</span> <span class="n">ExtraEndThinkingTime</span>
+    <span class="n">five_rock_rule</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">max_end</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">sheet_width</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">thinking_time</span><span class="p">:</span> <span class="n">ThinkingTime</span></div>
+
+
+
+<div class="viewcode-block" id="Simulator">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Simulator">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Simulator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulator Settings&quot;&quot;&quot;</span>
+
+    <span class="n">seconds_per_frame</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">simulator_type</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="GameRule">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.GameRule">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">GameRule</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Game Rule&quot;&quot;&quot;</span>
+
+    <span class="n">players</span><span class="p">:</span> <span class="n">Players</span>
+    <span class="n">rule</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">setting</span><span class="p">:</span> <span class="n">Setting</span>
+    <span class="n">simulator</span><span class="p">:</span> <span class="n">Simulator</span></div>
+
+
+
+<div class="viewcode-block" id="IsReady">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.IsReady">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">IsReady</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Match settings&quot;&quot;&quot;</span>
+
+    <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">team</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">game</span><span class="p">:</span> <span class="n">GameRule</span></div>
+
+
+
+<div class="viewcode-block" id="NewGame">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.NewGame">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">NewGame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Signal for the start of the match&quot;&quot;&quot;</span>
+
+    <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">dict</span></div>
+
+
+
+<div class="viewcode-block" id="ExtraEndScore">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.ExtraEndScore">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ExtraEndScore</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ExtraEnd Score&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">int</span></div>
+
+
+
+<div class="viewcode-block" id="GameResult">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.GameResult">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">GameResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Game Result&quot;&quot;&quot;</span>
+
+    <span class="n">winner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="Scores">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Scores">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Scores</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Scores&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">list</span></div>
+
+
+
+<div class="viewcode-block" id="Position">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Position">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Position</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stone Position&quot;&quot;&quot;</span>
+
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="Coordinate">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Coordinate">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Coordinate</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Position and Angle&quot;&quot;&quot;</span>
+
+    <span class="n">angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">position</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Position</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="Stones">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Stones">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Stones</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stone Positions of each team&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Coordinate</span><span class="p">]</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Coordinate</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="ThinkingTimeRemaining">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.ThinkingTimeRemaining">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ThinkingTimeRemaining</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Thinking time remaining&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+
+<div class="viewcode-block" id="State">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.State">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">State</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Match State&quot;&quot;&quot;</span>
+
+    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">extra_end_score</span><span class="p">:</span> <span class="n">ExtraEndScore</span>
+    <span class="n">game_result</span><span class="p">:</span> <span class="n">GameResult</span>
+    <span class="n">hammer</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">scores</span><span class="p">:</span> <span class="n">Scores</span>
+    <span class="n">shot</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">stones</span><span class="p">:</span> <span class="n">Stones</span>
+    <span class="n">thinking_time_remaining</span><span class="p">:</span> <span class="n">ThinkingTimeRemaining</span></div>
+
+
+
+<div class="viewcode-block" id="Velocity">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Velocity">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Velocity</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Velocity&quot;&quot;&quot;</span>
+
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="ActualMove">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.ActualMove">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ActualMove</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Actual Move&quot;&quot;&quot;</span>
+
+    <span class="n">rotation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">velocity</span><span class="p">:</span> <span class="n">Velocity</span></div>
+
+
+
+<div class="viewcode-block" id="Start">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Start">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Start</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stone placement at the start of the shot&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Coordinate</span><span class="p">]</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Coordinate</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="Finish">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Finish">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Finish</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stone placement at end of shot&quot;&quot;&quot;</span>
+
+    <span class="n">team0</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Coordinate</span><span class="p">]</span>
+    <span class="n">team1</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Coordinate</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="Frame">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Frame">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Frame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The position and angle of the stones at each time interval, denoted by seconds_per_frame.</span>
+<span class="sd">    Each frame is represented as the difference from the previous frame (the first frame is start).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">team</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">index</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Coordinate</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="FrameArray">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.FrameArray">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">FrameArray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Frame Array&quot;&quot;&quot;</span>
+
+    <span class="n">array</span><span class="p">:</span> <span class="n">Frame</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="Trajectory">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Trajectory">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Trajectory</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Trajectory of each stone&quot;&quot;&quot;</span>
+
+    <span class="n">seconds_per_frame</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">start</span><span class="p">:</span> <span class="n">Start</span>
+    <span class="n">finish</span><span class="p">:</span> <span class="n">Finish</span>
+    <span class="n">frames</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">FrameArray</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="LastMove">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.LastMove">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">LastMove</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Results of previous shot&quot;&quot;&quot;</span>
+
+    <span class="n">actual_move</span><span class="p">:</span> <span class="n">ActualMove</span>
+    <span class="n">free_guard_zone_foul</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">trajectory</span><span class="p">:</span> <span class="n">Trajectory</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="Update">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.Update">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Update</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Match information on each shot&quot;&quot;&quot;</span>
+
+    <span class="n">cmd</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">next_team</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">State</span>
+    <span class="n">last_move</span><span class="p">:</span> <span class="n">LastMove</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="MatchData">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.MatchData">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">MatchData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Match Data&quot;&quot;&quot;</span>
+
+    <span class="n">server_dc</span><span class="p">:</span> <span class="n">ServerDC</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">is_ready</span><span class="p">:</span> <span class="n">IsReady</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">new_game</span><span class="p">:</span> <span class="n">NewGame</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">update_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Update</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ShotInfo">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.ShotInfo">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ShotInfo</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ショット情報&quot;&quot;&quot;</span>
+
+    <span class="n">velocity_x</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">velocity_y</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">rotation</span><span class="p">:</span> <span class="n">StoneRotation</span></div>
+
+
+
+<div class="viewcode-block" id="DCNotFoundError">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.DCNotFoundError">[docs]</a>
+<span class="k">class</span> <span class="nc">DCNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="IsReadyNotFoundError">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.IsReadyNotFoundError">[docs]</a>
+<span class="k">class</span> <span class="nc">IsReadyNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+
+<div class="viewcode-block" id="GameResultNotFoundError">
+<a class="viewcode-back" href="../../dc3client.html#dc3client.models.GameResultNotFoundError">[docs]</a>
+<span class="k">class</span> <span class="nc">GameResultNotFoundError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, being24.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    </div>
+  </body>
+</html>
