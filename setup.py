@@ -11,7 +11,7 @@ AUTHOR_EMAIL = "34680324+being24@users.noreply.github.com"
 URL = "https://github.com/being24/pypi-test"
 LICENSE = "MIT"
 DOWNLOAD_URL = URL
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 PYTHON_REQUIRES = ">=3.10"
 INSTALL_REQUIRES = ["numpy>=1.24.0"]
 PACKAGES = ["dc3client"]

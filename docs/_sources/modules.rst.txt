@@ -1,5 +1,5 @@
-DC3-python-1
-============
+DC3-python
+==========
 
 .. toctree::
    :maxdepth: 4
