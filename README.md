@@ -6,7 +6,7 @@ If issues are found, please report them via GitHub issues.
 
 ## Installation
 
-python 3.10 or higher is required
+Python 3.10 or higher is required
 ```bash
 pip install dc3client
 ```
