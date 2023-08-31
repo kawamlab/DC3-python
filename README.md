@@ -13,7 +13,7 @@ pip install dc3client
 
 ## Usage
 
-see [samole.py](./sample.py)
+see [sample.py](./sample.py)
 
 ## Create document
 
