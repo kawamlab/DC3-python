@@ -13,7 +13,7 @@ pip install dc3client
 
 ## Usage
 
-see [sample.py](./sample.py)
+see [sample.py](https://github.com/kawamlab/DC3-python/blob/master/sample.py)
 
 ## Create document
 
