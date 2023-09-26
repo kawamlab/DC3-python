@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>dc3client package &#8212; dc3client 0.0.3 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=f63d8bfa" />
+    <link rel="stylesheet" type="text/css" href="_static/haiku.css?v=e491ac2d" />
+    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to dc3client’s documentation!" href="index.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>dc3client 0.0.3 documentation</span></a></h1>
+        <h2 class="heading"><span>dc3client package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">Welcome to dc3client’s documentation!</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <section id="dc3client-package">
+<h1>dc3client package<a class="headerlink" href="#dc3client-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-dc3client.dc3client">
+<span id="dc3client-dc3client-module"></span><h2>dc3client.dc3client module<a class="headerlink" href="#module-dc3client.dc3client" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.dc3client.BaseClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.dc3client.</span></span><span class="sig-name descname"><span class="pre">BaseClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1024</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/dc3client.html#BaseClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.BaseClient" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.BaseClient.receive">
+<span class="sig-name descname"><span class="pre">receive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#BaseClient.receive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.BaseClient.receive" title="Link to this definition">¶</a></dt>
+<dd><p>receive message from server until ”
+“</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Returns:</dt><dd><p>dict[str, Any]: received message</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.BaseClient.send">
+<span class="sig-name descname"><span class="pre">send</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/dc3client.html#BaseClient.send"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.BaseClient.send" title="Link to this definition">¶</a></dt>
+<dd><p>send message to server</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) – massage content. Defaults to “”.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.dc3client.</span></span><span class="sig-name descname"><span class="pre">SocketClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'dc3-server'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'AI0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rate_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#dc3client.dc3client.BaseClient" title="dc3client.dc3client.BaseClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseClient</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.concede">
+<span class="sig-name descname"><span class="pre">concede</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.concede"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.concede" title="Link to this definition">¶</a></dt>
+<dd><p>Concede</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.convert_dc">
+<span class="sig-name descname"><span class="pre">convert_dc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dc_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.ServerDC" title="dc3client.models.ServerDC"><span class="pre">ServerDC</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.convert_dc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.convert_dc" title="Link to this definition">¶</a></dt>
+<dd><p>convert ServerDC to dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.convert_is_ready">
+<span class="sig-name descname"><span class="pre">convert_is_ready</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_ready</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.IsReady" title="dc3client.models.IsReady"><span class="pre">IsReady</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.convert_is_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.convert_is_ready" title="Link to this definition">¶</a></dt>
+<dd><p>convert IsReady to dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>is_ready</strong> (<a class="reference internal" href="#dc3client.models.IsReady" title="dc3client.models.IsReady"><em>IsReady</em></a>) – is_ready</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>converted is_ready</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.convert_trajectory">
+<span class="sig-name descname"><span class="pre">convert_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trajectory_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Trajectory" title="dc3client.models.Trajectory"><span class="pre">Trajectory</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.convert_trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.convert_trajectory" title="Link to this definition">¶</a></dt>
+<dd><p>convert trajectory to dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>trajectory_data</strong> (<a class="reference internal" href="#dc3client.models.Trajectory" title="dc3client.models.Trajectory"><em>Trajectory</em></a>) – trajectory</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of trajectory</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.convert_update">
+<span class="sig-name descname"><span class="pre">convert_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">update_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Update" title="dc3client.models.Update"><span class="pre">Update</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_trajectory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.convert_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.convert_update" title="Link to this definition">¶</a></dt>
+<dd><p>convert Update to dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>update_data</strong> (<a class="reference internal" href="#dc3client.models.Update" title="dc3client.models.Update"><em>Update</em></a>) – Update</p></li>
+<li><p><strong>remove_trajectory</strong> (<em>bool</em>) – Delete trajectory data from Update? Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>converted Update</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.dc_ok">
+<span class="sig-name descname"><span class="pre">dc_ok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.dc_ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.dc_ok" title="Link to this definition">¶</a></dt>
+<dd><p>send dc_ok</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.dc_recv">
+<span class="sig-name descname"><span class="pre">dc_recv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.dc_recv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.dc_recv" title="Link to this definition">¶</a></dt>
+<dd><p>receive dc</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_dc">
+<span class="sig-name descname"><span class="pre">get_dc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dc3client.models.ServerDC" title="dc3client.models.ServerDC"><span class="pre">ServerDC</span></a></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_dc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_dc" title="Link to this definition">¶</a></dt>
+<dd><p>get dc data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_is_ready">
+<span class="sig-name descname"><span class="pre">get_is_ready</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dc3client.models.IsReady" title="dc3client.models.IsReady"><span class="pre">IsReady</span></a></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_is_ready"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_is_ready" title="Link to this definition">¶</a></dt>
+<dd><p>get is_ready data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_match_data">
+<span class="sig-name descname"><span class="pre">get_match_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#dc3client.models.MatchData" title="dc3client.models.MatchData"><span class="pre">MatchData</span></a></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_match_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_match_data" title="Link to this definition">¶</a></dt>
+<dd><p>get match data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_move_info">
+<span class="sig-name descname"><span class="pre">get_move_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.ShotInfo" title="dc3client.models.ShotInfo"><span class="pre">ShotInfo</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_move_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_move_info" title="Link to this definition">¶</a></dt>
+<dd><p>get move info</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_my_team">
+<span class="sig-name descname"><span class="pre">get_my_team</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_my_team"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_my_team" title="Link to this definition">¶</a></dt>
+<dd><p>get my team name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>my team name</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_new_game">
+<span class="sig-name descname"><span class="pre">get_new_game</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_new_game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_new_game" title="Link to this definition">¶</a></dt>
+<dd><p>receive new_game</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_next_team">
+<span class="sig-name descname"><span class="pre">get_next_team</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_next_team"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_next_team" title="Link to this definition">¶</a></dt>
+<dd><p>get next team name</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_update_and_trajectory">
+<span class="sig-name descname"><span class="pre">get_update_and_trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remove_trajectory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Update" title="dc3client.models.Update"><span class="pre">Update</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Trajectory" title="dc3client.models.Trajectory"><span class="pre">Trajectory</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_update_and_trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_update_and_trajectory" title="Link to this definition">¶</a></dt>
+<dd><p>get update and trajectory</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>remove_trajectory</strong> (<em>bool</em><em>, </em><em>optional</em>) – Delete trajectory data from Update?. Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>update list and trajectory list</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[list[<a class="reference internal" href="#dc3client.models.Update" title="dc3client.models.Update">Update</a>], list[<a class="reference internal" href="#dc3client.models.Trajectory" title="dc3client.models.Trajectory">Trajectory</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.get_winner">
+<span class="sig-name descname"><span class="pre">get_winner</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.get_winner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.get_winner" title="Link to this definition">¶</a></dt>
+<dd><p>get winner</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.is_ready_recv">
+<span class="sig-name descname"><span class="pre">is_ready_recv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.is_ready_recv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.is_ready_recv" title="Link to this definition">¶</a></dt>
+<dd><p>receive is_ready</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.move">
+<span class="sig-name descname"><span class="pre">move</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.StoneRotation" title="dc3client.models.StoneRotation"><span class="pre">StoneRotation</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">StoneRotation.counterclockwise</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.move"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.move" title="Link to this definition">¶</a></dt>
+<dd><p>Shot Stone</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>float</em><em>, </em><em>optional</em>) – Velocity in x-axis direction. Defaults to 0.0.</p></li>
+<li><p><strong>y</strong> (<em>float</em><em>, </em><em>optional</em>) – Velocity in y-axis direction. Defaults to 2.4.
+rotation (StoneRotation, optional): Rotation of stone. Defaults to StoneRotation.outturn.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.ready_ok">
+<span class="sig-name descname"><span class="pre">ready_ok</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3]</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.ready_ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.ready_ok" title="Link to this definition">¶</a></dt>
+<dd><p>send ready_ok</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.start_game">
+<span class="sig-name descname"><span class="pre">start_game</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.start_game"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.start_game" title="Link to this definition">¶</a></dt>
+<dd><p>start game</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dc3client.dc3client.SocketClient.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/dc3client.html#SocketClient.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.dc3client.SocketClient.update" title="Link to this definition">¶</a></dt>
+<dd><p>receive update</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-dc3client.models">
+<span id="dc3client-models-module"></span><h2>dc3client.models module<a class="headerlink" href="#module-dc3client.models" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.ActualMove">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">ActualMove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Velocity" title="dc3client.models.Velocity"><span class="pre">Velocity</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#ActualMove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.ActualMove" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Actual Move</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ActualMove.rotation">
+<span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.ActualMove.rotation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ActualMove.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.ActualMove.type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ActualMove.velocity">
+<span class="sig-name descname"><span class="pre">velocity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Velocity" title="dc3client.models.Velocity"><span class="pre">Velocity</span></a></em><a class="headerlink" href="#dc3client.models.ActualMove.velocity" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Coordinate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Coordinate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Position" title="dc3client.models.Position"><span class="pre">Position</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Coordinate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Coordinate" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Position and Angle</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Coordinate.angle">
+<span class="sig-name descname"><span class="pre">angle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Coordinate.angle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Coordinate.position">
+<span class="sig-name descname"><span class="pre">position</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Position" title="dc3client.models.Position"><span class="pre">Position</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Coordinate.position" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="dc3client.models.DCNotFoundError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">DCNotFoundError</span></span><a class="reference internal" href="_modules/dc3client/models.html#DCNotFoundError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.DCNotFoundError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.ExtraEndScore">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">ExtraEndScore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#ExtraEndScore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.ExtraEndScore" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ExtraEnd Score</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ExtraEndScore.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dc3client.models.ExtraEndScore.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ExtraEndScore.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dc3client.models.ExtraEndScore.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.ExtraEndThinkingTime">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">ExtraEndThinkingTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#ExtraEndThinkingTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.ExtraEndThinkingTime" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Thinking time per end of ExtraEnd</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ExtraEndThinkingTime.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.ExtraEndThinkingTime.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ExtraEndThinkingTime.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.ExtraEndThinkingTime.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Finish">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Finish</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Finish"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Finish" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stone placement at end of shot</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Finish.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Finish.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Finish.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Finish.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Frame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Frame" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The position and angle of the stones at each time interval, denoted by seconds_per_frame.
+Each frame is represented as the difference from the previous frame (the first frame is start).</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Frame.index">
+<span class="sig-name descname"><span class="pre">index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Frame.index" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Frame.team">
+<span class="sig-name descname"><span class="pre">team</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Frame.team" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Frame.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Frame.value" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.FrameArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">FrameArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Frame" title="dc3client.models.Frame"><span class="pre">Frame</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#FrameArray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.FrameArray" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Frame Array</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.FrameArray.array">
+<span class="sig-name descname"><span class="pre">array</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Frame" title="dc3client.models.Frame"><span class="pre">Frame</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.FrameArray.array" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.GameResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">GameResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">winner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reason</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#GameResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.GameResult" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Game Result</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.GameResult.reason">
+<span class="sig-name descname"><span class="pre">reason</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.GameResult.reason" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.GameResult.winner">
+<span class="sig-name descname"><span class="pre">winner</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.GameResult.winner" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="dc3client.models.GameResultNotFoundError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">GameResultNotFoundError</span></span><a class="reference internal" href="_modules/dc3client/models.html#GameResultNotFoundError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.GameResultNotFoundError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.GameRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">GameRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">players</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Players" title="dc3client.models.Players"><span class="pre">Players</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">setting</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Setting" title="dc3client.models.Setting"><span class="pre">Setting</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Simulator" title="dc3client.models.Simulator"><span class="pre">Simulator</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#GameRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.GameRule" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Game Rule</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.GameRule.players">
+<span class="sig-name descname"><span class="pre">players</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Players" title="dc3client.models.Players"><span class="pre">Players</span></a></em><a class="headerlink" href="#dc3client.models.GameRule.players" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.GameRule.rule">
+<span class="sig-name descname"><span class="pre">rule</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.GameRule.rule" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.GameRule.setting">
+<span class="sig-name descname"><span class="pre">setting</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Setting" title="dc3client.models.Setting"><span class="pre">Setting</span></a></em><a class="headerlink" href="#dc3client.models.GameRule.setting" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.GameRule.simulator">
+<span class="sig-name descname"><span class="pre">simulator</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Simulator" title="dc3client.models.Simulator"><span class="pre">Simulator</span></a></em><a class="headerlink" href="#dc3client.models.GameRule.simulator" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.IsReady">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">IsReady</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">game</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.GameRule" title="dc3client.models.GameRule"><span class="pre">GameRule</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#IsReady"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.IsReady" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Match settings</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.IsReady.cmd">
+<span class="sig-name descname"><span class="pre">cmd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.IsReady.cmd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.IsReady.game">
+<span class="sig-name descname"><span class="pre">game</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.GameRule" title="dc3client.models.GameRule"><span class="pre">GameRule</span></a></em><a class="headerlink" href="#dc3client.models.IsReady.game" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.IsReady.team">
+<span class="sig-name descname"><span class="pre">team</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.IsReady.team" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="dc3client.models.IsReadyNotFoundError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">IsReadyNotFoundError</span></span><a class="reference internal" href="_modules/dc3client/models.html#IsReadyNotFoundError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.IsReadyNotFoundError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.LastMove">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">LastMove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actual_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.ActualMove" title="dc3client.models.ActualMove"><span class="pre">ActualMove</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_guard_zone_foul</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Trajectory" title="dc3client.models.Trajectory"><span class="pre">Trajectory</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#LastMove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.LastMove" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Results of previous shot</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.LastMove.actual_move">
+<span class="sig-name descname"><span class="pre">actual_move</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.ActualMove" title="dc3client.models.ActualMove"><span class="pre">ActualMove</span></a></em><a class="headerlink" href="#dc3client.models.LastMove.actual_move" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.LastMove.free_guard_zone_foul">
+<span class="sig-name descname"><span class="pre">free_guard_zone_foul</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#dc3client.models.LastMove.free_guard_zone_foul" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.LastMove.trajectory">
+<span class="sig-name descname"><span class="pre">trajectory</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Trajectory" title="dc3client.models.Trajectory"><span class="pre">Trajectory</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.LastMove.trajectory" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.MatchData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">MatchData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">server_dc:</span> <span class="pre">~dc3client.models.ServerDC</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_ready:</span> <span class="pre">~dc3client.models.IsReady</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_game:</span> <span class="pre">~dc3client.models.NewGame</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_list:</span> <span class="pre">list[~dc3client.models.Update]</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#MatchData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.MatchData" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Match Data</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.MatchData.is_ready">
+<span class="sig-name descname"><span class="pre">is_ready</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.IsReady" title="dc3client.models.IsReady"><span class="pre">IsReady</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.MatchData.is_ready" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.MatchData.new_game">
+<span class="sig-name descname"><span class="pre">new_game</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.NewGame" title="dc3client.models.NewGame"><span class="pre">NewGame</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.MatchData.new_game" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.MatchData.server_dc">
+<span class="sig-name descname"><span class="pre">server_dc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.ServerDC" title="dc3client.models.ServerDC"><span class="pre">ServerDC</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.MatchData.server_dc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.MatchData.update_list">
+<span class="sig-name descname"><span class="pre">update_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Update" title="dc3client.models.Update"><span class="pre">Update</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.MatchData.update_list" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.NewGame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">NewGame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#NewGame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.NewGame" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Signal for the start of the match</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.NewGame.cmd">
+<span class="sig-name descname"><span class="pre">cmd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.NewGame.cmd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.NewGame.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#dc3client.models.NewGame.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.PlayerInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">PlayerInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev_angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stddev_speed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">randomness</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#PlayerInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.PlayerInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Maximum velocity of the stone and standard deviation of normally distributed random numbers
+applied to the initial velocity and initial angle</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.PlayerInfo.max_speed">
+<span class="sig-name descname"><span class="pre">max_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.PlayerInfo.max_speed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.PlayerInfo.randomness">
+<span class="sig-name descname"><span class="pre">randomness</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.PlayerInfo.randomness" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.PlayerInfo.seed">
+<span class="sig-name descname"><span class="pre">seed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.PlayerInfo.seed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.PlayerInfo.stddev_angle">
+<span class="sig-name descname"><span class="pre">stddev_angle</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.PlayerInfo.stddev_angle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.PlayerInfo.stddev_speed">
+<span class="sig-name descname"><span class="pre">stddev_speed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.PlayerInfo.stddev_speed" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Players">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Players</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.PlayerInfo" title="dc3client.models.PlayerInfo"><span class="pre">PlayerInfo</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.PlayerInfo" title="dc3client.models.PlayerInfo"><span class="pre">PlayerInfo</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Players"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Players" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Pool of players per team</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Players.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.PlayerInfo" title="dc3client.models.PlayerInfo"><span class="pre">PlayerInfo</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Players.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Players.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.PlayerInfo" title="dc3client.models.PlayerInfo"><span class="pre">PlayerInfo</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Players.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Position">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Position" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stone Position</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Position.x">
+<span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Position.x" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Position.y">
+<span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Position.y" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Scores">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Scores" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Scores.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#dc3client.models.Scores.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Scores.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#dc3client.models.Scores.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.ServerDC">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">ServerDC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">game_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Version" title="dc3client.models.Version"><span class="pre">Version</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#ServerDC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.ServerDC" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Server Info</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ServerDC.cmd">
+<span class="sig-name descname"><span class="pre">cmd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.ServerDC.cmd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ServerDC.date_time">
+<span class="sig-name descname"><span class="pre">date_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.ServerDC.date_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ServerDC.game_id">
+<span class="sig-name descname"><span class="pre">game_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.ServerDC.game_id" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ServerDC.version">
+<span class="sig-name descname"><span class="pre">version</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Version" title="dc3client.models.Version"><span class="pre">Version</span></a></em><a class="headerlink" href="#dc3client.models.ServerDC.version" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Setting">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Setting</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extra_end_thinking_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.ExtraEndThinkingTime" title="dc3client.models.ExtraEndThinkingTime"><span class="pre">ExtraEndThinkingTime</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">five_rock_rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_width</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thinking_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.ThinkingTime" title="dc3client.models.ThinkingTime"><span class="pre">ThinkingTime</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Setting"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Setting" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Match Setting</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Setting.extra_end_thinking_time">
+<span class="sig-name descname"><span class="pre">extra_end_thinking_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.ExtraEndThinkingTime" title="dc3client.models.ExtraEndThinkingTime"><span class="pre">ExtraEndThinkingTime</span></a></em><a class="headerlink" href="#dc3client.models.Setting.extra_end_thinking_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Setting.five_rock_rule">
+<span class="sig-name descname"><span class="pre">five_rock_rule</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#dc3client.models.Setting.five_rock_rule" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Setting.max_end">
+<span class="sig-name descname"><span class="pre">max_end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dc3client.models.Setting.max_end" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Setting.sheet_width">
+<span class="sig-name descname"><span class="pre">sheet_width</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.Setting.sheet_width" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Setting.thinking_time">
+<span class="sig-name descname"><span class="pre">thinking_time</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.ThinkingTime" title="dc3client.models.ThinkingTime"><span class="pre">ThinkingTime</span></a></em><a class="headerlink" href="#dc3client.models.Setting.thinking_time" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.ShotInfo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">ShotInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.StoneRotation" title="dc3client.models.StoneRotation"><span class="pre">StoneRotation</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#ShotInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.ShotInfo" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ショット情報</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ShotInfo.rotation">
+<span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.StoneRotation" title="dc3client.models.StoneRotation"><span class="pre">StoneRotation</span></a></em><a class="headerlink" href="#dc3client.models.ShotInfo.rotation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ShotInfo.velocity_x">
+<span class="sig-name descname"><span class="pre">velocity_x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.ShotInfo.velocity_x" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ShotInfo.velocity_y">
+<span class="sig-name descname"><span class="pre">velocity_y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.ShotInfo.velocity_y" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Simulator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds_per_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulator_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Simulator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Simulator" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simulator Settings</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Simulator.seconds_per_frame">
+<span class="sig-name descname"><span class="pre">seconds_per_frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.Simulator.seconds_per_frame" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Simulator.simulator_type">
+<span class="sig-name descname"><span class="pre">simulator_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.Simulator.simulator_type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Start">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Start" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stone placement at the start of the shot</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Start.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Start.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Start.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Start.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.State">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">State</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_end_score</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.ExtraEndScore" title="dc3client.models.ExtraEndScore"><span class="pre">ExtraEndScore</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">game_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.GameResult" title="dc3client.models.GameResult"><span class="pre">GameResult</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">hammer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Scores" title="dc3client.models.Scores"><span class="pre">Scores</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">shot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stones</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Stones" title="dc3client.models.Stones"><span class="pre">Stones</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">thinking_time_remaining</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.ThinkingTimeRemaining" title="dc3client.models.ThinkingTimeRemaining"><span class="pre">ThinkingTimeRemaining</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#State"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.State" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Match State</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.State.end">
+<span class="sig-name descname"><span class="pre">end</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dc3client.models.State.end" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.State.extra_end_score">
+<span class="sig-name descname"><span class="pre">extra_end_score</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.ExtraEndScore" title="dc3client.models.ExtraEndScore"><span class="pre">ExtraEndScore</span></a></em><a class="headerlink" href="#dc3client.models.State.extra_end_score" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.State.game_result">
+<span class="sig-name descname"><span class="pre">game_result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.GameResult" title="dc3client.models.GameResult"><span class="pre">GameResult</span></a></em><a class="headerlink" href="#dc3client.models.State.game_result" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.State.hammer">
+<span class="sig-name descname"><span class="pre">hammer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.State.hammer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.State.scores">
+<span class="sig-name descname"><span class="pre">scores</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Scores" title="dc3client.models.Scores"><span class="pre">Scores</span></a></em><a class="headerlink" href="#dc3client.models.State.scores" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.State.shot">
+<span class="sig-name descname"><span class="pre">shot</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dc3client.models.State.shot" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.State.stones">
+<span class="sig-name descname"><span class="pre">stones</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Stones" title="dc3client.models.Stones"><span class="pre">Stones</span></a></em><a class="headerlink" href="#dc3client.models.State.stones" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.State.thinking_time_remaining">
+<span class="sig-name descname"><span class="pre">thinking_time_remaining</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.ThinkingTimeRemaining" title="dc3client.models.ThinkingTimeRemaining"><span class="pre">ThinkingTimeRemaining</span></a></em><a class="headerlink" href="#dc3client.models.State.thinking_time_remaining" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.StoneRotation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">StoneRotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#StoneRotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.StoneRotation" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Stone Rotation Direction</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.StoneRotation.clockwise">
+<span class="sig-name descname"><span class="pre">clockwise</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cw'</span></em><a class="headerlink" href="#dc3client.models.StoneRotation.clockwise" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.StoneRotation.counterclockwise">
+<span class="sig-name descname"><span class="pre">counterclockwise</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ccw'</span></em><a class="headerlink" href="#dc3client.models.StoneRotation.counterclockwise" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.StoneRotation.inturn">
+<span class="sig-name descname"><span class="pre">inturn</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'cw'</span></em><a class="headerlink" href="#dc3client.models.StoneRotation.inturn" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.StoneRotation.outturn">
+<span class="sig-name descname"><span class="pre">outturn</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ccw'</span></em><a class="headerlink" href="#dc3client.models.StoneRotation.outturn" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Stones">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Stones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Stones"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Stones" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stone Positions of each team</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Stones.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Stones.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Stones.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Coordinate" title="dc3client.models.Coordinate"><span class="pre">Coordinate</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dc3client.models.Stones.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.ThinkingTime">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">ThinkingTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#ThinkingTime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.ThinkingTime" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Thinking time not including ExtraEnd</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ThinkingTime.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.ThinkingTime.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ThinkingTime.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.ThinkingTime.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.ThinkingTimeRemaining">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">ThinkingTimeRemaining</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">team0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">team1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#ThinkingTimeRemaining"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.ThinkingTimeRemaining" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Thinking time remaining</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ThinkingTimeRemaining.team0">
+<span class="sig-name descname"><span class="pre">team0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.ThinkingTimeRemaining.team0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.ThinkingTimeRemaining.team1">
+<span class="sig-name descname"><span class="pre">team1</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#dc3client.models.ThinkingTimeRemaining.team1" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Trajectory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Trajectory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seconds_per_frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Start" title="dc3client.models.Start"><span class="pre">Start</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">finish</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Finish" title="dc3client.models.Finish"><span class="pre">Finish</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">frames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.FrameArray" title="dc3client.models.FrameArray"><span class="pre">FrameArray</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Trajectory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Trajectory" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Trajectory of each stone</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Trajectory.finish">
+<span class="sig-name descname"><span class="pre">finish</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Finish" title="dc3client.models.Finish"><span class="pre">Finish</span></a></em><a class="headerlink" href="#dc3client.models.Trajectory.finish" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Trajectory.frames">
+<span class="sig-name descname"><span class="pre">frames</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.FrameArray" title="dc3client.models.FrameArray"><span class="pre">FrameArray</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Trajectory.frames" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Trajectory.seconds_per_frame">
+<span class="sig-name descname"><span class="pre">seconds_per_frame</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Trajectory.seconds_per_frame" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Trajectory.start">
+<span class="sig-name descname"><span class="pre">start</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Start" title="dc3client.models.Start"><span class="pre">Start</span></a></em><a class="headerlink" href="#dc3client.models.Trajectory.start" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Update">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_team</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.State" title="dc3client.models.State"><span class="pre">State</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.LastMove" title="dc3client.models.LastMove"><span class="pre">LastMove</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Update" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Match information on each shot</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Update.cmd">
+<span class="sig-name descname"><span class="pre">cmd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.Update.cmd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Update.last_move">
+<span class="sig-name descname"><span class="pre">last_move</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.LastMove" title="dc3client.models.LastMove"><span class="pre">LastMove</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Update.last_move" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Update.next_team">
+<span class="sig-name descname"><span class="pre">next_team</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#dc3client.models.Update.next_team" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Update.state">
+<span class="sig-name descname"><span class="pre">state</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.State" title="dc3client.models.State"><span class="pre">State</span></a></em><a class="headerlink" href="#dc3client.models.Update.state" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Velocity">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Velocity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Velocity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Velocity" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Velocity.x">
+<span class="sig-name descname"><span class="pre">x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Velocity.x" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Velocity.y">
+<span class="sig-name descname"><span class="pre">y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dc3client.models.Velocity.y" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Version">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">major</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Version" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Version Info</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Version.major">
+<span class="sig-name descname"><span class="pre">major</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dc3client.models.Version.major" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Version.minor">
+<span class="sig-name descname"><span class="pre">minor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#dc3client.models.Version.minor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-dc3client">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dc3client" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">Welcome to dc3client’s documentation!</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2023, being24.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+    </div>
+  </body>
+</html>

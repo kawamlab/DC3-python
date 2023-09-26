@@ -73,10 +73,10 @@ class BaseClient:
         # Rate limit time interval
         self.rate_limit = 3.0
 
-    def _connect(self, address: tuple, family: int, typ: int, proto: int):
+    def _connect(self, address: tuple):
         self.logger.info(f"Connect to {address}")
         self.address = address  # address of server
-        self.socket = socket.socket(family, typ, proto)  # create socket object
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)  # create socket object
         self.socket.settimeout(self.timeout)  # set timeout
         self.socket.connect(self.address)  # connect to server
         self.logger.info(f"Connect to {address} success")
@@ -159,6 +159,7 @@ class SocketClient(BaseClient):
             host (str, optional): URL of the server of Digital Curling 3. Defaults to "dc3-server".
             port (int, optional): Connection port to Digital Curling Server. Defaults to 10000.
             client_name (str, optional): Identification name of the client. Defaults to "AI0".
+            auto_start (bool, optional): Whether to start the game automatically. Defaults to True.
             rate_limit (int, optional): Minimum time interval to send data to the server. Defaults to 3.
         """
         self.is_connected = False
@@ -173,21 +174,19 @@ class SocketClient(BaseClient):
         # Name of the client
         self.client_name = client_name
 
+        self.rate_limit = rate_limit
+
         if auto_start:
-            self.rate_limit = rate_limit
-            super()._connect(self.server, socket.AF_INET, socket.SOCK_STREAM, 0)
-            self.start_game()
-        else:
             self.start_game()
 
     def start_game(self):
         """start game"""
+        super()._connect(self.server)
         self.dc_recv()
         self.dc_ok()
         self.is_ready_recv()
         self.ready_ok()
         self.get_new_game()
-
 
     def __stone_trajectory_parser(self, message_recv: list) -> list:
         """Convert stone trajectory to data class
@@ -302,7 +301,7 @@ class SocketClient(BaseClient):
 
         self.match_data.is_ready = is_ready
 
-    def ready_ok(self, player_order: list = [0, 1, 3, 2]) -> None:
+    def ready_ok(self, player_order: list = [0, 1, 2, 3]) -> None:
         """send ready_ok"""
         ready = {"cmd": "ready_ok", "player_order": player_order}
         ready_str = json.dumps(ready)
@@ -322,7 +321,7 @@ class SocketClient(BaseClient):
 
         if self.is_connected is False:
             raise Exception("Not connected to server")
-        
+
         message_recv = self.receive()
 
         start_team0_position = []
@@ -488,13 +487,13 @@ class SocketClient(BaseClient):
 
         self.match_data.update_list.append(update_info)
 
-    def move(self, x: float = 0.0, y: float = 2.4, rotation: StoneRotation = StoneRotation.outtern) -> None:
+    def move(self, x: float = 0.0, y: float = 2.4, rotation: StoneRotation = StoneRotation.outturn) -> None:
         """Shot Stone
 
         Args:
             x (float, optional): Velocity in x-axis direction. Defaults to 0.0.
             y (float, optional): Velocity in y-axis direction. Defaults to 2.4.
-            rotation (str, optional): Direction of rotation. Defaults to "ccw".
+                        rotation (StoneRotation, optional): Rotation of stone. Defaults to StoneRotation.outturn.
         """
         if self.is_connected is False:
             raise Exception("Not connected to server")
@@ -681,7 +680,7 @@ class SocketClient(BaseClient):
         Returns:
             dict: converted Update
         """
-        update_dict = {}
+        update_dict: dict = {}
         for field in fields(update_data):
             update_value = getattr(update_data, field.name)
             if field.name == "state":
@@ -714,18 +713,18 @@ class SocketClient(BaseClient):
                             update_dict["state"]["stones"][field.name] = []
                             state_stones_team_list = []
                             for i in stones_value:
-                                state_stone_team_dict = {}
-                                for field in fields(i):
-                                    team_value = getattr(i, field.name)
-                                    if field.name == "position":
+                                state_stone_team_dict: dict = {}
+                                for team in fields(i):
+                                    team_value = getattr(i, team.name)
+                                    if team.name == "position":
                                         for pos in team_value:
                                             state_stone_team_dict["position"] = {}
-                                            for field in fields(pos):
-                                                team_position_value = getattr(pos, field.name)
-                                                state_stone_team_dict["position"][field.name] = team_position_value
+                                            for position in fields(pos):
+                                                team_position_value = getattr(pos, position.name)
+                                                state_stone_team_dict["position"][position.name] = team_position_value
 
                                     else:
-                                        state_stone_team_dict[field.name] = team_value
+                                        state_stone_team_dict[team.name] = team_value
                                 state_stones_team_list.append(state_stone_team_dict)
                             update_dict["state"]["stones"][field.name] = state_stones_team_list
 
