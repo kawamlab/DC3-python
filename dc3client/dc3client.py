@@ -680,7 +680,7 @@ class SocketClient(BaseClient):
         Returns:
             dict: converted Update
         """
-        update_dict = {}
+        update_dict: dict = {}
         for field in fields(update_data):
             update_value = getattr(update_data, field.name)
             if field.name == "state":
@@ -713,18 +713,18 @@ class SocketClient(BaseClient):
                             update_dict["state"]["stones"][field.name] = []
                             state_stones_team_list = []
                             for i in stones_value:
-                                state_stone_team_dict = {}
-                                for field in fields(i):
-                                    team_value = getattr(i, field.name)
-                                    if field.name == "position":
+                                state_stone_team_dict: dict = {}
+                                for team in fields(i):
+                                    team_value = getattr(i, team.name)
+                                    if team.name == "position":
                                         for pos in team_value:
                                             state_stone_team_dict["position"] = {}
-                                            for field in fields(pos):
-                                                team_position_value = getattr(pos, field.name)
-                                                state_stone_team_dict["position"][field.name] = team_position_value
+                                            for position in fields(pos):
+                                                team_position_value = getattr(pos, position.name)
+                                                state_stone_team_dict["position"][position.name] = team_position_value
 
                                     else:
-                                        state_stone_team_dict[field.name] = team_value
+                                        state_stone_team_dict[team.name] = team_value
                                 state_stones_team_list.append(state_stone_team_dict)
                             update_dict["state"]["stones"][field.name] = state_stones_team_list
 
