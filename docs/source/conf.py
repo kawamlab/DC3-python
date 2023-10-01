@@ -16,7 +16,7 @@ for dirpath, dirnames, filenames in os.walk(root_path):
 project = "dc3client"
 copyright = "2023, being24"
 author = "being24"
-release = "0.0.5"
+release = "0.0.6"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
