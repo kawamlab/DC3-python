@@ -4,17 +4,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dc3client.dc3client &#8212; dc3client 0.0.2 documentation</title>
+    <title>dc3client.dc3client &#8212; dc3client 0.0.6 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f63d8bfa" />
     <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
-    <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+    <script src="../../_static/documentation_options.js?v=1fd71caa"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
-          <span>dc3client 0.0.2 documentation</span></a></h1>
+          <span>dc3client 0.0.6 documentation</span></a></h1>
         <h2 class="heading"><span>dc3client.dc3client</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -90,6 +90,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>  <span class="c1"># timeout in seconds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">buffer</span>  <span class="c1"># buffer size in bytes</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">message_buffer</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;socket_client&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
@@ -159,9 +161,19 @@
 
         <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">message_recv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">message_buffer</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">message_recv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">message_buffer</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">message_buffer</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">message_recv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="n">message</span> <span class="o">+=</span> <span class="n">message_recv</span>
-            <span class="k">if</span> <span class="n">message_recv</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">message_recv</span><span class="p">:</span>
+                <span class="c1"># split message by &quot;\n&quot;</span>
+                <span class="n">message_split</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># set first message to message</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="n">message_split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="c1"># set second and later message to message_buffer</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">message_buffer</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">message_split</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
                 <span class="k">break</span>
 
         <span class="n">s</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -780,7 +792,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: converted Update</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">update_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">update_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">update_data</span><span class="p">):</span>
             <span class="n">update_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">update_data</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;state&quot;</span><span class="p">:</span>
@@ -813,18 +825,18 @@
                             <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;stones&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
                             <span class="n">state_stones_team_list</span> <span class="o">=</span> <span class="p">[]</span>
                             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">stones_value</span><span class="p">:</span>
-                                <span class="n">state_stone_team_dict</span> <span class="o">=</span> <span class="p">{}</span>
-                                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
-                                    <span class="n">team_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                    <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span>
+                                <span class="n">state_stone_team_dict</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
+                                <span class="k">for</span> <span class="n">team</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                                    <span class="n">team_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">team</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                                    <span class="k">if</span> <span class="n">team</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span>
                                         <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">team_value</span><span class="p">:</span>
                                             <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                                            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
-                                                <span class="n">team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                                <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">team_position_value</span>
+                                            <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
+                                                <span class="n">team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">position</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                                                <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="n">position</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">team_position_value</span>
 
                                     <span class="k">else</span><span class="p">:</span>
-                                        <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">team_value</span>
+                                        <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="n">team</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">team_value</span>
                                 <span class="n">state_stones_team_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_stone_team_dict</span><span class="p">)</span>
                             <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;stones&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_stones_team_list</span>
 
@@ -1054,7 +1066,7 @@
 
     <div class="footer" role="contentinfo">
     &#169; Copyright 2023, being24.
-      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.4.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
     </div>
   </body>
 </html>
