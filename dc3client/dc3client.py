@@ -58,6 +58,8 @@ class BaseClient:
         self.timeout = timeout  # timeout in seconds
         self.buffer = buffer  # buffer size in bytes
 
+        self.message_buffer = ""
+
         self.logger = logging.getLogger("socket_client")
 
         self.logger.setLevel(log_level)
@@ -122,9 +124,19 @@ class BaseClient:
 
         message = ""
         while True:
-            message_recv: str = self.socket.recv(self.buffer).decode("utf-8")  # type: ignore
+            if self.message_buffer != "":
+                message_recv = self.message_buffer
+                self.message_buffer = ""
+            else:
+                message_recv: str = self.socket.recv(self.buffer).decode("utf-8")  # type: ignore
             message += message_recv
-            if message_recv[-1] == "\n":
+            if "\n" in message_recv:
+                # split message by "\n"
+                message_split = message.split("\n")
+                # set first message to message
+                message = message_split[0]
+                # set second and later message to message_buffer
+                self.message_buffer = "\n".join(message_split[1:])
                 break
 
         s = json.dumps(message)
