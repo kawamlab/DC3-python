@@ -4,17 +4,17 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>dc3client.dc3client &#8212; dc3client 0.0.6 documentation</title>
+    <title>dc3client.dc3client &#8212; dc3client 0.0.7 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=f63d8bfa" />
     <link rel="stylesheet" type="text/css" href="../../_static/haiku.css?v=e491ac2d" />
-    <script src="../../_static/documentation_options.js?v=1fd71caa"></script>
+    <script src="../../_static/documentation_options.js?v=bbaf98b3"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="../../index.html">
-          <span>dc3client 0.0.6 documentation</span></a></h1>
+          <span>dc3client 0.0.7 documentation</span></a></h1>
         <h2 class="heading"><span>dc3client.dc3client</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -38,6 +38,7 @@
 
 <span class="kn">from</span> <span class="nn">dc3client.models</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">ActualMove</span><span class="p">,</span>
+    <span class="n">Concede</span><span class="p">,</span>
     <span class="n">Coordinate</span><span class="p">,</span>
     <span class="n">DCNotFoundError</span><span class="p">,</span>
     <span class="n">ExtraEndScore</span><span class="p">,</span>
@@ -76,7 +77,9 @@
 <div class="viewcode-block" id="BaseClient">
 <a class="viewcode-back" href="../../dc3client.html#dc3client.dc3client.BaseClient">[docs]</a>
 <span class="k">class</span> <span class="nc">BaseClient</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">log_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">log_level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;base client initialize</span>
 
 <span class="sd">        Args:</span>
@@ -96,7 +99,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
 
-        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(levelname)s</span><span class="s2">:</span><span class="si">%(name)s</span><span class="s2"> - </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span>
+            <span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(levelname)s</span><span class="s2">:</span><span class="si">%(name)s</span><span class="s2"> - </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
         <span class="n">stream_handler</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
         <span class="n">stream_handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">formatter</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">stream_handler</span><span class="p">)</span>
@@ -110,7 +115,9 @@
     <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connect to </span><span class="si">{</span><span class="n">address</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>  <span class="c1"># address of server</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># create socket object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span>
+            <span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="p">)</span>  <span class="c1"># create socket object</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>  <span class="c1"># set timeout</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>  <span class="c1"># connect to server</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Connect to </span><span class="si">{</span><span class="n">address</span><span class="si">}</span><span class="s2"> success&quot;</span><span class="p">)</span>
@@ -139,7 +146,9 @@
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">wait_time</span> <span class="o">:=</span> <span class="p">((</span><span class="n">now</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_send</span><span class="p">))</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_limit</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">wait_time</span> <span class="o">:=</span> <span class="p">((</span><span class="n">now</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_send</span><span class="p">)</span>
+                <span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">rate_limit</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Send message : </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">last_send</span> <span class="o">=</span> <span class="n">now</span>
@@ -256,13 +265,17 @@
         <span class="n">team_stone</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">message_recv</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">team_stone</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Coordinate</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="n">Position</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">)]))</span>
+                <span class="n">team_stone</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Coordinate</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="n">Position</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">)])</span>
+                <span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">team_stone</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">Coordinate</span><span class="p">(</span>
                         <span class="n">angle</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;angle&quot;</span><span class="p">],</span>
-                        <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="n">Position</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">])],</span>
+                        <span class="n">position</span><span class="o">=</span><span class="p">[</span>
+                            <span class="n">Position</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">])</span>
+                        <span class="p">],</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
@@ -361,7 +374,9 @@
             <span class="n">simulator</span><span class="o">=</span><span class="n">simulator</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">is_ready</span> <span class="o">=</span> <span class="n">IsReady</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;cmd&quot;</span><span class="p">],</span> <span class="n">team</span><span class="o">=</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;team&quot;</span><span class="p">],</span> <span class="n">game</span><span class="o">=</span><span class="n">game</span><span class="p">)</span>
+        <span class="n">is_ready</span> <span class="o">=</span> <span class="n">IsReady</span><span class="p">(</span>
+            <span class="n">cmd</span><span class="o">=</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;cmd&quot;</span><span class="p">],</span> <span class="n">team</span><span class="o">=</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;team&quot;</span><span class="p">],</span> <span class="n">game</span><span class="o">=</span><span class="n">game</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">match_data</span><span class="o">.</span><span class="n">is_ready</span> <span class="o">=</span> <span class="n">is_ready</span></div>
 
@@ -382,7 +397,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;receive new_game&quot;&quot;&quot;</span>
 
         <span class="n">message_recv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">receive</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">match_data</span><span class="o">.</span><span class="n">new_game</span> <span class="o">=</span> <span class="n">NewGame</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;cmd&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">match_data</span><span class="o">.</span><span class="n">new_game</span> <span class="o">=</span> <span class="n">NewGame</span><span class="p">(</span>
+            <span class="n">cmd</span><span class="o">=</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;cmd&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">match_data</span><span class="o">.</span><span class="n">new_game</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span> <span class="o">=</span> <span class="kc">True</span></div>
 
@@ -432,8 +449,12 @@
         <span class="p">)</span>
 
         <span class="n">stones</span> <span class="o">=</span> <span class="n">Stones</span><span class="p">(</span>
-            <span class="n">team0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;stones&quot;</span><span class="p">][</span><span class="s2">&quot;team0&quot;</span><span class="p">]),</span>
-            <span class="n">team1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span><span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;stones&quot;</span><span class="p">][</span><span class="s2">&quot;team1&quot;</span><span class="p">]),</span>
+            <span class="n">team0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
+                <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;stones&quot;</span><span class="p">][</span><span class="s2">&quot;team0&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">team1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
+                <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;stones&quot;</span><span class="p">][</span><span class="s2">&quot;team1&quot;</span><span class="p">]</span>
+            <span class="p">),</span>
         <span class="p">)</span>
 
         <span class="n">thinking_time_remaining</span> <span class="o">=</span> <span class="n">ThinkingTimeRemaining</span><span class="p">(</span>
@@ -443,7 +464,7 @@
 
         <span class="k">if</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">free_guard_zone_foul</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">cmd_type</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">rotation</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">x</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>
@@ -452,68 +473,82 @@
             <span class="n">last_move</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">]</span>
             <span class="n">actual_move</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">]</span>
             <span class="n">free_guard_zone_foul</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;free_guard_zone_foul&quot;</span><span class="p">]</span>
-            <span class="nb">type</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
-            <span class="n">velocity</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;velocity&quot;</span><span class="p">]</span>
-            <span class="n">rotation</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;rotation&quot;</span><span class="p">]</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;velocity&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
-            <span class="n">y</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;velocity&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+            <span class="n">cmd_type</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">cmd_type</span> <span class="o">==</span> <span class="s2">&quot;shot&quot;</span><span class="p">:</span>
+                <span class="n">velocity</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;velocity&quot;</span><span class="p">]</span>
+                <span class="n">rotation</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;rotation&quot;</span><span class="p">]</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;velocity&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;velocity&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
 
-            <span class="k">if</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">seconds_per_frame</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">seconds_per_frame</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">seconds_per_frame</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;seconds_per_frame&quot;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">seconds_per_frame</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                        <span class="s2">&quot;seconds_per_frame&quot;</span>
+                    <span class="p">]</span>
 
-                <span class="n">start_team0_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
-                    <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">][</span><span class="s2">&quot;team0&quot;</span><span class="p">]</span>
-                <span class="p">)</span>
+                    <span class="n">start_team0_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
+                        <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">][</span><span class="s2">&quot;team0&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>
 
-                <span class="n">start_team1_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
-                    <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">][</span><span class="s2">&quot;team1&quot;</span><span class="p">]</span>
-                <span class="p">)</span>
+                    <span class="n">start_team1_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
+                        <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">][</span><span class="s2">&quot;team1&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>
 
-                <span class="n">finish_team0_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
-                    <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;finish&quot;</span><span class="p">][</span><span class="s2">&quot;team0&quot;</span><span class="p">]</span>
-                <span class="p">)</span>
+                    <span class="n">finish_team0_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
+                        <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;finish&quot;</span><span class="p">][</span><span class="s2">&quot;team0&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>
 
-                <span class="n">finish_team1_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
-                    <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;finish&quot;</span><span class="p">][</span><span class="s2">&quot;team1&quot;</span><span class="p">]</span>
-                <span class="p">)</span>
+                    <span class="n">finish_team1_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stone_trajectory_parser</span><span class="p">(</span>
+                        <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;finish&quot;</span><span class="p">][</span><span class="s2">&quot;team1&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>
 
-                <span class="k">for</span> <span class="n">frames</span> <span class="ow">in</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;frames&quot;</span><span class="p">]:</span>
-                    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
-                        <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">frame</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                            <span class="n">frame_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                                <span class="n">Frame</span><span class="p">(</span>
-                                    <span class="n">team</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                    <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                    <span class="n">value</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span><span class="n">angle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="n">Position</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">)]),</span>
+                    <span class="k">for</span> <span class="n">frames</span> <span class="ow">in</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;frames&quot;</span><span class="p">]:</span>
+                        <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">frame</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                                <span class="n">frame_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                    <span class="n">Frame</span><span class="p">(</span>
+                                        <span class="n">team</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                        <span class="n">index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                        <span class="n">value</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span>
+                                            <span class="n">angle</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                                            <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="n">Position</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">)],</span>
+                                        <span class="p">),</span>
+                                    <span class="p">)</span>
                                 <span class="p">)</span>
-                            <span class="p">)</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="n">frame_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                                <span class="n">Frame</span><span class="p">(</span>
-                                    <span class="n">team</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;team&quot;</span><span class="p">],</span>
-                                    <span class="n">index</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">],</span>
-                                    <span class="n">value</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span>
-                                        <span class="n">angle</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;angle&quot;</span><span class="p">],</span>
-                                        <span class="n">position</span><span class="o">=</span><span class="p">[</span>
-                                            <span class="n">Position</span><span class="p">(</span>
-                                                <span class="n">x</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span>
-                                                <span class="n">y</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">],</span>
-                                            <span class="p">)</span>
-                                        <span class="p">],</span>
-                                    <span class="p">),</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">frame_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                    <span class="n">Frame</span><span class="p">(</span>
+                                        <span class="n">team</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;team&quot;</span><span class="p">],</span>
+                                        <span class="n">index</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">],</span>
+                                        <span class="n">value</span><span class="o">=</span><span class="n">Coordinate</span><span class="p">(</span>
+                                            <span class="n">angle</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;angle&quot;</span><span class="p">],</span>
+                                            <span class="n">position</span><span class="o">=</span><span class="p">[</span>
+                                                <span class="n">Position</span><span class="p">(</span>
+                                                    <span class="n">x</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;x&quot;</span><span class="p">],</span>
+                                                    <span class="n">y</span><span class="o">=</span><span class="n">frame</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="s2">&quot;y&quot;</span><span class="p">],</span>
+                                                <span class="p">)</span>
+                                            <span class="p">],</span>
+                                        <span class="p">),</span>
+                                    <span class="p">)</span>
                                 <span class="p">)</span>
-                            <span class="p">)</span>
 
-            <span class="n">velocity</span> <span class="o">=</span> <span class="n">Velocity</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+                <span class="n">velocity</span> <span class="o">=</span> <span class="n">Velocity</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
 
-            <span class="n">actual_move</span> <span class="o">=</span> <span class="n">ActualMove</span><span class="p">(</span>
-                <span class="n">rotation</span><span class="o">=</span><span class="n">rotation</span><span class="p">,</span>
-                <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
-                <span class="n">velocity</span><span class="o">=</span><span class="n">velocity</span><span class="p">,</span>
-            <span class="p">)</span>
+                <span class="n">actual_move</span> <span class="o">=</span> <span class="n">ActualMove</span><span class="p">(</span>
+                    <span class="n">rotation</span><span class="o">=</span><span class="n">rotation</span><span class="p">,</span>
+                    <span class="nb">type</span><span class="o">=</span><span class="n">cmd_type</span><span class="p">,</span>
+                    <span class="n">velocity</span><span class="o">=</span><span class="n">velocity</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># cmd_type == &quot;concede&quot;</span>
+                <span class="k">if</span> <span class="n">cmd_type</span> <span class="o">!=</span> <span class="s2">&quot;concede&quot;</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cmd_type is not concede. cmd_type : </span><span class="si">{</span><span class="n">cmd_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">seconds_per_frame</span> <span class="o">=</span> <span class="n">message_recv</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                    <span class="s2">&quot;seconds_per_frame&quot;</span>
+                <span class="p">]</span>
+                <span class="n">actual_move</span> <span class="o">=</span> <span class="n">Concede</span><span class="p">()</span>
 
             <span class="n">start</span> <span class="o">=</span> <span class="n">Start</span><span class="p">(</span>
                 <span class="n">team0</span><span class="o">=</span><span class="n">start_team0_position</span><span class="p">,</span>
@@ -563,7 +598,12 @@
 
 <div class="viewcode-block" id="SocketClient.move">
 <a class="viewcode-back" href="../../dc3client.html#dc3client.dc3client.SocketClient.move">[docs]</a>
-    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.4</span><span class="p">,</span> <span class="n">rotation</span><span class="p">:</span> <span class="n">StoneRotation</span> <span class="o">=</span> <span class="n">StoneRotation</span><span class="o">.</span><span class="n">outturn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">x</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">y</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.4</span><span class="p">,</span>
+        <span class="n">rotation</span><span class="p">:</span> <span class="n">StoneRotation</span> <span class="o">=</span> <span class="n">StoneRotation</span><span class="o">.</span><span class="n">outturn</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Shot Stone</span>
 
 <span class="sd">        Args:</span>
@@ -651,7 +691,9 @@
 
 <div class="viewcode-block" id="SocketClient.get_update_and_trajectory">
 <a class="viewcode-back" href="../../dc3client.html#dc3client.dc3client.SocketClient.get_update_and_trajectory">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_update_and_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remove_trajectory</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Update</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trajectory</span><span class="p">]]:</span>
+    <span class="k">def</span> <span class="nf">get_update_and_trajectory</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">remove_trajectory</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Update</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trajectory</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;get update and trajectory</span>
 
 <span class="sd">        Args:</span>
@@ -665,7 +707,10 @@
         <span class="n">trajectory_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Trajectory</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">update_data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">match_data</span><span class="o">.</span><span class="n">update_list</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">update_data</span><span class="o">.</span><span class="n">last_move</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">update_data</span><span class="o">.</span><span class="n">last_move</span><span class="o">.</span><span class="n">trajectory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">update_data</span><span class="o">.</span><span class="n">last_move</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">update_data</span><span class="o">.</span><span class="n">last_move</span><span class="o">.</span><span class="n">trajectory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">):</span>
                 <span class="n">trajectory_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">update_data</span><span class="o">.</span><span class="n">last_move</span><span class="o">.</span><span class="n">trajectory</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">remove_trajectory</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -740,24 +785,34 @@
                             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;thinking_time&quot;</span><span class="p">:</span>
                                 <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;setting&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                 <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">config_value</span><span class="p">):</span>
-                                    <span class="n">thinking_time_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                    <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;setting&quot;</span><span class="p">][</span><span class="s2">&quot;thinking_time&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">thinking_time_value</span>
+                                    <span class="n">thinking_time_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                        <span class="n">config_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">)</span>
+                                    <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;setting&quot;</span><span class="p">][</span><span class="s2">&quot;thinking_time&quot;</span><span class="p">][</span>
+                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">]</span> <span class="o">=</span> <span class="n">thinking_time_value</span>
 
                             <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;extra_end_thinking_time&quot;</span><span class="p">:</span>
                                 <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;setting&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                 <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">config_value</span><span class="p">):</span>
-                                    <span class="n">extra_end_thinking_time_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">config_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                    <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;setting&quot;</span><span class="p">][</span><span class="s2">&quot;extra_end_thinking_time&quot;</span><span class="p">][</span>
-                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
-                                    <span class="p">]</span> <span class="o">=</span> <span class="n">extra_end_thinking_time_value</span>
+                                    <span class="n">extra_end_thinking_time_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                        <span class="n">config_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">)</span>
+                                    <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;setting&quot;</span><span class="p">][</span>
+                                        <span class="s2">&quot;extra_end_thinking_time&quot;</span>
+                                    <span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extra_end_thinking_time_value</span>
 
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;setting&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
+                                <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;setting&quot;</span><span class="p">][</span>
+                                    <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                <span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
                     <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;simulator&quot;</span><span class="p">:</span>
                         <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">game_value</span><span class="p">):</span>
                             <span class="n">simulator_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">game_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                            <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;simulator&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">simulator_value</span>
+                            <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="s2">&quot;simulator&quot;</span><span class="p">][</span>
+                                <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                            <span class="p">]</span> <span class="o">=</span> <span class="n">simulator_value</span>
 
                     <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;players&quot;</span><span class="p">:</span>
                         <span class="n">is_ready_dict</span><span class="p">[</span><span class="s2">&quot;game&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -782,7 +837,9 @@
 
 <div class="viewcode-block" id="SocketClient.convert_update">
 <a class="viewcode-back" href="../../dc3client.html#dc3client.dc3client.SocketClient.convert_update">[docs]</a>
-    <span class="k">def</span> <span class="nf">convert_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_data</span><span class="p">:</span> <span class="n">Update</span><span class="p">,</span> <span class="n">remove_trajectory</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">convert_update</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">update_data</span><span class="p">:</span> <span class="n">Update</span><span class="p">,</span> <span class="n">remove_trajectory</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;convert Update to dict</span>
 
 <span class="sd">        Args:</span>
@@ -805,13 +862,17 @@
                         <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">state_value</span><span class="p">):</span>
                             <span class="n">extra_end_score_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">state_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                            <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;extra_end_score&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extra_end_score_value</span>
+                            <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;extra_end_score&quot;</span><span class="p">][</span>
+                                <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                            <span class="p">]</span> <span class="o">=</span> <span class="n">extra_end_score_value</span>
 
                     <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;game_result&quot;</span><span class="p">:</span>
                         <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">state_value</span><span class="p">):</span>
                             <span class="n">game_result_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">state_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                            <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;game_result&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">game_result_value</span>
+                            <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;game_result&quot;</span><span class="p">][</span>
+                                <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                            <span class="p">]</span> <span class="o">=</span> <span class="n">game_result_value</span>
 
                     <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;scores&quot;</span><span class="p">:</span>
                         <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -832,19 +893,29 @@
                                         <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">team_value</span><span class="p">:</span>
                                             <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                             <span class="k">for</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">pos</span><span class="p">):</span>
-                                                <span class="n">team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">position</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                                <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="n">position</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">team_position_value</span>
+                                                <span class="n">team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                                    <span class="n">pos</span><span class="p">,</span> <span class="n">position</span><span class="o">.</span><span class="n">name</span>
+                                                <span class="p">)</span>
+                                                <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span>
+                                                    <span class="n">position</span><span class="o">.</span><span class="n">name</span>
+                                                <span class="p">]</span> <span class="o">=</span> <span class="n">team_position_value</span>
 
                                     <span class="k">else</span><span class="p">:</span>
                                         <span class="n">state_stone_team_dict</span><span class="p">[</span><span class="n">team</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">team_value</span>
                                 <span class="n">state_stones_team_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_stone_team_dict</span><span class="p">)</span>
-                            <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;stones&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_stones_team_list</span>
+                            <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;stones&quot;</span><span class="p">][</span>
+                                <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                            <span class="p">]</span> <span class="o">=</span> <span class="n">state_stones_team_list</span>
 
                     <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;thinking_time_remaining&quot;</span><span class="p">:</span>
                         <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">state_value</span><span class="p">):</span>
-                            <span class="n">thinking_time_remaining_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">state_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                            <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;thinking_time_remaining&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">thinking_time_remaining_value</span>
+                            <span class="n">thinking_time_remaining_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                <span class="n">state_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                            <span class="p">)</span>
+                            <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="s2">&quot;thinking_time_remaining&quot;</span><span class="p">][</span>
+                                <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                            <span class="p">]</span> <span class="o">=</span> <span class="n">thinking_time_remaining_value</span>
 
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">state_value</span>
@@ -864,10 +935,16 @@
                             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;velocity&quot;</span><span class="p">:</span>
                                 <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                 <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">actual_move_value</span><span class="p">):</span>
-                                    <span class="n">velocity_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">actual_move_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;velocity&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">velocity_value</span>
+                                    <span class="n">velocity_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                        <span class="n">actual_move_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">)</span>
+                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="s2">&quot;velocity&quot;</span><span class="p">][</span>
+                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">]</span> <span class="o">=</span> <span class="n">velocity_value</span>
                             <span class="k">else</span><span class="p">:</span>
-                                <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">actual_move_value</span>
+                                <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;actual_move&quot;</span><span class="p">][</span>
+                                    <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                <span class="p">]</span> <span class="o">=</span> <span class="n">actual_move_value</span>
 
                     <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;trajectory&quot;</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">remove_trajectory</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
@@ -877,81 +954,133 @@
                             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">last_move_value</span><span class="p">):</span>
                                 <span class="n">trajectory_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">last_move_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
                                 <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;start&quot;</span><span class="p">:</span>
-                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">trajectory_value</span><span class="p">):</span>
-                                        <span class="n">start_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">trajectory_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                                        <span class="n">start_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                            <span class="n">trajectory_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">)</span>
+                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">][</span>
+                                            <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
                                         <span class="n">start_team_list</span> <span class="o">=</span> <span class="p">[]</span>
                                         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">start_value</span><span class="p">):</span>
                                             <span class="n">start_team_dict</span> <span class="o">=</span> <span class="p">{}</span>
-                                            <span class="n">start_team_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">start_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                                            <span class="n">start_team_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                                <span class="n">start_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                            <span class="p">)</span>
                                             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span>
                                                 <span class="n">start_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                                 <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">start_team_value</span><span class="p">):</span>
-                                                    <span class="n">start_team0_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">start_team_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                                    <span class="n">start_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_team0_position_value</span>
+                                                    <span class="n">start_team0_position_value</span> <span class="o">=</span> <span class="p">(</span>
+                                                        <span class="nb">getattr</span><span class="p">(</span>
+                                                            <span class="n">start_team_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                                        <span class="p">)</span>
+                                                    <span class="p">)</span>
+                                                    <span class="n">start_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span>
+                                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                                    <span class="p">]</span> <span class="o">=</span> <span class="n">start_team0_position_value</span>
 
                                             <span class="k">else</span><span class="p">:</span>
-                                                <span class="n">start_team_dict</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_team_value</span>
+                                                <span class="n">start_team_dict</span><span class="p">[</span>
+                                                    <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                                <span class="p">]</span> <span class="o">=</span> <span class="n">start_team_value</span>
                                             <span class="n">start_team_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_team_dict</span><span class="p">)</span>
-                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_team_list</span>
+                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">][</span>
+                                            <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">]</span> <span class="o">=</span> <span class="n">start_team_list</span>
 
                                 <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;finish&quot;</span><span class="p">:</span>
-                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">trajectory_value</span><span class="p">):</span>
-                                        <span class="n">finish_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">trajectory_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;finish&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                                        <span class="n">finish_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                            <span class="n">trajectory_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">)</span>
+                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                                            <span class="s2">&quot;finish&quot;</span>
+                                        <span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
                                         <span class="n">finish_team0_list</span> <span class="o">=</span> <span class="p">[]</span>
                                         <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">finish_value</span><span class="p">):</span>
                                             <span class="n">finish_team_dict</span> <span class="o">=</span> <span class="p">{}</span>
-                                            <span class="n">finish_team_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">finish_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                                            <span class="n">finish_team_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                                <span class="n">finish_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                            <span class="p">)</span>
                                             <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span>
                                                 <span class="n">finish_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                                 <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">finish_team_value</span><span class="p">):</span>
-                                                    <span class="n">finish_team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                                                        <span class="n">finish_team_value</span><span class="p">,</span>
-                                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                    <span class="n">finish_team_position_value</span> <span class="o">=</span> <span class="p">(</span>
+                                                        <span class="nb">getattr</span><span class="p">(</span>
+                                                            <span class="n">finish_team_value</span><span class="p">,</span>
+                                                            <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                        <span class="p">)</span>
                                                     <span class="p">)</span>
                                                     <span class="n">finish_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span>
                                                         <span class="n">field</span><span class="o">.</span><span class="n">name</span>
                                                     <span class="p">]</span> <span class="o">=</span> <span class="n">finish_team_position_value</span>
                                             <span class="k">else</span><span class="p">:</span>
-                                                <span class="n">finish_team_dict</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">finish_team_value</span>
+                                                <span class="n">finish_team_dict</span><span class="p">[</span>
+                                                    <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                                <span class="p">]</span> <span class="o">=</span> <span class="n">finish_team_value</span>
                                             <span class="n">finish_team0_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">finish_team_dict</span><span class="p">)</span>
-                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;finish&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">finish_team0_list</span>
+                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                                            <span class="s2">&quot;finish&quot;</span>
+                                        <span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">finish_team0_list</span>
 
                                 <span class="k">elif</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;frames&quot;</span><span class="p">:</span>
-                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
                                     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">trajectory_value</span><span class="p">):</span>
                                         <span class="n">frames_list</span> <span class="o">=</span> <span class="p">[]</span>
                                         <span class="n">frames_dict</span> <span class="o">=</span> <span class="p">{}</span>
-                                        <span class="n">frames_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">trajectory_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                                        <span class="n">frames_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                            <span class="n">trajectory_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">)</span>
 
                                         <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span>
                                             <span class="n">frames_dict</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                             <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">frames_value</span><span class="p">):</span>
-                                                <span class="n">frames_value_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">frames_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                                                <span class="n">frames_value_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                                    <span class="n">frames_value</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                                <span class="p">)</span>
 
                                                 <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span>
-                                                    <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
-                                                    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">frames_value_value</span><span class="p">):</span>
-                                                        <span class="n">frames_value_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
-                                                            <span class="n">frames_value_value</span><span class="p">,</span>
-                                                            <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                    <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span>
+                                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                                    <span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+                                                    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span>
+                                                        <span class="n">frames_value_value</span>
+                                                    <span class="p">):</span>
+                                                        <span class="n">frames_value_position_value</span> <span class="o">=</span> <span class="p">(</span>
+                                                            <span class="nb">getattr</span><span class="p">(</span>
+                                                                <span class="n">frames_value_value</span><span class="p">,</span>
+                                                                <span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                                            <span class="p">)</span>
                                                         <span class="p">)</span>
-                                                        <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span>
+                                                        <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span>
+                                                            <span class="s2">&quot;position&quot;</span>
+                                                        <span class="p">][</span>
                                                             <span class="n">field</span><span class="o">.</span><span class="n">name</span>
                                                         <span class="p">]</span> <span class="o">=</span> <span class="n">frames_value_position_value</span>
                                                 <span class="k">else</span><span class="p">:</span>
-                                                    <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">frames_value_value</span>
+                                                    <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span>
+                                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                                    <span class="p">]</span> <span class="o">=</span> <span class="n">frames_value_value</span>
                                         <span class="k">else</span><span class="p">:</span>
                                             <span class="n">frames_dict</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">frames_value</span>
 
                                         <span class="n">frames_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frames_dict</span><span class="p">)</span>
-                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="s2">&quot;frames&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frames_list</span><span class="p">)</span>
+                                        <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                                            <span class="s2">&quot;frames&quot;</span>
+                                        <span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frames_list</span><span class="p">)</span>
                                 <span class="k">else</span><span class="p">:</span>
-                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">trajectory_value</span>
+                                    <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="s2">&quot;trajectory&quot;</span><span class="p">][</span>
+                                        <span class="n">field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">]</span> <span class="o">=</span> <span class="n">trajectory_value</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">update_dict</span><span class="p">[</span><span class="s2">&quot;last_move&quot;</span><span class="p">][</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_move_value</span>
             <span class="k">else</span><span class="p">:</span>
@@ -992,8 +1121,12 @@
                                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">start_team_value</span><span class="p">:</span>
                                     <span class="n">start_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                     <span class="k">for</span> <span class="n">pos_field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
-                                        <span class="n">start_team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">pos_field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                        <span class="n">start_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="n">pos_field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_team_position_value</span>
+                                        <span class="n">start_team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                            <span class="n">j</span><span class="p">,</span> <span class="n">pos_field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">)</span>
+                                        <span class="n">start_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span>
+                                            <span class="n">pos_field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">]</span> <span class="o">=</span> <span class="n">start_team_position_value</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">start_team_dict</span><span class="p">[</span><span class="n">start_field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">start_team_value</span>
                         <span class="n">start_team_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start_team_dict</span><span class="p">)</span>
@@ -1014,8 +1147,12 @@
                                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">finish_team_value</span><span class="p">:</span>
                                     <span class="n">finish_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                     <span class="k">for</span> <span class="n">finish_field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
-                                        <span class="n">finish_team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">finish_field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-                                        <span class="n">finish_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span><span class="n">finish_field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">finish_team_position_value</span>
+                                        <span class="n">finish_team_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                            <span class="n">j</span><span class="p">,</span> <span class="n">finish_field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">)</span>
+                                        <span class="n">finish_team_dict</span><span class="p">[</span><span class="s2">&quot;position&quot;</span><span class="p">][</span>
+                                            <span class="n">finish_field</span><span class="o">.</span><span class="n">name</span>
+                                        <span class="p">]</span> <span class="o">=</span> <span class="n">finish_team_position_value</span>
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="n">finish_team_dict</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">finish_team_value</span>
                         <span class="n">finish_team_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">finish_team_dict</span><span class="p">)</span>
@@ -1031,19 +1168,25 @@
                         <span class="k">if</span> <span class="n">field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span>
                             <span class="n">frames_dict</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                             <span class="k">for</span> <span class="n">frame_field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">frame_value</span><span class="p">):</span>
-                                <span class="n">frame_data_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">frame_value</span><span class="p">,</span> <span class="n">frame_field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                                <span class="n">frame_data_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                    <span class="n">frame_value</span><span class="p">,</span> <span class="n">frame_field</span><span class="o">.</span><span class="n">name</span>
+                                <span class="p">)</span>
 
                                 <span class="k">if</span> <span class="n">frame_field</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;position&quot;</span><span class="p">:</span>
                                     <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="n">frame_field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
                                     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">frame_data_value</span><span class="p">:</span>
                                         <span class="k">for</span> <span class="n">frame_field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
-                                            <span class="n">frame_data_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">frame_field</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                                            <span class="n">frame_data_position_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                                                <span class="n">j</span><span class="p">,</span> <span class="n">frame_field</span><span class="o">.</span><span class="n">name</span>
+                                            <span class="p">)</span>
                                             <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="s2">&quot;position&quot;</span><span class="p">][</span>
                                                 <span class="n">frame_field</span><span class="o">.</span><span class="n">name</span>
                                             <span class="p">]</span> <span class="o">=</span> <span class="n">frame_data_position_value</span>
 
                                 <span class="k">else</span><span class="p">:</span>
-                                    <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span><span class="n">frame_field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_data_value</span>
+                                    <span class="n">frames_dict</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">][</span>
+                                        <span class="n">frame_field</span><span class="o">.</span><span class="n">name</span>
+                                    <span class="p">]</span> <span class="o">=</span> <span class="n">frame_data_value</span>
                         <span class="k">else</span><span class="p">:</span>
                             <span class="n">frames_dict</span><span class="p">[</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">frame_value</span>
                     <span class="n">frames_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">frames_dict</span><span class="p">)</span>

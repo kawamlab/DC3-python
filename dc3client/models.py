@@ -201,6 +201,13 @@ class ActualMove:
 
 
 @dataclass
+class Concede:
+    """Concede"""
+
+    type: str = "concede"
+
+
+@dataclass
 class Start:
     """Stone placement at the start of the shot"""
 
@@ -249,7 +256,7 @@ class Trajectory:
 class LastMove:
     """Results of previous shot"""
 
-    actual_move: ActualMove
+    actual_move: ActualMove | Concede
     free_guard_zone_foul: bool
     trajectory: Trajectory | None
 
@@ -276,7 +283,7 @@ class MatchData:
 
 @dataclass
 class ShotInfo:
-    """ショット情報"""
+    """Shot Info"""
 
     velocity_x: float
     velocity_y: float
