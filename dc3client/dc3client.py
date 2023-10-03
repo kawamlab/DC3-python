@@ -8,6 +8,7 @@ from typing import Any
 
 from dc3client.models import (
     ActualMove,
+    Concede,
     Coordinate,
     DCNotFoundError,
     ExtraEndScore,
@@ -44,7 +45,9 @@ from dc3client.models import (
 
 
 class BaseClient:
-    def __init__(self, timeout: int = 10, buffer: int = 1024, log_level: int = logging.INFO):
+    def __init__(
+        self, timeout: int = 10, buffer: int = 1024, log_level: int = logging.INFO
+    ):
         """base client initialize
 
         Args:
@@ -64,7 +67,9 @@ class BaseClient:
 
         self.logger.setLevel(log_level)
 
-        formatter = logging.Formatter("%(asctime)s - %(levelname)s:%(name)s - %(message)s")
+        formatter = logging.Formatter(
+            "%(asctime)s - %(levelname)s:%(name)s - %(message)s"
+        )
         stream_handler = logging.StreamHandler()
         stream_handler.setFormatter(formatter)
         self.logger.addHandler(stream_handler)
@@ -78,7 +83,9 @@ class BaseClient:
     def _connect(self, address: tuple):
         self.logger.info(f"Connect to {address}")
         self.address = address  # address of server
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)  # create socket object
+        self.socket = socket.socket(
+            socket.AF_INET, socket.SOCK_STREAM, 0
+        )  # create socket object
         self.socket.settimeout(self.timeout)  # set timeout
         self.socket.connect(self.address)  # connect to server
         self.logger.info(f"Connect to {address} success")
@@ -105,7 +112,9 @@ class BaseClient:
 
         else:
             while True:
-                if (wait_time := ((now := time.time()) - self.last_send)) > self.rate_limit:
+                if (
+                    wait_time := ((now := time.time()) - self.last_send)
+                ) > self.rate_limit:
                     self.socket.send(message.encode("utf-8"))  # type: ignore
                     self.logger.info(f"Send message : {message}")
                     self.last_send = now
@@ -212,13 +221,17 @@ class SocketClient(BaseClient):
         team_stone: list = []
         for data in message_recv:
             if data is None:
-                team_stone.append(Coordinate(angle=None, position=[Position(x=None, y=None)]))
+                team_stone.append(
+                    Coordinate(angle=None, position=[Position(x=None, y=None)])
+                )
 
             else:
                 team_stone.append(
                     Coordinate(
                         angle=data["angle"],
-                        position=[Position(x=data["position"]["x"], y=data["position"]["y"])],
+                        position=[
+                            Position(x=data["position"]["x"], y=data["position"]["y"])
+                        ],
                     )
                 )
 
@@ -309,7 +322,9 @@ class SocketClient(BaseClient):
             simulator=simulator,
         )
 
-        is_ready = IsReady(cmd=message_recv["cmd"], team=message_recv["team"], game=game)
+        is_ready = IsReady(
+            cmd=message_recv["cmd"], team=message_recv["team"], game=game
+        )
 
         self.match_data.is_ready = is_ready
 
@@ -324,7 +339,9 @@ class SocketClient(BaseClient):
         """receive new_game"""
 
         message_recv = self.receive()
-        self.match_data.new_game = NewGame(cmd=message_recv["cmd"], name=message_recv["name"])
+        self.match_data.new_game = NewGame(
+            cmd=message_recv["cmd"], name=message_recv["name"]
+        )
         if self.match_data.new_game is not None:
             self.is_connected = True
 
@@ -371,8 +388,12 @@ class SocketClient(BaseClient):
         )
 
         stones = Stones(
-            team0=self.__stone_trajectory_parser(message_recv["state"]["stones"]["team0"]),
-            team1=self.__stone_trajectory_parser(message_recv["state"]["stones"]["team1"]),
+            team0=self.__stone_trajectory_parser(
+                message_recv["state"]["stones"]["team0"]
+            ),
+            team1=self.__stone_trajectory_parser(
+                message_recv["state"]["stones"]["team1"]
+            ),
         )
 
         thinking_time_remaining = ThinkingTimeRemaining(
@@ -382,7 +403,7 @@ class SocketClient(BaseClient):
 
         if message_recv["last_move"] is None:
             free_guard_zone_foul = False
-            type = None
+            cmd_type = None
             rotation = None
             x = None
             y = None
@@ -391,68 +412,82 @@ class SocketClient(BaseClient):
             last_move = message_recv["last_move"]
             actual_move = message_recv["last_move"]["actual_move"]
             free_guard_zone_foul = message_recv["last_move"]["free_guard_zone_foul"]
-            type = message_recv["last_move"]["actual_move"]["type"]
-            velocity = message_recv["last_move"]["actual_move"]["velocity"]
-            rotation = message_recv["last_move"]["actual_move"]["rotation"]
-            x = message_recv["last_move"]["actual_move"]["velocity"]["x"]
-            y = message_recv["last_move"]["actual_move"]["velocity"]["y"]
+            cmd_type = message_recv["last_move"]["actual_move"]["type"]
+            if cmd_type == "shot":
+                velocity = message_recv["last_move"]["actual_move"]["velocity"]
+                rotation = message_recv["last_move"]["actual_move"]["rotation"]
+                x = message_recv["last_move"]["actual_move"]["velocity"]["x"]
+                y = message_recv["last_move"]["actual_move"]["velocity"]["y"]
 
-            if message_recv["last_move"]["trajectory"] is None:
-                seconds_per_frame = None
+                if message_recv["last_move"]["trajectory"] is None:
+                    seconds_per_frame = None
 
-            else:
-                seconds_per_frame = message_recv["last_move"]["trajectory"]["seconds_per_frame"]
+                else:
+                    seconds_per_frame = message_recv["last_move"]["trajectory"][
+                        "seconds_per_frame"
+                    ]
 
-                start_team0_position = self.__stone_trajectory_parser(
-                    message_recv["last_move"]["trajectory"]["start"]["team0"]
-                )
+                    start_team0_position = self.__stone_trajectory_parser(
+                        message_recv["last_move"]["trajectory"]["start"]["team0"]
+                    )
 
-                start_team1_position = self.__stone_trajectory_parser(
-                    message_recv["last_move"]["trajectory"]["start"]["team1"]
-                )
+                    start_team1_position = self.__stone_trajectory_parser(
+                        message_recv["last_move"]["trajectory"]["start"]["team1"]
+                    )
 
-                finish_team0_position = self.__stone_trajectory_parser(
-                    message_recv["last_move"]["trajectory"]["finish"]["team0"]
-                )
+                    finish_team0_position = self.__stone_trajectory_parser(
+                        message_recv["last_move"]["trajectory"]["finish"]["team0"]
+                    )
 
-                finish_team1_position = self.__stone_trajectory_parser(
-                    message_recv["last_move"]["trajectory"]["finish"]["team1"]
-                )
+                    finish_team1_position = self.__stone_trajectory_parser(
+                        message_recv["last_move"]["trajectory"]["finish"]["team1"]
+                    )
 
-                for frames in message_recv["last_move"]["trajectory"]["frames"]:
-                    for frame in frames:
-                        if frame is None or frame["value"] is None:
-                            frame_data.append(
-                                Frame(
-                                    team=None,
-                                    index=None,
-                                    value=Coordinate(angle=None, position=[Position(x=None, y=None)]),
+                    for frames in message_recv["last_move"]["trajectory"]["frames"]:
+                        for frame in frames:
+                            if frame is None or frame["value"] is None:
+                                frame_data.append(
+                                    Frame(
+                                        team=None,
+                                        index=None,
+                                        value=Coordinate(
+                                            angle=None,
+                                            position=[Position(x=None, y=None)],
+                                        ),
+                                    )
                                 )
-                            )
-                        else:
-                            frame_data.append(
-                                Frame(
-                                    team=frame["team"],
-                                    index=frame["index"],
-                                    value=Coordinate(
-                                        angle=frame["value"]["angle"],
-                                        position=[
-                                            Position(
-                                                x=frame["value"]["position"]["x"],
-                                                y=frame["value"]["position"]["y"],
-                                            )
-                                        ],
-                                    ),
+                            else:
+                                frame_data.append(
+                                    Frame(
+                                        team=frame["team"],
+                                        index=frame["index"],
+                                        value=Coordinate(
+                                            angle=frame["value"]["angle"],
+                                            position=[
+                                                Position(
+                                                    x=frame["value"]["position"]["x"],
+                                                    y=frame["value"]["position"]["y"],
+                                                )
+                                            ],
+                                        ),
+                                    )
                                 )
-                            )
 
-            velocity = Velocity(x=x, y=y)
+                velocity = Velocity(x=x, y=y)
 
-            actual_move = ActualMove(
-                rotation=rotation,
-                type=type,
-                velocity=velocity,
-            )
+                actual_move = ActualMove(
+                    rotation=rotation,
+                    type=cmd_type,
+                    velocity=velocity,
+                )
+
+            else:  # cmd_type == "concede"
+                if cmd_type != "concede":
+                    raise Exception(f"cmd_type is not concede. cmd_type : {cmd_type}")
+                seconds_per_frame = message_recv["last_move"]["trajectory"][
+                    "seconds_per_frame"
+                ]
+                actual_move = Concede()
 
             start = Start(
                 team0=start_team0_position,
@@ -499,7 +534,12 @@ class SocketClient(BaseClient):
 
         self.match_data.update_list.append(update_info)
 
-    def move(self, x: float = 0.0, y: float = 2.4, rotation: StoneRotation = StoneRotation.outturn) -> None:
+    def move(
+        self,
+        x: float = 0.0,
+        y: float = 2.4,
+        rotation: StoneRotation = StoneRotation.outturn,
+    ) -> None:
         """Shot Stone
 
         Args:
@@ -566,7 +606,9 @@ class SocketClient(BaseClient):
         """get move info"""
         return self.move_info
 
-    def get_update_and_trajectory(self, remove_trajectory: bool = True) -> tuple[list[Update], list[Trajectory]]:
+    def get_update_and_trajectory(
+        self, remove_trajectory: bool = True
+    ) -> tuple[list[Update], list[Trajectory]]:
         """get update and trajectory
 
         Args:
@@ -580,7 +622,10 @@ class SocketClient(BaseClient):
         trajectory_list: list[Trajectory] = []
 
         for update_data in self.match_data.update_list:
-            if update_data.last_move is not None and update_data.last_move.trajectory is not None:
+            if (
+                update_data.last_move is not None
+                and update_data.last_move.trajectory is not None
+            ):
                 trajectory_list.append(update_data.last_move.trajectory)
 
             if remove_trajectory is True:
@@ -643,24 +688,34 @@ class SocketClient(BaseClient):
                             if field.name == "thinking_time":
                                 is_ready_dict["game"]["setting"][field.name] = {}
                                 for field in fields(config_value):
-                                    thinking_time_value = getattr(config_value, field.name)
-                                    is_ready_dict["game"]["setting"]["thinking_time"][field.name] = thinking_time_value
+                                    thinking_time_value = getattr(
+                                        config_value, field.name
+                                    )
+                                    is_ready_dict["game"]["setting"]["thinking_time"][
+                                        field.name
+                                    ] = thinking_time_value
 
                             elif field.name == "extra_end_thinking_time":
                                 is_ready_dict["game"]["setting"][field.name] = {}
                                 for field in fields(config_value):
-                                    extra_end_thinking_time_value = getattr(config_value, field.name)
-                                    is_ready_dict["game"]["setting"]["extra_end_thinking_time"][
-                                        field.name
-                                    ] = extra_end_thinking_time_value
+                                    extra_end_thinking_time_value = getattr(
+                                        config_value, field.name
+                                    )
+                                    is_ready_dict["game"]["setting"][
+                                        "extra_end_thinking_time"
+                                    ][field.name] = extra_end_thinking_time_value
 
                             else:
-                                is_ready_dict["game"]["setting"][field.name] = config_value
+                                is_ready_dict["game"]["setting"][
+                                    field.name
+                                ] = config_value
                     if field.name == "simulator":
                         is_ready_dict["game"][field.name] = {}
                         for field in fields(game_value):
                             simulator_value = getattr(game_value, field.name)
-                            is_ready_dict["game"]["simulator"][field.name] = simulator_value
+                            is_ready_dict["game"]["simulator"][
+                                field.name
+                            ] = simulator_value
 
                     if field.name == "players":
                         is_ready_dict["game"][field.name] = {}
@@ -682,7 +737,9 @@ class SocketClient(BaseClient):
                 is_ready_dict[field.name] = value
         return is_ready_dict
 
-    def convert_update(self, update_data: Update, remove_trajectory: bool = True) -> dict[str, Any]:
+    def convert_update(
+        self, update_data: Update, remove_trajectory: bool = True
+    ) -> dict[str, Any]:
         """convert Update to dict
 
         Args:
@@ -705,13 +762,17 @@ class SocketClient(BaseClient):
                         update_dict["state"][field.name] = {}
                         for field in fields(state_value):
                             extra_end_score_value = getattr(state_value, field.name)
-                            update_dict["state"]["extra_end_score"][field.name] = extra_end_score_value
+                            update_dict["state"]["extra_end_score"][
+                                field.name
+                            ] = extra_end_score_value
 
                     elif field.name == "game_result":
                         update_dict["state"][field.name] = {}
                         for field in fields(state_value):
                             game_result_value = getattr(state_value, field.name)
-                            update_dict["state"]["game_result"][field.name] = game_result_value
+                            update_dict["state"]["game_result"][
+                                field.name
+                            ] = game_result_value
 
                     elif field.name == "scores":
                         update_dict["state"][field.name] = {}
@@ -732,19 +793,29 @@ class SocketClient(BaseClient):
                                         for pos in team_value:
                                             state_stone_team_dict["position"] = {}
                                             for position in fields(pos):
-                                                team_position_value = getattr(pos, position.name)
-                                                state_stone_team_dict["position"][position.name] = team_position_value
+                                                team_position_value = getattr(
+                                                    pos, position.name
+                                                )
+                                                state_stone_team_dict["position"][
+                                                    position.name
+                                                ] = team_position_value
 
                                     else:
                                         state_stone_team_dict[team.name] = team_value
                                 state_stones_team_list.append(state_stone_team_dict)
-                            update_dict["state"]["stones"][field.name] = state_stones_team_list
+                            update_dict["state"]["stones"][
+                                field.name
+                            ] = state_stones_team_list
 
                     elif field.name == "thinking_time_remaining":
                         update_dict["state"][field.name] = {}
                         for field in fields(state_value):
-                            thinking_time_remaining_value = getattr(state_value, field.name)
-                            update_dict["state"]["thinking_time_remaining"][field.name] = thinking_time_remaining_value
+                            thinking_time_remaining_value = getattr(
+                                state_value, field.name
+                            )
+                            update_dict["state"]["thinking_time_remaining"][
+                                field.name
+                            ] = thinking_time_remaining_value
 
                     else:
                         update_dict["state"][field.name] = state_value
@@ -764,10 +835,16 @@ class SocketClient(BaseClient):
                             if field.name == "velocity":
                                 update_dict["last_move"]["actual_move"][field.name] = {}
                                 for field in fields(actual_move_value):
-                                    velocity_value = getattr(actual_move_value, field.name)
-                                    update_dict["last_move"]["actual_move"]["velocity"][field.name] = velocity_value
+                                    velocity_value = getattr(
+                                        actual_move_value, field.name
+                                    )
+                                    update_dict["last_move"]["actual_move"]["velocity"][
+                                        field.name
+                                    ] = velocity_value
                             else:
-                                update_dict["last_move"]["actual_move"][field.name] = actual_move_value
+                                update_dict["last_move"]["actual_move"][
+                                    field.name
+                                ] = actual_move_value
 
                     elif field.name == "trajectory":
                         if remove_trajectory is True:
@@ -777,81 +854,133 @@ class SocketClient(BaseClient):
                             for field in fields(last_move_value):
                                 trajectory_value = getattr(last_move_value, field.name)
                                 if field.name == "start":
-                                    update_dict["last_move"]["trajectory"][field.name] = {}
+                                    update_dict["last_move"]["trajectory"][
+                                        field.name
+                                    ] = {}
                                     for field in fields(trajectory_value):
-                                        start_value = getattr(trajectory_value, field.name)
-                                        update_dict["last_move"]["trajectory"]["start"][field.name] = []
+                                        start_value = getattr(
+                                            trajectory_value, field.name
+                                        )
+                                        update_dict["last_move"]["trajectory"]["start"][
+                                            field.name
+                                        ] = []
                                         start_team_list = []
                                         for field in fields(start_value):
                                             start_team_dict = {}
-                                            start_team_value = getattr(start_value, field.name)
+                                            start_team_value = getattr(
+                                                start_value, field.name
+                                            )
                                             if field.name == "position":
                                                 start_team_dict["position"] = {}
                                                 for field in fields(start_team_value):
-                                                    start_team0_position_value = getattr(start_team_value, field.name)
-                                                    start_team_dict["position"][field.name] = start_team0_position_value
+                                                    start_team0_position_value = (
+                                                        getattr(
+                                                            start_team_value, field.name
+                                                        )
+                                                    )
+                                                    start_team_dict["position"][
+                                                        field.name
+                                                    ] = start_team0_position_value
 
                                             else:
-                                                start_team_dict[field.name] = start_team_value
+                                                start_team_dict[
+                                                    field.name
+                                                ] = start_team_value
                                             start_team_list.append(start_team_dict)
-                                        update_dict["last_move"]["trajectory"]["start"][field.name] = start_team_list
+                                        update_dict["last_move"]["trajectory"]["start"][
+                                            field.name
+                                        ] = start_team_list
 
                                 elif field.name == "finish":
-                                    update_dict["last_move"]["trajectory"][field.name] = {}
+                                    update_dict["last_move"]["trajectory"][
+                                        field.name
+                                    ] = {}
                                     for field in fields(trajectory_value):
-                                        finish_value = getattr(trajectory_value, field.name)
-                                        update_dict["last_move"]["trajectory"]["finish"][field.name] = []
+                                        finish_value = getattr(
+                                            trajectory_value, field.name
+                                        )
+                                        update_dict["last_move"]["trajectory"][
+                                            "finish"
+                                        ][field.name] = []
                                         finish_team0_list = []
                                         for field in fields(finish_value):
                                             finish_team_dict = {}
-                                            finish_team_value = getattr(finish_value, field.name)
+                                            finish_team_value = getattr(
+                                                finish_value, field.name
+                                            )
                                             if field.name == "position":
                                                 finish_team_dict["position"] = {}
                                                 for field in fields(finish_team_value):
-                                                    finish_team_position_value = getattr(
-                                                        finish_team_value,
-                                                        field.name,
+                                                    finish_team_position_value = (
+                                                        getattr(
+                                                            finish_team_value,
+                                                            field.name,
+                                                        )
                                                     )
                                                     finish_team_dict["position"][
                                                         field.name
                                                     ] = finish_team_position_value
                                             else:
-                                                finish_team_dict[field.name] = finish_team_value
+                                                finish_team_dict[
+                                                    field.name
+                                                ] = finish_team_value
                                             finish_team0_list.append(finish_team_dict)
-                                        update_dict["last_move"]["trajectory"]["finish"][field.name] = finish_team0_list
+                                        update_dict["last_move"]["trajectory"][
+                                            "finish"
+                                        ][field.name] = finish_team0_list
 
                                 elif field.name == "frames":
-                                    update_dict["last_move"]["trajectory"][field.name] = []
+                                    update_dict["last_move"]["trajectory"][
+                                        field.name
+                                    ] = []
 
                                     for field in fields(trajectory_value):
                                         frames_list = []
                                         frames_dict = {}
-                                        frames_value = getattr(trajectory_value, field.name)
+                                        frames_value = getattr(
+                                            trajectory_value, field.name
+                                        )
 
                                         if field.name == "value":
                                             frames_dict[field.name] = {}
                                             for field in fields(frames_value):
-                                                frames_value_value = getattr(frames_value, field.name)
+                                                frames_value_value = getattr(
+                                                    frames_value, field.name
+                                                )
 
                                                 if field.name == "position":
-                                                    frames_dict["value"][field.name] = {}
-                                                    for field in fields(frames_value_value):
-                                                        frames_value_position_value = getattr(
-                                                            frames_value_value,
-                                                            field.name,
+                                                    frames_dict["value"][
+                                                        field.name
+                                                    ] = {}
+                                                    for field in fields(
+                                                        frames_value_value
+                                                    ):
+                                                        frames_value_position_value = (
+                                                            getattr(
+                                                                frames_value_value,
+                                                                field.name,
+                                                            )
                                                         )
-                                                        frames_dict["value"]["position"][
+                                                        frames_dict["value"][
+                                                            "position"
+                                                        ][
                                                             field.name
                                                         ] = frames_value_position_value
                                                 else:
-                                                    frames_dict["value"][field.name] = frames_value_value
+                                                    frames_dict["value"][
+                                                        field.name
+                                                    ] = frames_value_value
                                         else:
                                             frames_dict[field.name] = frames_value
 
                                         frames_list.append(frames_dict)
-                                        update_dict["last_move"]["trajectory"]["frames"].append(frames_list)
+                                        update_dict["last_move"]["trajectory"][
+                                            "frames"
+                                        ].append(frames_list)
                                 else:
-                                    update_dict["last_move"]["trajectory"][field.name] = trajectory_value
+                                    update_dict["last_move"]["trajectory"][
+                                        field.name
+                                    ] = trajectory_value
                     else:
                         update_dict["last_move"][field.name] = last_move_value
             else:
@@ -889,8 +1018,12 @@ class SocketClient(BaseClient):
                                 for j in start_team_value:
                                     start_team_dict["position"] = {}
                                     for pos_field in fields(j):
-                                        start_team_position_value = getattr(j, pos_field.name)
-                                        start_team_dict["position"][pos_field.name] = start_team_position_value
+                                        start_team_position_value = getattr(
+                                            j, pos_field.name
+                                        )
+                                        start_team_dict["position"][
+                                            pos_field.name
+                                        ] = start_team_position_value
                             else:
                                 start_team_dict[start_field.name] = start_team_value
                         start_team_list.append(start_team_dict)
@@ -911,8 +1044,12 @@ class SocketClient(BaseClient):
                                 for j in finish_team_value:
                                     finish_team_dict["position"] = {}
                                     for finish_field in fields(j):
-                                        finish_team_position_value = getattr(j, finish_field.name)
-                                        finish_team_dict["position"][finish_field.name] = finish_team_position_value
+                                        finish_team_position_value = getattr(
+                                            j, finish_field.name
+                                        )
+                                        finish_team_dict["position"][
+                                            finish_field.name
+                                        ] = finish_team_position_value
                             else:
                                 finish_team_dict[field.name] = finish_team_value
                         finish_team_list.append(finish_team_dict)
@@ -928,19 +1065,25 @@ class SocketClient(BaseClient):
                         if field.name == "value":
                             frames_dict[field.name] = {}
                             for frame_field in fields(frame_value):
-                                frame_data_value = getattr(frame_value, frame_field.name)
+                                frame_data_value = getattr(
+                                    frame_value, frame_field.name
+                                )
 
                                 if frame_field.name == "position":
                                     frames_dict["value"][frame_field.name] = {}
                                     for j in frame_data_value:
                                         for frame_field in fields(j):
-                                            frame_data_position_value = getattr(j, frame_field.name)
+                                            frame_data_position_value = getattr(
+                                                j, frame_field.name
+                                            )
                                             frames_dict["value"]["position"][
                                                 frame_field.name
                                             ] = frame_data_position_value
 
                                 else:
-                                    frames_dict["value"][frame_field.name] = frame_data_value
+                                    frames_dict["value"][
+                                        frame_field.name
+                                    ] = frame_data_value
                         else:
                             frames_dict[field.name] = frame_value
                     frames_list.append(frames_dict)
