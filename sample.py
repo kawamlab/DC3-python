@@ -32,9 +32,9 @@ if __name__ == "__main__":
     # auto_start : サーバーに接続した際に自動で試合を開始するかどうかを指定します。デフォルトではTrueとなっています。
     # これは、dc3のコンバート機能のみを使用したいときにサーバーを起動する必要をなくすために用意されています。
     # rate_limit : 通信のレート制限を指定します。デフォルトでは2.0秒に1回となっています。早すぎるとサーバーから切断される可能性があります。
-    cli = SocketClient(rate_limit=2.0)
+    cli = SocketClient(host="dc3-server", port=10000, client_name="SAMPLE_AI0", auto_start=True, rate_limit=3.0)
 
-    # ログを出力するディレクトリを指定します。デフォルトでは"logs"となっています。
+    # ログを出力するディレクトリを指定します。デフォルトでは"logs/"となっています。
     log_dir = pathlib.Path("logs")
 
     # データ保存時に、軌跡データを削除するかどうかを指定します。デフォルトではTrueとなっています。
@@ -58,6 +58,7 @@ if __name__ == "__main__":
         cli.update()
 
         # 試合状況を取得します
+        # 現在の情報は、match_data.update_listに順番に格納されています
         match_data = cli.get_match_data()
 
         # winnerが存在するかどうかで、試合が終了しているかどうかを確認します
