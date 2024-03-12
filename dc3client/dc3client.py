@@ -172,7 +172,7 @@ class SocketClient(BaseClient):
         port: int = 10000,
         client_name: str = "AI0",
         auto_start: bool = True,
-        rate_limit: float = 3.0,
+        rate_limit: float = 0.2,
     ) -> None:
         """initialize socket client
 
