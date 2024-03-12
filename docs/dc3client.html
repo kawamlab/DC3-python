@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>dc3client package &#8212; dc3client 0.0.6 documentation</title>
+    <title>dc3client package &#8212; dc3client 0.0.7 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=f63d8bfa" />
     <link rel="stylesheet" type="text/css" href="_static/haiku.css?v=e491ac2d" />
-    <script src="_static/documentation_options.js?v=1fd71caa"></script>
+    <script src="_static/documentation_options.js?v=bbaf98b3"></script>
     <script src="_static/doctools.js?v=888ff710"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -16,7 +16,7 @@
     <link rel="prev" title="Welcome to dc3client’s documentation!" href="index.html" /> 
   </head><body>
       <div class="header" role="banner"><h1 class="heading"><a href="index.html">
-          <span>dc3client 0.0.6 documentation</span></a></h1>
+          <span>dc3client 0.0.7 documentation</span></a></h1>
         <h2 class="heading"><span>dc3client package</span></h2>
       </div>
       <div class="topnav" role="navigation" aria-label="top navigation">
@@ -290,6 +290,17 @@ rotation (StoneRotation, optional): Rotation of stone. Defaults to StoneRotation
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="dc3client.models.Concede">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Concede</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'concede'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Concede"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Concede" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dc3client.models.Concede.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'concede'</span></em><a class="headerlink" href="#dc3client.models.Concede.type" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="dc3client.models.Coordinate">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">Coordinate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dc3client.models.Position" title="dc3client.models.Position"><span class="pre">Position</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#Coordinate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.Coordinate" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -478,12 +489,12 @@ Each frame is represented as the difference from the previous frame (the first f
 
 <dl class="py class">
 <dt class="sig sig-object py" id="dc3client.models.LastMove">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">LastMove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actual_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.ActualMove" title="dc3client.models.ActualMove"><span class="pre">ActualMove</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_guard_zone_foul</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Trajectory" title="dc3client.models.Trajectory"><span class="pre">Trajectory</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#LastMove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.LastMove" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">LastMove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">actual_move</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.ActualMove" title="dc3client.models.ActualMove"><span class="pre">ActualMove</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Concede" title="dc3client.models.Concede"><span class="pre">Concede</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">free_guard_zone_foul</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trajectory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.Trajectory" title="dc3client.models.Trajectory"><span class="pre">Trajectory</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#LastMove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.LastMove" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Results of previous shot</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dc3client.models.LastMove.actual_move">
-<span class="sig-name descname"><span class="pre">actual_move</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.ActualMove" title="dc3client.models.ActualMove"><span class="pre">ActualMove</span></a></em><a class="headerlink" href="#dc3client.models.LastMove.actual_move" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">actual_move</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.ActualMove" title="dc3client.models.ActualMove"><span class="pre">ActualMove</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.Concede" title="dc3client.models.Concede"><span class="pre">Concede</span></a></em><a class="headerlink" href="#dc3client.models.LastMove.actual_move" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -688,7 +699,7 @@ applied to the initial velocity and initial angle</p>
 <dt class="sig sig-object py" id="dc3client.models.ShotInfo">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dc3client.models.</span></span><span class="sig-name descname"><span class="pre">ShotInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dc3client.models.StoneRotation" title="dc3client.models.StoneRotation"><span class="pre">StoneRotation</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dc3client/models.html#ShotInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dc3client.models.ShotInfo" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>ショット情報</p>
+<p>Shot Info</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="dc3client.models.ShotInfo.rotation">
 <span class="sig-name descname"><span class="pre">rotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dc3client.models.StoneRotation" title="dc3client.models.StoneRotation"><span class="pre">StoneRotation</span></a></em><a class="headerlink" href="#dc3client.models.ShotInfo.rotation" title="Link to this definition">¶</a></dt>

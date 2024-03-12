@@ -1,23 +1,25 @@
 # dc3client
 
-Wrapper for developing digitalcuring3 clients in python
+[デジタルカーリング3](https://github.com/digitalcurling/DigitalCurling3/wiki)用のクライアントライブラリです。
 
-If issues are found, please report them via GitHub issues.
+問題を発見した場合、GitHubのissueに投稿してください。
 
-## Installation
+## インストール
 
-Python 3.10 or higher is required
+Python 3.10以上が必要です。pip経由でインストールできます。
+
 ```bash
 pip install dc3client
 ```
 
-## Usage
+## 使い方
 
-see [sample.py](https://github.com/kawamlab/DC3-python/blob/master/sample.py)
+ドキュメントは[こちら](https://kawamlab.github.io/DC3-python/)を参照してください。
+また、使い方や対戦環境の構築方法は[DC3-python-template](https://github.com/kawamlab/DC3-python-template)を参照してください。
 
-## Create document
 
-from [here](https://zero-cheese.com/12248/)
+## ドキュメント更新用メモ
+
 ```sh
 sphinx-quickstart docs # init
 ```

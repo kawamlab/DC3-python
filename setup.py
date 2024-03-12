@@ -11,7 +11,7 @@ AUTHOR_EMAIL = "34680324+being24@users.noreply.github.com"
 URL = "https://github.com/kawamlab/DC3-python"
 LICENSE = "MIT"
 DOWNLOAD_URL = URL
-VERSION = "0.0.6"
+VERSION = "0.0.7"
 PYTHON_REQUIRES = ">=3.10"
 INSTALL_REQUIRES = ["numpy>=1.24.0"]
 PACKAGES = ["dc3client"]
