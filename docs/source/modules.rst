@@ -6,5 +6,4 @@ DC3-python
 
    dc3client
    sample
-   sample1
    setup
